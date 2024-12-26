@@ -4,6 +4,7 @@ import Attendance from '../../components/Attendance/Attendance';
 import { FaBars, FaTimes, FaChartBar, FaUser, FaUsers, FaMoneyCheckAlt, FaClipboardList } from "react-icons/fa";
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
+import Report from '../../components/Report/Report';
 
 
 function Home() {
@@ -40,15 +41,15 @@ function Home() {
 
         <nav className={`mt-16 space-y-4 ${isMenuCollapsed ? "hidden" : "block"}`}>
           {/* Xisobot */}
-          <a
-            href="#"
+          <Link
+            to={'/report'}
             className={`flex items-center p-2 space-x-2 rounded ${activeMenu === "Xisobot" ? "bg-blue-600" : "hover:bg-blue-700"
               }`}
             onClick={() => handleMenuClick("Xisobot")}
           >
             <FaChartBar className="text-xl" />
             <span className="font-medium">Xisobot</span>
-          </a>
+          </Link>
 
           {/* O‘quvchilar */}
           <a
@@ -98,6 +99,7 @@ function Home() {
 
       {/* Main Content */}
       <main className="flex-1 p-6 ml-4">
+        {pathname == "/report" && <Report />}
         {pathname == "/payment" && <Payment />}
         {pathname == "/attandance" && <Attendance />}
       </main>
