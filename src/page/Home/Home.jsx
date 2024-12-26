@@ -4,6 +4,7 @@ import Attendance from '../../components/Attendance/Attendance';
 import { FaBars, FaTimes, FaChartBar, FaUser, FaUsers, FaMoneyCheckAlt, FaClipboardList } from "react-icons/fa";
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
+import AttendenceGroup from '../../components/Attendance/AttendenceGroup';
 
 
 function Home() {
@@ -100,6 +101,7 @@ function Home() {
       <main className="flex-1 p-6 ml-4">
         {pathname == "/payment" && <Payment />}
         {pathname == "/attandance" && <Attendance />}
+        {pathname == "/attendenceGroup" && <AttendenceGroup />}
       </main>
     </div>
   )
