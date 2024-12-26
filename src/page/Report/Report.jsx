@@ -1,11 +1,11 @@
 import React from 'react'
 
-function Xisobot() {
+function Report() {
   return (
     <div>
-      Xisobot
+      Report
     </div>
   )
 }
 
-export default Xisobot;
+export default Report;
