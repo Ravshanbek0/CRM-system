@@ -8,8 +8,6 @@ import { Link, useLocation, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import Report from '../../components/Report/Report';
 import AttendenceGroup from '../../components/Attendance/AttendenceGroup';
-import Report from '../Report/Report';
-import Appeals from '../Appeals/Appeals';
 
 
 
@@ -47,8 +45,8 @@ function Home() {
 
         <nav className={`mt-16 space-y-4 ${isMenuCollapsed ? "hidden" : "block"}`}>
           {/* Xisobot */}
-          <a
-            href="#"
+          <Link
+            to={"/"}
             className={`flex items-center p-2 space-x-2 rounded ${activeMenu === "Xisobot" ? "bg-blue-600" : "hover:bg-blue-700"
               }`}
             onClick={() => handleMenuClick("Xisobot")}
@@ -105,12 +103,11 @@ function Home() {
 
       {/* Main Content */}
       <main className="flex-1 p-6 ml-4">
-        {pathname == "/report" && <Report />}
+        {pathname == "/" && <Report />}
         {pathname == "/payment" && <Payment />}
         {pathname == "/attandance" && <Attendance />}
         {pathname=="/students" && <Students/>}
         {pathname=="/groups" && <Groups/>}
-
         {pathname == "/attendenceGroup" && <AttendenceGroup />}
       </main>
     </div>
