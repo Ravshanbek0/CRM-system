@@ -105,12 +105,11 @@ function Home() {
         {pathname == "/report" && <Report />}
         {pathname == "/payment" && <Payment />}
         {pathname == "/attandance" && <Attendance />}
-<<<<<<< HEAD
         {pathname=="/students" && <Students/>}
         {pathname=="/groups" && <Groups/>}
-=======
+
         {pathname == "/attendenceGroup" && <AttendenceGroup />}
->>>>>>> 6438a7bdac911d4dbfad72ca8228592f72acecf6
+
       </main>
     </div>
   )
