@@ -8,3 +8,9 @@
   list-style: none;
   text-decoration: none;
 }
+.bg-main{
+  background-color: rgba(240, 242, 250, 1);
+}
+.bg-main-lg{
+  background-color: rgba(234, 237, 250, 1);
+}

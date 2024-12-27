@@ -13,7 +13,12 @@ function App() {
           <Route path='/appeals' element={<Home />} />
           <Route path='/payment' element={<Home />} />
           <Route path='/attandance' element={<Home />} />
+
+          <Route path='/students' element={<Home/>}/>
+          <Route path='/groups' element={<Home/>}/>
+
           <Route path='/attendenceGroup' element={<Home />} />
+
         </Routes>
       </BrowserRouter>
     </>
