@@ -7,13 +7,16 @@ import { useEffect } from 'react';
 import Report from '../../components/Report/Report';
 import AttendenceGroup from '../../components/Attendance/AttendenceGroup';
 import Appeals from '../../components/Appeals/Appeals';
+import Students from '../../components/Students/Students';
+import Groups from '../../components/Groups/gROUPS.JSX';
+
 
 
 function Home() {
   const { pathname } = useLocation()
 
   const [isMenuCollapsed, setMenuCollapsed] = useState(false);
-  const [activeMenu, setActiveMenu] = useState(`${pathname}`); // Bosilgan menyu elementi
+  const [activeMenu, setActiveMenu] = useState('Xisobot'); // Bosilgan menyu elementi
 
   const toggleMenu = () => {
     setMenuCollapsed(!isMenuCollapsed);
@@ -44,7 +47,7 @@ function Home() {
         <nav className={`mt-16 space-y-4 ${isMenuCollapsed ? "hidden" : "block"}`}>
           {/* Xisobot */}
           <Link
-            to={'/report'}
+            to={"/"}
             className={`flex items-center p-2 space-x-2 rounded ${activeMenu === "Xisobot" ? "bg-blue-600" : "hover:bg-blue-700"
               }`}
             onClick={() => handleMenuClick("Xisobot")}
@@ -54,26 +57,26 @@ function Home() {
           </Link>
 
           {/* O‘quvchilar */}
-          <a
-            href="#"
+          <Link
+            to={'/students'}
             className={`flex items-center p-2 space-x-2 rounded ${activeMenu === "O‘quvchilar" ? "bg-blue-600" : "hover:bg-blue-700"
               }`}
             onClick={() => handleMenuClick("O‘quvchilar")}
           >
             <FaGraduationCap className="text-xl" />
             <span className="font-medium">O‘quvchilar</span>
-          </a>
+          </Link>
 
           {/* Guruhlar */}
-          <a
-            href="#"
+          <Link
+            to={'/groups'}
             className={`flex items-center p-2 space-x-2 rounded ${activeMenu === "Guruhlar" ? "bg-blue-600" : "hover:bg-blue-700"
               }`}
             onClick={() => handleMenuClick("Guruhlar")}
           >
             <FaUsers className="text-xl" />
             <span className="font-medium">Guruhlar</span>
-          </a>
+          </Link>
 
           {/* To‘lovlar */}
           <Link
@@ -111,11 +114,13 @@ function Home() {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1">
+      <main className="flex-1 p-6 ml-4">
+        {pathname == "/" && <Report />}
         {pathname == "/appeals" && <Appeals />}
-        {pathname == "/report" && <Report />}
         {pathname == "/payment" && <Payment />}
         {pathname == "/attandance" && <Attendance />}
+        {pathname=="/students" && <Students/>}
+        {pathname=="/groups" && <Groups/>}
         {pathname == "/attendenceGroup" && <AttendenceGroup />}
       </main>
     </div>
