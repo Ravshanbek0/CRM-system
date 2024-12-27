@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
 import Payment from '../../components/Payment/Payment';
 import Attendance from '../../components/Attendance/Attendance';
-import { FaBars, FaTimes, FaChartBar, FaUser, FaUsers, FaMoneyCheckAlt, FaClipboardList } from "react-icons/fa";
+import { FaBars, FaTimes,  FaHome, FaGraduationCap, FaUsers, FaCreditCard, FaUser, FaComments } from "react-icons/fa";
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import Report from '../../components/Report/Report';
 import AttendenceGroup from '../../components/Attendance/AttendenceGroup';
+import Appeals from '../../components/Appeals/Appeals';
 
 
 function Home() {
@@ -26,7 +27,7 @@ function Home() {
 
   }, [])
   return (
-    <div className="bg-gray-100 min-h-screen flex">
+    <div className="bg-gray-100 h-auto flex">
       {/* Sidebar */}
       <aside
         className={`${isMenuCollapsed ? "w-16" : "w-64"
@@ -48,7 +49,7 @@ function Home() {
               }`}
             onClick={() => handleMenuClick("Xisobot")}
           >
-            <FaChartBar className="text-xl" />
+            <FaHome className="text-xl" />
             <span className="font-medium">Xisobot</span>
           </Link>
 
@@ -59,7 +60,7 @@ function Home() {
               }`}
             onClick={() => handleMenuClick("O‘quvchilar")}
           >
-            <FaUsers className="text-xl" />
+            <FaGraduationCap className="text-xl" />
             <span className="font-medium">O‘quvchilar</span>
           </a>
 
@@ -70,7 +71,7 @@ function Home() {
               }`}
             onClick={() => handleMenuClick("Guruhlar")}
           >
-            <FaUser className="text-xl" />
+            <FaUsers className="text-xl" />
             <span className="font-medium">Guruhlar</span>
           </a>
 
@@ -81,7 +82,7 @@ function Home() {
               }`}
             onClick={() => handleMenuClick("To‘lovlar")}
           >
-            <FaMoneyCheckAlt className="text-xl" />
+            <FaCreditCard className="text-xl" />
             <span className="font-medium">To‘lovlar</span>
           </Link>
 
@@ -92,14 +93,26 @@ function Home() {
               }`}
             onClick={() => handleMenuClick("Davomat")}
           >
-            <FaClipboardList className="text-xl" />
+            <FaUser className="text-xl" />
             <span className="font-medium">Davomat</span>
+          </Link>
+
+          {/* Murojatlar */}
+          <Link
+            to={'/appeals'}
+            className={`flex items-center p-2 space-x-2 rounded ${activeMenu === "Murojatlar" ? "bg-blue-600" : "hover:bg-blue-700"
+              }`}
+            onClick={() => handleMenuClick("Murojatlar")}
+          >
+            <FaComments className="text-xl" />
+            <span className="font-medium">Murojatlar</span>
           </Link>
         </nav>
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 p-6 ml-4">
+      <main className="flex-1">
+        {pathname == "/appeals" && <Appeals />}
         {pathname == "/report" && <Report />}
         {pathname == "/payment" && <Payment />}
         {pathname == "/attandance" && <Attendance />}
