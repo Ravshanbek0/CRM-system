@@ -1,9 +1,9 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Navbar from './components/Navbar/Navbar';
 import Home from './page/Home/Home';
 import Report from './page/Report/Report';
 import Appeals from './page/Appeals/Appeals';
+
 
 function App() {
   return (
@@ -15,6 +15,8 @@ function App() {
           <Route path='/appeals' element={<Appeals />} />
           <Route path='/payment' element={<Home />} />
           <Route path='/attandance' element={<Home />} />
+          <Route path='/students' element={<Home/>}/>
+          <Route path='/groups' element={<Home/>}/>
         </Routes>
       </BrowserRouter>
     </>
