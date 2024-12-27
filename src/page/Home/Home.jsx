@@ -5,6 +5,7 @@ import { FaBars, FaTimes, FaChartBar, FaUser, FaUsers, FaMoneyCheckAlt, FaClipbo
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import Report from '../../components/Report/Report';
+import AttendenceGroup from '../../components/Attendance/AttendenceGroup';
 
 
 function Home() {
@@ -102,6 +103,7 @@ function Home() {
         {pathname == "/report" && <Report />}
         {pathname == "/payment" && <Payment />}
         {pathname == "/attandance" && <Attendance />}
+        {pathname == "/attendenceGroup" && <AttendenceGroup />}
       </main>
     </div>
   )
