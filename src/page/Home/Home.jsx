@@ -14,7 +14,7 @@ function Home() {
   const { pathname } = useLocation()
 
   const [isMenuCollapsed, setMenuCollapsed] = useState(false);
-  const [activeMenu, setActiveMenu] = useState(`${pathname}`); // Bosilgan menyu elementi
+  const [activeMenu, setActiveMenu] = useState('Xisobot'); // Bosilgan menyu elementi
 
   const toggleMenu = () => {
     setMenuCollapsed(!isMenuCollapsed);
@@ -44,15 +44,15 @@ function Home() {
 
         <nav className={`mt-16 space-y-4 ${isMenuCollapsed ? "hidden" : "block"}`}>
           {/* Xisobot */}
-          <a
-            href="#"
+          <Link
+            to={"/"}
             className={`flex items-center p-2 space-x-2 rounded ${activeMenu === "Xisobot" ? "bg-blue-600" : "hover:bg-blue-700"
               }`}
             onClick={() => handleMenuClick("Xisobot")}
           >
             <FaChartBar className="text-xl" />
             <span className="font-medium">Xisobot</span>
-          </a>
+          </Link>
 
           {/* O‘quvchilar */}
           <a
@@ -105,7 +105,7 @@ function Home() {
         {pathname == "/payment" && <Payment />}
         {pathname == "/attandance" && <Attendance />}
         {pathname == "/attendenceGroup" && <AttendenceGroup />}
-        {pathname == "/report" && <Report />}
+        {pathname == "/" && <Report />}
         {pathname == "/appeals" && <Appeals />}
       </main>
     </div>
