@@ -34,7 +34,7 @@ function Home() {
       {/* Sidebar */}
       <aside
         className={`${isMenuCollapsed ? "w-16" : "w-64"
-          } bg-blue-800 text-white h-auto sticky top-0 transition-all duration-300`}
+          } bg-blue-800 text-white h-screen sticky top-0 transition-all duration-300`}
       >
         {/* Menu Button */}
         <button
