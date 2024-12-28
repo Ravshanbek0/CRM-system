@@ -28,7 +28,7 @@ const Groups = () => {
             );
         };
     
-        const absentStudents = attendance.filter((student) => !student.present);
+      
 
   return (
     <div>
