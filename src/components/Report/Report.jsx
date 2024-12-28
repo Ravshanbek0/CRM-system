@@ -85,7 +85,7 @@ function Report() {
         ticks: {
           color: "#2F327D", // Oylik nomlar rangini o'zgartirish
           font: {
-            size: ismobile ? 16 : 24,
+            size: ismobile ? 16 : 20,
             weight: "bold",
           },
         },
@@ -99,7 +99,7 @@ function Report() {
         ticks: {
           color: "#2F327D",
           font: {
-            size: ismobile ? 16 : 24,
+            size: ismobile ? 16 : 20,
           },
         },
       },
@@ -111,8 +111,8 @@ function Report() {
       <div className="flex flex-wrap w-100 ml-5 sm:ml-16 xl:ml-36 gap-5">
         {data.map((item, index) => (
           <div key={index} className="w-5/12 h-28 sm:h-44 border p-3 lg:rounded-xl bg-white relative shadow-md hover:shadow-lg transition-shadow">
-            <h1 className='text-sm sm:text-base md:text-xl lg:text-2xl xl:text-3xl font-medium'>{ismobile ? item.minTitle : item.title}:</h1>
-            <p className='sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold mt-1'>{item.num} ta</p>
+            <h1 className='text-xs sm:text-base lg:text-xl xl:text-2xl font-medium'>{ismobile ? item.minTitle : item.title}:</h1>
+            <p className='sm:text-xl lg:text-2xl xl:text-3xl font-bold mt-1'>{item.num} ta</p>
             <div className="w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-16 xl:w-24 xl:h-24 rounded-full flex justify-center content-center absolute right-5 bottom-5 hover:cursor-pointer bg-main-lg">
               <img className='w-3 sm:w-4 lg:w-6 xl:w-8' src={stat} alt="" />
             </div>
@@ -122,8 +122,8 @@ function Report() {
       <div className='w-100 h-auto ml-5 sm:ml-16 xl:ml-36 mt-5'>
         <div className='w-11/12 lg:w-10/12 h-auto bg-white relative shadow-md hover:shadow-lg transition'>
           <div className="flex gap-2 justify-center xl:block xl:w-4/12 xl:absolute xl:right-0 xl:top-3">
-            <p className='text-xs sm:text-sm md:text-lg xl:text-3xl font-semibold'>2022-YIL</p>
-            <p className='text-xs sm:text-sm md:text-lg xl:text-3xl font-semibold'><span className='text-blue-700'>Aprel</span> oyigacha bo’lgan statistika</p>
+            <p className='text-xs sm:text-sm md:text-lg xl:text-2xl font-semibold'>2022-YIL</p>
+            <p className='text-xs sm:text-sm md:text-lg xl:text-2xl font-semibold'><span className='text-blue-700'>Aprel</span> oyigacha bo’lgan statistika</p>
           </div>
           <div className='w-100 h-96 xl:w-10/12'>
             <Bar data={mainData} options={options} />
