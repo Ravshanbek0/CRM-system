@@ -34,7 +34,7 @@ function Home() {
       {/* Sidebar */}
       <aside
         className={`${isMenuCollapsed ? "w-16" : "w-64"
-          } bg-blue-800 text-white h-screen sticky top-0 transition-all duration-300`}
+          } bg-blue-800 text-white h-auto sticky top-0 transition-all duration-300`}
       >
         {/* Menu Button */}
         <button
@@ -114,7 +114,7 @@ function Home() {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 p-6 ml-4">
+      <main className="flex-1">
         {pathname == "/" && <Report />}
         {pathname == "/appeals" && <Appeals />}
         {pathname == "/payment" && <Payment />}

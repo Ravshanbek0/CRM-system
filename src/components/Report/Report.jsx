@@ -120,7 +120,7 @@ function Report() {
         ))}
       </div>
       <div className='w-100 h-auto ml-5 sm:ml-16 xl:ml-36 mt-5'>
-        <div className='w-11/12 lg:w-10/12 h-auto bg-white relative'>
+        <div className='w-11/12 lg:w-10/12 h-auto bg-white relative shadow-md hover:shadow-lg transition'>
           <div className="flex gap-2 justify-center xl:block xl:w-4/12 xl:absolute xl:right-0 xl:top-3">
             <p className='text-xs sm:text-sm md:text-lg xl:text-3xl font-semibold'>2022-YIL</p>
             <p className='text-xs sm:text-sm md:text-lg xl:text-3xl font-semibold'><span className='text-blue-700'>Aprel</span> oyigacha bo’lgan statistika</p>
