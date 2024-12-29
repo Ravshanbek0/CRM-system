@@ -16,7 +16,7 @@ function Home() {
   const { pathname } = useLocation()
 
   const [isMenuCollapsed, setMenuCollapsed] = useState(false);
-  const [activeMenu, setActiveMenu] = useState('Xisobot'); // Bosilgan menyu elementi
+  const [activeMenu, setActiveMenu] = useState(`${pathname}`); // Bosilgan menyu elementi
 
   const toggleMenu = () => {
     setMenuCollapsed(!isMenuCollapsed);
@@ -114,7 +114,7 @@ function Home() {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1">
+      <main className="flex-1 p-6 ml-4">
         {pathname == "/" && <Report />}
         {pathname == "/appeals" && <Appeals />}
         {pathname == "/payment" && <Payment />}

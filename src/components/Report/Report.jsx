@@ -101,6 +101,7 @@ function Report() {
           font: {
             size: ismobile ? 16 : 20,
           },
+          padding: 15
         },
       },
     },
