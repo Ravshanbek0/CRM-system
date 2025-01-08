@@ -1,6 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
-function Payment() {
+function Payment({ data }) {
+    useEffect(() => {
+        console.log(data);
+    }, [])
+
     return (
         <div><h2 className="text-2xl font-semibold text-blue-600 text-[40px]">To'lov qilish</h2>
 
@@ -58,14 +62,16 @@ function Payment() {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td className="border border-gray-300 p-2">1</td>
-                            <td className="border border-gray-300 p-2">Muxamadaliyev Ibroxim</td>
-                            <td className="border border-gray-300 p-2">+998900113861</td>
-                            <td className="border border-gray-300 p-2">Matematika</td>
-                            <td className="border border-gray-300 p-2">O'qituvchi F.I.SH</td>
-                            <td className="border border-gray-300 p-2">06.02.2022</td>
-                        </tr>
+                        {data ? data.map((item) => {
+                            return (<tr>
+                                <td className="border border-gray-300 p-2">1</td>
+                                <td className="border border-gray-300 p-2">{item.name} {item.surname}</td>
+                                <td className="border border-gray-300 p-2">{item.phone}</td>
+                                <td className="border border-gray-300 p-2">{item.group[0]?.group_name}</td>
+                                <td className="border border-gray-300 p-2">O'qituvchi F.I.SH</td>
+                                <td className="border border-gray-300 p-2">{item.updatedAt}</td>
+                            </tr>)
+                        }) : <h1>Ma'lumot yo'q.</h1>}
                         {/* More rows as needed */}
                     </tbody>
                 </table>

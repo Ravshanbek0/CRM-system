@@ -33,14 +33,11 @@ function App() {
           <Route path='/' element={<Home />} />
           <Route path='/report' element={<Home />} />
           <Route path='/appeals' element={<Home />} />
-          <Route path='/payment' element={<Home />} />
+          <Route path='/payment' element={<Home data={data} />} />
           <Route path='/attandance' element={<Home />} />
-
           <Route path='/students' element={<Home />} />
           <Route path='/groups' element={<Home />} />
-
           <Route path='/attendenceGroup' element={<Home />} />
-
         </Routes>
       </BrowserRouter>
     </>

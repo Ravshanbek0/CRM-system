@@ -12,7 +12,7 @@ import Groups from '../../components/Groups/gROUPS.JSX';
 
 
 
-function Home() {
+function Home({data}) {
   const { pathname } = useLocation()
 
   const [isMenuCollapsed, setMenuCollapsed] = useState(false);
@@ -117,7 +117,7 @@ function Home() {
       <main className="flex-1 p-6 ml-4">
         {pathname == "/" && <Report />}
         {pathname == "/appeals" && <Appeals />}
-        {pathname == "/payment" && <Payment />}
+        {pathname == "/payment" && <Payment data={data} />}
         {pathname == "/attandance" && <Attendance />}
         {pathname=="/students" && <Students/>}
         {pathname=="/groups" && <Groups/>}
