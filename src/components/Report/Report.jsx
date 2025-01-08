@@ -20,7 +20,11 @@ ChartJS.register(
   Legend
 );
 
-function Report() {
+function Report({ data }) {
+
+  useEffect(() => {
+    console.log(data);
+  }, [data])
 
   const [ismobile, setIsMobile] = useState(window.innerWidth < 1024)
 
@@ -30,7 +34,7 @@ function Report() {
     return () => window.removeEventListener("resize", handleResize)
   }, [])
 
-  const data = [
+  const data1 = [
     {
       title: "Jami o'quvchilar soni",
       minTitle: "Jami o'quvchilar",
@@ -110,12 +114,12 @@ function Report() {
   return (
     <div className='bg-main pt-6'>
       <div className="flex flex-wrap w-100 ml-5 sm:ml-16 xl:ml-36 gap-5">
-        {data.map((item, index) => (
+        {data1.map((item, index) => (
           <div key={index} className="w-5/12 h-28 sm:h-44 border p-3 lg:rounded-xl bg-white relative shadow-md hover:shadow-lg transition-shadow">
             <h1 className='text-xs sm:text-base lg:text-xl xl:text-2xl font-medium'>{ismobile ? item.minTitle : item.title}:</h1>
             <p className='sm:text-xl lg:text-2xl xl:text-3xl font-bold mt-1'>{item.num} ta</p>
             <div className="w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-16 xl:w-24 xl:h-24 rounded-full flex justify-center content-center absolute right-5 bottom-5 hover:cursor-pointer bg-main-lg">
-              <img className='w-3 sm:w-4 lg:w-6 xl:w-8' src={stat} alt="" />
+              <img onClick={()=>console.log(data)} className='w-3 sm:w-4 lg:w-6 xl:w-8' src={stat} alt="" />
             </div>
           </div>
         ))}
