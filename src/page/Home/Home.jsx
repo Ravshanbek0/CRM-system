@@ -26,7 +26,7 @@ function Home({data}) {
     setActiveMenu(menu); // Bosilgan menyu elementini belgilash
   };
   useEffect(() => {
-    console.log(pathname);
+    console.log(data);
 
   }, [])
   return (
@@ -115,7 +115,7 @@ function Home({data}) {
 
       {/* Main Content */}
       <main className="flex-1 p-6 ml-4">
-        {pathname == "/" && <Report />}
+        {pathname == "/" && <Report data={data} />}
         {pathname == "/appeals" && <Appeals />}
         {pathname == "/payment" && <Payment data={data} />}
         {pathname == "/attandance" && <Attendance />}

@@ -30,7 +30,7 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path='/' element={<Home data={data} />}  />
+          <Route path='/' element={<Home />} />
           <Route path='/report' element={<Home data={data} />} />
           <Route path='/appeals' element={<Home />} />
           <Route path='/payment' element={<Home data={data} />} />
