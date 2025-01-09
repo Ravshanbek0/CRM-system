@@ -1,7 +1,9 @@
 import React from 'react';
 import deleted from "./delete.svg";
 
-const Students = () => {
+const Students = ({ data }) => {
+    console.log(data);
+    
   return (
     <div>
       <h2 className='text-2xl font-semibold text-blue-600'>Yangi o’quvchi qo’shish</h2>
@@ -90,15 +92,18 @@ const Students = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td className="border border-gray-300 p-2">1</td>
-                            <td className="border border-gray-300 p-2">Muxamadaliyev Ibroxim</td>
-                            <td className="border border-gray-300 p-2">+998900113861</td>
-                            <td className="border border-gray-300 p-2">Matematika</td>
-                            <td className="border border-gray-300 p-2">Ota-ona(F.I.SH)</td>
-                            <td className="border border-gray-300 p-2 flex justify-around">+998900113861  <button> <img src={deleted} alt="" />  </button>  </td>
-                        </tr>
-                        {/* More rows as needed */}
+
+                      
+                    {data ? data.map((item) => {
+                            return (<tr>
+                                <td className="border border-gray-300 p-2">1</td>
+                                <td className="border border-gray-300 p-2">{item.name} {item.surname}</td>
+                                <td className="border border-gray-300 p-2">{item.phone}</td>
+                                <td className="border border-gray-300 p-2">{item.group[0]?.group_name}</td>
+                                <td className="border border-gray-300 p-2">{item.parents_name}</td>
+                                <td className="border border-gray-300 p-2">{item.parents_phone}</td>
+                            </tr>)
+                        }) : <h1>Ma'lumot yo'q.</h1>}
                     </tbody>
                 </table>
             </div>
