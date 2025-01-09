@@ -44,6 +44,8 @@ function App() {
   };
   useEffect(()=>{
     fetchData()
+    fetchDataGroup()
+    fetchDataTeacher()
     console.log(data);
     
   },[])
