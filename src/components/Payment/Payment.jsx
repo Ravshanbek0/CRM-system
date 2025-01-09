@@ -1,9 +1,8 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 
 function Payment({ data }) {
-    useEffect(() => {
-        console.log(data);
-    }, [])
+   
+   
 
     return (
         <div><h2 className="text-2xl font-semibold text-blue-600 text-[40px]">To'lov qilish</h2>

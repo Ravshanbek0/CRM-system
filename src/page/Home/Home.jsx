@@ -25,10 +25,7 @@ function Home({data}) {
   const handleMenuClick = (menu) => {
     setActiveMenu(menu); // Bosilgan menyu elementini belgilash
   };
-  useEffect(() => {
-    console.log(data);
-
-  }, [])
+  
   return (
     <div className="bg-gray-100 h-auto flex">
       {/* Sidebar */}
@@ -119,7 +116,7 @@ function Home({data}) {
         {pathname == "/appeals" && <Appeals />}
         {pathname == "/payment" && <Payment data={data} />}
         {pathname == "/attandance" && <Attendance />}
-        {pathname=="/students" && <Students/>}
+        {pathname=="/students" && <Students data={data}/>}
         {pathname=="/groups" && <Groups/>}
         {pathname == "/attendenceGroup" && <AttendenceGroup />}
       </main>
