@@ -44,8 +44,7 @@ function App() {
   };
   useEffect(()=>{
     fetchData()
-    fetchDataGroup()
-    fetchDataTeacher()
+    console.log(data);
     
   },[])
 
@@ -58,7 +57,7 @@ function App() {
           <Route path='/appeals' element={<Home />} />
           <Route path='/payment' element={<Home data={data} />} />
           <Route path='/attandance' element={<Home />} />
-          <Route path='/students' element={<Home />} />
+          <Route path='/students' element={<Home data={data} />} />
           <Route path='/groups' element={<Home />} />
           <Route path='/attendenceGroup' element={<Home />} />
         </Routes>

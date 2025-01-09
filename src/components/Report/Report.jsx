@@ -24,7 +24,7 @@ function Report({data}) {
 
   useEffect(() => {
     console.log(data);
-  }, [])
+  }, [data])
 
   const [ismobile, setIsMobile] = useState(window.innerWidth < 1024)
 
