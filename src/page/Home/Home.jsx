@@ -12,7 +12,7 @@ import Groups from '../../components/Groups/gROUPS.JSX';
 
 
 
-function Home({data}) {
+function Home({data,dataGroup,dataTeacher}) {
   const { pathname } = useLocation()
 
   const [isMenuCollapsed, setMenuCollapsed] = useState(false);
@@ -115,9 +115,9 @@ function Home({data}) {
         {pathname == "/" && <Report data={data} />}
         {pathname == "/appeals" && <Appeals />}
         {pathname == "/payment" && <Payment data={data} />}
-        {pathname == "/attandance" && <Attendance />}
+        {pathname == "/attandance" && <Attendance dataGroup={dataGroup} dataTeacher={dataTeacher}/>}
         {pathname=="/students" && <Students data={data}/>}
-        {pathname=="/groups" && <Groups/>}
+        {pathname=="/groups" && <Groups dataGroup={dataGroup}/>}
         {pathname == "/attendenceGroup" && <AttendenceGroup />}
       </main>
     </div>

@@ -57,10 +57,10 @@ function App() {
           <Route path='/' element={<Home data={data}/>} />
           <Route path='/report' element={<Home data={data} />} />
           <Route path='/appeals' element={<Home />} />
-          <Route path='/payment' element={<Home data={data} />} />
-          <Route path='/attandance' element={<Home />} />
+          <Route path='/payment' element={<Home data={data}  />} />
+          <Route path='/attandance' element={<Home  dataGroup={dataGroup} dataTeacher={dataTeacher}/>} />
           <Route path='/students' element={<Home data={data} />} />
-          <Route path='/groups' element={<Home />} />
+          <Route path='/groups' element={<Home dataGroup={dataGroup} />} />
           <Route path='/attendenceGroup' element={<Home />} />
         </Routes>
       </BrowserRouter>

@@ -1,6 +1,6 @@
 import React from 'react'
 
-function Payment({ data }) {
+function Payment({ data,dataGroup }) {
    
    
 
