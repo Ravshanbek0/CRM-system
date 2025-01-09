@@ -6,6 +6,8 @@ import Home from './page/Home/Home';
 
 function App() {
   const [data, setData] = useState([]); // Ma'lumotni saqlash uchun holat
+  const [dataGroup, setDataGroup] = useState([]); // Ma'lumotni saqlash uchun holat
+  const [dataTeacher, setDataTeacher] = useState([]); // Ma'lumotni saqlash uchun holat
   const [loading, setLoading] = useState(true); // Yuklanish holatini ko'rsatish uchun
   const [error, setError] = useState(null); // Xatolarni saqlash uchun
 
@@ -20,9 +22,30 @@ function App() {
       setLoading(false); // Yuklashni to'xtatish
     }
   };
+  const fetchDataGroup = async () => {
+    try {
+      const response = await axios.get('https://crm-project.up.railway.app/api/v1/group/'); // API URL
+      setDataGroup(response.data); // Javobni saqlash
+      setLoading(false); // Yuklashni to'xtatish
+    } catch (err) {
+      setError(err.message); // Xatoni saqlash
+      setLoading(false); // Yuklashni to'xtatish
+    }
+  };
+  const fetchDataTeacher = async () => {
+    try {
+      const response = await axios.get('https://crm-project.up.railway.app/api/v1/teacher/'); // API URL
+      setDataTeacher(response.data); // Javobni saqlash
+      setLoading(false); // Yuklashni to'xtatish
+    } catch (err) {
+      setError(err.message); // Xatoni saqlash
+      setLoading(false); // Yuklashni to'xtatish
+    }
+  };
   useEffect(()=>{
     fetchData()
-    console.log(data);
+    fetchDataGroup()
+    fetchDataTeacher()
     
   },[])
 
