@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios'
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Home from './page/Home/Home';
+import Attendance from './components/Attendance/Attendance';
+import AttendenceGroup from './components/Attendance/AttendenceGroup';
 
 
 function App() {
@@ -10,6 +12,8 @@ function App() {
   const [dataTeacher, setDataTeacher] = useState([]); // Ma'lumotni saqlash uchun holat
   const [loading, setLoading] = useState(true); // Yuklanish holatini ko'rsatish uchun
   const [error, setError] = useState(null); // Xatolarni saqlash uchun
+
+  const [group_id,setGroup_id] = useState("")
 
 
   const fetchData = async () => {
@@ -58,10 +62,10 @@ function App() {
           <Route path='/report' element={<Home data={data} />} />
           <Route path='/appeals' element={<Home />} />
           <Route path='/payment' element={<Home data={data}  />} />
-          <Route path='/attandance' element={<Home  dataGroup={dataGroup} dataTeacher={dataTeacher}/>} />
+          <Route path='/attandance' element={<Home  dataGroup={dataGroup} dataTeacher={dataTeacher} setGroup_id={setGroup_id}/>} />
           <Route path='/students' element={<Home data={data} />} />
           <Route path='/groups' element={<Home dataGroup={dataGroup} />} />
-          <Route path='/attendenceGroup' element={<Home />} />
+          <Route path='/attendenceGroup/:id' element={<AttendenceGroup dataGroup={dataGroup} group_id={group_id} data={data}/>} />
         </Routes>
       </BrowserRouter>
     </>

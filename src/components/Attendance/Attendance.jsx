@@ -2,37 +2,38 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
-function Attendance() {
+function Attendance({setGroup_id}) {
     const [combinedData, setCombinedData] = useState([]);
     const fetchData = async () => {
         try {
-          // API so'rovlarini parallel bajarish
-          const [response1, response2] = await Promise.all([
-            axios.get('https://crm-project.up.railway.app/api/v1/group/'), // Birinchi API URL
-            axios.get('https://crm-project.up.railway.app/api/v1/teacher/'), // Ikkinchi API URL
-          ]);
-  
-  
-          // Key'larni noyob qilib obyektni birlashtirish
-          const combined = {
-            ...Object.fromEntries(
-              Object.entries(response1.data).map(([key, value]) => [0, value])
-            ),
-            ...Object.fromEntries(
-              Object.entries(response2.data).map(([key, value]) => [1, value])
-            ),
-          };
-          
-          setCombinedData([combined]);
+            // API so'rovlarini parallel bajarish
+            const [response1, response2] = await Promise.all([
+                axios.get('https://crm-project.up.railway.app/api/v1/group/'), // Birinchi API URL
+                axios.get('https://crm-project.up.railway.app/api/v1/teacher/'), // Ikkinchi API URL
+            ]);
+
+
+            // Key'larni noyob qilib obyektni birlashtirish
+            const combined = {
+                ...Object.fromEntries(
+                    Object.entries(response1.data).map(([key, value]) => [0, value])
+                ),
+                ...Object.fromEntries(
+                    Object.entries(response2.data).map(([key, value]) => [1, value])
+                ),
+            };
+
+            setCombinedData([combined]);
         } catch (err) {
-          console.error(err);
-          setError('Ma\'lumotlarni olishda xatolik yuz berdi.');
+            console.error(err);
+            setError('Ma\'lumotlarni olishda xatolik yuz berdi.');
         } finally {
         }
-      };
+    };
     useEffect(() => {
         fetchData()
         console.log(combinedData);
+        // console.log();
         
     }, [])
 
@@ -46,10 +47,13 @@ function Attendance() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     {/* Card 1 */}
-                    <Link to={'/attendenceGroup'}>
-                        {combinedData && combinedData.map((item,index) => {
-                            return (<div key={index} className="bg-white shadow rounded-lg  overflow-hidden border border-gray-200">
-                                <h2 className="text-lg font-bold bg-blue-600 p-2 text-white mb-2 text-center">{item[1].group_name}</h2>
+
+                    {combinedData && combinedData.map((item, index) => {
+                        return (<Link onClick={()=>{
+                            setGroup_id(item[0]._id)
+                        }} to={`/attendenceGroup/${item[0]._id}`}>
+                            <div key={index} className="bg-white shadow rounded-lg  overflow-hidden border border-gray-200">
+                                <h2 className="text-lg font-bold bg-blue-600 p-2 text-white mb-2 text-center">{item[0].group_name}</h2>
                                 <div className='p-4'>
                                     <div className='flex items-center'>
                                         <img src="./imgs/face.png" alt="" />
@@ -67,9 +71,10 @@ function Attendance() {
                                     <p className="text-sm text-blue-800 font-semibold  mb-2">O'quvchilar soni:  <span className="text-gray-800">{item[0].group_pupils.length}ta</span></p>
                                     <p className="text-sm text-blue-800 font-semibold ">To'lov qilganlar: <span className="text-gray-800">{item[0].payment_done}ta</span></p>
                                 </div>
-                            </div>)
-                        })}
-                    </Link>
+                            </div>
+                        </Link>)
+                    })}
+
 
 
 
