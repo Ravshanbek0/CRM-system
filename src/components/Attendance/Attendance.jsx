@@ -2,10 +2,12 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
-function Attendance({setGroup_id}) {
+function Attendance({ setGroup_id ,setLoading}) {
     const [combinedData, setCombinedData] = useState([]);
+
     const fetchData = async () => {
         try {
+            setLoading(true)
             // API so'rovlarini parallel bajarish
             const [response1, response2] = await Promise.all([
                 axios.get('https://crm-project.up.railway.app/api/v1/group/'), // Birinchi API URL
@@ -24,17 +26,15 @@ function Attendance({setGroup_id}) {
             };
 
             setCombinedData([combined]);
+            setLoading(false)
         } catch (err) {
             console.error(err);
-            setError('Ma\'lumotlarni olishda xatolik yuz berdi.');
+            setLoading(false)
         } finally {
         }
     };
     useEffect(() => {
         fetchData()
-        console.log(combinedData);
-        // console.log();
-        
     }, [])
 
     return (
@@ -49,7 +49,7 @@ function Attendance({setGroup_id}) {
                     {/* Card 1 */}
 
                     {combinedData && combinedData.map((item, index) => {
-                        return (<Link onClick={()=>{
+                        return (<Link onClick={() => {
                             setGroup_id(item[0]._id)
                         }} to={`/attendenceGroup/${item[0]._id}`}>
                             <div key={index} className="bg-white shadow rounded-lg  overflow-hidden border border-gray-200">

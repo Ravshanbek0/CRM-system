@@ -4,18 +4,17 @@ import { FaBars, FaTimes, FaHome, FaGraduationCap, FaUsers, FaCreditCard, FaUser
 import axios from 'axios';
 
 
-function AttendenceGroup({ dataGroup, data }) {
+function AttendenceGroup({ dataGroup, data, setLoading }) {
     const { id } = useParams()
     const { pathname } = useLocation()
     const [isMenuCollapsed, setMenuCollapsed] = useState(false);
     const [activeMenu, setActiveMenu] = useState(`${pathname}`); // Bosilgan menyu elementi
     const [attendenceGroup, setAttendanceGroup] = useState([])
     const [attendenceGroupPupil, setAttendanceGroupPupil] = useState([])
-    const [loading, setLoading] = useState(false)
 
     const fetchData = async () => {
         try {
-            setLoading(false)
+            setLoading(true)
             // API so'rovlarini parallel bajarish
             const [response1, response2] = await Promise.all([
                 axios.get('https://crm-project.up.railway.app/api/v1/group/'), // Birinchi API URL
@@ -37,10 +36,12 @@ function AttendenceGroup({ dataGroup, data }) {
                 return id == item[0]._id
             })
             setAttendanceGroup(obj);
+            setLoading(false)
         } catch (err) {
             console.error(err);
+            setLoading(false)
         } finally {
-            setLoading(true)
+            setLoading(false)
         }
     };
     const fetchDataPupil = async () => {
@@ -49,8 +50,8 @@ function AttendenceGroup({ dataGroup, data }) {
 
             const obj = response.data.filter((item) => {
                 return id == item.group[0]._id
-            })
-            console.log(response.data);
+            })                                                      
+            console.log(response.data);                                                                    
             console.log(obj);
 
             setAttendanceGroupPupil(obj);
@@ -182,9 +183,9 @@ function AttendenceGroup({ dataGroup, data }) {
             <div className=''>
                 <div className="p-6 bg-gray-100 min-h-screen flex gap-2 w-full">
 
-                    {attendenceGroup.length != 0 ? attendenceGroup.map((item) => {
+                    {attendenceGroup.length != 0 ? attendenceGroup.map((item,index) => {
                         return (
-                            <div className='min-w-[450px]'>
+                            <div className='min-w-[450px]' key={index}>
                                 <h2 className="text-2xl font-bold text-blue-600 mb-4">
                                     {item[0].group_name} guruhi ro'yhati
                                 </h2>
@@ -234,10 +235,10 @@ function AttendenceGroup({ dataGroup, data }) {
                                     <th className="border border-gray-300 p-2">Davomat</th>
                                 </tr>
                             </thead>
-                            {attendenceGroupPupil.length != 0 ? attendenceGroupPupil.map((item) => {
+                            {attendenceGroupPupil.length != 0 ? attendenceGroupPupil.map((item,index) => {
                                 return (
 
-                                    <tbody>
+                                    <tbody key={index}>
                                         {attendenceGroupPupil.map((student,index) => (
                                             <tr
                                                 key={index}

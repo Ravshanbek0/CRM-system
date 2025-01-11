@@ -56,7 +56,7 @@ function App() {
     fetchData()
     fetchDataGroup()
     fetchDataTeacher()
-    console.log(data);
+    console.log(dataGroup);
     
   },[])
 
@@ -68,11 +68,11 @@ function App() {
           <Route path='/' element={<Home data={data}/>} />
           <Route path='/report' element={<Home data={data} />} />
           <Route path='/appeals' element={<Home />} />
-          <Route path='/payment' element={<Home data={data}  />} />
-          <Route path='/attandance' element={<Home  dataGroup={dataGroup} dataTeacher={dataTeacher} setGroup_id={setGroup_id}/>} />
-          <Route path='/students' element={<Home data={data} />} />
+          <Route path='/payment' element={<Home data={data} setLoading={setLoading} />} />
+          <Route path='/attandance' element={<Home  setLoading={setLoading} setGroup_id={setGroup_id}/>} />
+          <Route path='/students' element={<Home data={data} dataGroup={dataGroup} />} />
           <Route path='/groups' element={<Home dataGroup={dataGroup} />} />
-          <Route path='/attendenceGroup/:id' element={<AttendenceGroup dataGroup={dataGroup} group_id={group_id} data={data}/>} />
+          <Route path='/attendenceGroup/:id' element={<AttendenceGroup setLoading={setLoading} dataGroup={dataGroup} group_id={group_id} data={data}/>} />
         </Routes>
       </BrowserRouter>
     </>
