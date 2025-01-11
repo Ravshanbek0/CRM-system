@@ -8,7 +8,7 @@ import Report from '../../components/Report/Report';
 import AttendenceGroup from '../../components/Attendance/AttendenceGroup';
 import Appeals from '../../components/Appeals/Appeals';
 import Students from '../../components/Students/Students';
-import Groups from '../../components/Groups/gROUPS.JSX';
+import Groups from '../../components/Groups/Groups';
 
 
 
