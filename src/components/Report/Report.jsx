@@ -20,11 +20,16 @@ ChartJS.register(
   Legend
 );
 
-function Report({ data }) {
+function Report({ data, dataGroup, dataTeacher }) {
 
   useEffect(() => {
-    console.log(data);
-  }, [])
+    if (data && dataGroup && dataTeacher) {
+      console.log(data, dataGroup, dataTeacher);
+    } else {
+      console.log("Ma'lumotlar hali yuklanmagan");
+    }
+  }, [data, dataGroup, dataTeacher]);
+  
 
   const [ismobile, setIsMobile] = useState(window.innerWidth < 1024)
 
