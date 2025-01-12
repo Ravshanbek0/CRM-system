@@ -8,11 +8,11 @@ import Report from '../../components/Report/Report';
 import AttendenceGroup from '../../components/Attendance/AttendenceGroup';
 import Appeals from '../../components/Appeals/Appeals';
 import Students from '../../components/Students/Students';
-import Groups from '../../components/Groups/gROUPS.JSX';
+import Groups from '../../components/Groups/Groups';
 
 
 
-function Home({data}) {
+function Home({data,dataGroup,dataTeacher,group_id,setGroup_id,setLoading}) {
   const { pathname } = useLocation()
 
   const [isMenuCollapsed, setMenuCollapsed] = useState(false);
@@ -114,11 +114,11 @@ function Home({data}) {
       <main className="flex-1 p-6 ml-4">
         {pathname == "/" && <Report data={data} />}
         {pathname == "/appeals" && <Appeals />}
-        {pathname == "/payment" && <Payment data={data} />}
-        {pathname == "/attandance" && <Attendance />}
-        {pathname=="/students" && <Students data={data}/>}
-        {pathname=="/groups" && <Groups/>}
-        {pathname == "/attendenceGroup" && <AttendenceGroup />}
+        {pathname == "/payment" && <Payment data={data} setLoading={setLoading}/>}
+        {pathname == "/attandance" && <Attendance setGroup_id={setGroup_id} setLoading={setLoading}/>}
+        {pathname=="/students" && <Students data={data} dataGroup={dataGroup}/>}
+        {pathname=="/groups" && <Groups dataGroup={dataGroup}/>}
+        {/* {pathname == `/attendenceGroup/${group_id}` && <AttendenceGroup dataGroup={dataGroup} />} */}
       </main>
     </div>
   )
