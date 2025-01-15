@@ -12,7 +12,7 @@ import Groups from '../../components/Groups/Groups';
 
 
 
-function Home({data,dataGroup,dataTeacher,group_id,setGroup_id,setLoading}) {
+function Home({data,dataGroup,dataTeacher,group_id,setGroup_id,setLoading,dataAppeals}) {
   const { pathname } = useLocation()
 
   const [isMenuCollapsed, setMenuCollapsed] = useState(false);
@@ -112,8 +112,8 @@ function Home({data,dataGroup,dataTeacher,group_id,setGroup_id,setLoading}) {
 
       {/* Main Content */}
       <main className="flex-1 p-6 ml-4">
-        {pathname == "/" && <Report data={data} />}
-        {pathname == "/appeals" && <Appeals />}
+        {pathname == "/" && <Report data={data} dataGroup={dataGroup} dataTeacher={dataTeacher} />}
+        {pathname == "/appeals" && <Appeals dataAppeals={dataAppeals} />}
         {pathname == "/payment" && <Payment data={data} setLoading={setLoading}/>}
         {pathname == "/attandance" && <Attendance setGroup_id={setGroup_id} setLoading={setLoading}/>}
         {pathname=="/students" && <Students data={data} dataGroup={dataGroup}/>}

@@ -11,6 +11,7 @@ function App() {
   const [data, setData] = useState([]); // Ma'lumotni saqlash uchun holat
   const [dataGroup, setDataGroup] = useState([]); // Ma'lumotni saqlash uchun holat
   const [dataTeacher, setDataTeacher] = useState([]); // Ma'lumotni saqlash uchun holat
+  const [dataAppeals, setDataAppeals] = useState([]); // Ma'lumotni saqlash uchun holat
   const [loading, setLoading] = useState(false); // Yuklanish holatini ko'rsatish uchun
   const [error, setError] = useState(null); // Xatolarni saqlash uchun
 
@@ -52,12 +53,24 @@ function App() {
       setLoading(false); // Yuklashni to'xtatish
     }
   };
+  const fetchDataAppeals = async () => {
+    try {
+      setLoading(true)
+
+      const response = await axios.get('https://crm-project.up.railway.app/api/v1/appeal'); // API URL
+      setDataAppeals(response.data); // Javobni saqlash
+      setLoading(false); // Yuklashni to'xtatish
+    } catch (err) {
+      setError(err.message); // Xatoni saqlash
+      setLoading(false); // Yuklashni to'xtatish
+    }
+  };
   useEffect(()=>{
     fetchData()
     fetchDataGroup()
     fetchDataTeacher()
+    fetchDataAppeals()
     console.log(dataGroup);
-    
   },[])
 
   return (
@@ -67,7 +80,7 @@ function App() {
         <Routes>
           <Route path='/' element={<Home data={data} dataGroup={dataGroup} dataTeacher={dataTeacher} />} />
           <Route path='/report' element={<Home data={data} dataGroup={dataGroup} dataTeacher={dataTeacher} />} />
-          <Route path='/appeals' element={<Home />} />
+          <Route path='/appeals' element={<Home dataAppeals={dataAppeals} />} />
           <Route path='/payment' element={<Home data={data} setLoading={setLoading} />} />
           <Route path='/attandance' element={<Home  setLoading={setLoading} setGroup_id={setGroup_id}/>} />
           <Route path='/students' element={<Home data={data} dataGroup={dataGroup} />} />

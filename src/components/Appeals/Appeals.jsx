@@ -1,73 +1,26 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-function Appeals() {
+function Appeals({ dataAppeals }) {
+  const [dataToday, setDataToday] = useState([]);
+  const [dataYesterday, setDataYesterday] = useState([]);
 
-  const [dataToday, setDataToday] = useState([
-    {
-      id: 1,
-      name: "Muxamadaliyev Ibroxim",
-      phoneNum: "+998900113861",
-      comment: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Bibendum nascetur faucibus quam nunc mattis. Etiam ultrices vel nisl nisl nec sed. "
-    },
-    {
-      id: 2,
-      name: "Muxamadaliyev Ibroxim",
-      phoneNum: "+998900113861",
-      comment: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Bibendum nascetur faucibus quam nunc mattis. Etiam ultrices vel nisl nisl nec sed. "
-    },
-    {
-      id: 3,
-      name: "Muxamadaliyev Ibroxim",
-      phoneNum: "+998900113861",
-      comment: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Bibendum nascetur faucibus quam nunc mattis. Etiam ultrices vel nisl nisl nec sed. "
-    },
-    {
-      id: 4,
-      name: "Muxamadaliyev Ibroxim",
-      phoneNum: "+998900113861",
-      comment: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Bibendum nascetur faucibus quam nunc mattis. Etiam ultrices vel nisl nisl nec sed. "
-    }
-  ]);
-
-  const [dataYesterday, setDataYesterday] = useState([
-    {
-      id: 1,
-      name: "Muxamadaliyev Ibroxim",
-      phoneNum: "+998900113861",
-      comment: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Bibendum nascetur faucibus quam nunc mattis. Etiam ultrices vel nisl nisl nec sed. "
-    },
-    {
-      id: 2,
-      name: "Muxamadaliyev Ibroxim",
-      phoneNum: "+998900113861",
-      comment: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Bibendum nascetur faucibus quam nunc mattis. Etiam ultrices vel nisl nisl nec sed. "
-    },
-    {
-      id: 3,
-      name: "Muxamadaliyev Ibroxim",
-      phoneNum: "+998900113861",
-      comment: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Bibendum nascetur faucibus quam nunc mattis. Etiam ultrices vel nisl nisl nec sed. "
-    },
-    {
-      id: 4,
-      name: "Muxamadaliyev Ibroxim",
-      phoneNum: "+998900113861",
-      comment: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Bibendum nascetur faucibus quam nunc mattis. Etiam ultrices vel nisl nisl nec sed. "
-    }
-  ]);
+  useEffect(()=>{
+    setDataToday(dataAppeals);
+    setDataYesterday(dataAppeals);
+  },[dataAppeals])
 
   const onDeleteToday = (id) => {
     const newData = dataToday.filter((data) => {
-      return data.id !== id
+      return data._id !== id
     });
-    setDataToday(newData)
+    setDataToday(newData);
   };
 
   const onDeleteYesterday = (id) => {
     const newData = dataYesterday.filter((data) => {
-      return data.id !== id
+      return data._id !== id
     });
-    setDataYesterday(newData)
+    setDataYesterday(newData);
   };
 
   return (
@@ -78,8 +31,8 @@ function Appeals() {
             Bugungi murojaatlar
           </div>
           <div className="shadow-lg hover:shadow-xl transition">
-            <div className='overflow-x-scroll max-w-full'>
-              <table className="table-auto min-w-[860px] xl:min-w-full divide-y divide-gray-200">
+            <div className='overflow-x-scroll xl:overflow-hidden'>
+              <table className="table-auto min-w-[900px] xl:min-w-full divide-y divide-gray-200">
                 <thead className="bg-blue-600 text-white">
                   <tr>
                     <th className="px-4 py-2 text-left text-sm lg:text-base">№</th>
@@ -90,14 +43,14 @@ function Appeals() {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {dataToday.map(item => (
-                    <tr className='odd:bg-white even:bg-indigo-100' key={item.id}>
-                      <td className="px-4 py-2 text-sm xl:text-base">{item.id}</td>
-                      <td className="px-4 py-2 text-sm xl:text-base">{item.name}</td>
-                      <td className="px-4 py-2 text-sm xl:text-base">{item.phoneNum}</td>
-                      <td className="px-4 py-2 text-sm xl:text-base">{item.comment}</td>
+                  {dataAppeals && dataToday.map((item, index) => (
+                    <tr className='odd:bg-white even:bg-indigo-100' key={index}>
+                      <td className="px-4 py-2 text-sm xl:text-base">{index+1}</td>
+                      <td className="px-4 py-2 text-sm xl:text-base">{item.full_name}</td>
+                      <td className="px-4 py-2 text-sm xl:text-base">{item.phone}</td>
+                      <td className="px-4 py-2 text-sm xl:text-base">{item.description}</td>
                       <td className="px-4 py-2 text-center">
-                        <button onClick={() => onDeleteToday(item.id)} className="text-red-500 hover:text-red-700">
+                        <button onClick={() => onDeleteToday(item._id)} className="text-red-500 hover:text-red-700">
                           🗑️
                         </button>
                       </td>
@@ -115,7 +68,7 @@ function Appeals() {
             26.03.2022 kungi murojaatlar
           </div>
           <div className="shadow-lg hover:shadow-xl transition">
-            <div className="overflow-x-scroll">
+            <div className="overflow-x-scroll xl:overflow-hidden">
               <table className="table-auto min-w-[900px] xl:min-w-full divide-y divide-gray-200">
                 <thead className="bg-blue-600 text-white">
                   <tr>
@@ -127,14 +80,14 @@ function Appeals() {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {dataYesterday.map(item => (
-                    <tr className='odd:bg-white even:bg-indigo-100' key={item.id}>
-                      <td className="px-4 py-2 text-sm xl:text-base">{item.id}</td>
-                      <td className="px-4 py-2 text-sm xl:text-base">{item.name}</td>
-                      <td className="px-4 py-2 text-sm xl:text-base">{item.phoneNum}</td>
-                      <td className="px-4 py-2 text-sm xl:text-base">{item.comment}</td>
+                  {dataAppeals && dataYesterday.map((item, index) => (
+                    <tr className='odd:bg-white even:bg-indigo-100' key={index}>
+                      <td className="px-4 py-2 text-sm xl:text-base">{index+1}</td>
+                      <td className="px-4 py-2 text-sm xl:text-base">{item.full_name}</td>
+                      <td className="px-4 py-2 text-sm xl:text-base">{item.phone}</td>
+                      <td className="px-4 py-2 text-sm xl:text-base">{item.description}</td>
                       <td className="px-4 py-2 text-center">
-                        <button onClick={() => onDeleteYesterday(item.id)} className="text-red-500 hover:text-red-700">
+                        <button onClick={() => onDeleteYesterday(item._id)} className="text-red-500 hover:text-red-700">
                           🗑️
                         </button>
                       </td>
