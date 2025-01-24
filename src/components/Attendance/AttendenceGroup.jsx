@@ -7,41 +7,24 @@ import axios from 'axios';
 function AttendenceGroup({ dataGroup, data, setLoading }) {
     const { id } = useParams()
     const { pathname } = useLocation()
+    const [error, setError] = useState()
     const [isMenuCollapsed, setMenuCollapsed] = useState(false);
     const [activeMenu, setActiveMenu] = useState(`${pathname}`); // Bosilgan menyu elementi
     const [attendenceGroup, setAttendanceGroup] = useState([])
     const [attendenceGroupPupil, setAttendanceGroupPupil] = useState([])
 
-    const fetchData = async () => {
+    const fetchDataGroup = async () => {
         try {
             setLoading(true)
-            // API so'rovlarini parallel bajarish
-            const [response1, response2] = await Promise.all([
-                axios.get('https://crm-project.up.railway.app/api/v1/group/'), // Birinchi API URL
-                axios.get('https://crm-project.up.railway.app/api/v1/teacher/'), // Ikkinchi API URL
-            ]);
 
+            const response = await axios.get(`https://crm-project.up.railway.app/api/v1/group/${id}/`); // API URL
+            setAttendanceGroup(response.data); // Javobni saqlash
+            setLoading(false); // Yuklashni to'xtatish
+            console.log(response.data);
 
-            // Key'larni noyob qilib obyektni birlashtirish
-            const combined = [{
-                ...Object.fromEntries(
-                    Object.entries(response1.data).map(([key, value]) => [0, value])
-                ),
-                ...Object.fromEntries(
-                    Object.entries(response2.data).map(([key, value]) => [1, value])
-                ),
-            }];
-
-            const obj = combined.filter((item) => {
-                return id == item[0]._id
-            })
-            setAttendanceGroup(obj);
-            setLoading(false)
         } catch (err) {
-            console.error(err);
-            setLoading(false)
-        } finally {
-            setLoading(false)
+            setError(err.message); // Xatoni saqlash
+            setLoading(false); // Yuklashni to'xtatish
         }
     };
     const fetchDataPupil = async () => {
@@ -50,11 +33,10 @@ function AttendenceGroup({ dataGroup, data, setLoading }) {
 
             const obj = response.data.filter((item) => {
                 return id == item.group[0]._id
-            })                                                      
-            console.log(response.data);                                                                    
-            console.log(obj);
-
+            })
             setAttendanceGroupPupil(obj);
+            console.log(response.data);
+
             setLoading(false); // Yuklashni to'xtatish
         } catch (err) {
             setError(err.message); // Xatoni saqlash
@@ -91,7 +73,7 @@ function AttendenceGroup({ dataGroup, data, setLoading }) {
         );
     };
     useEffect(() => {
-        fetchData()
+        fetchDataGroup()
         fetchDataPupil()
     }, [])
     const absentStudents = attendance.filter((student) => !student.present);
@@ -183,48 +165,44 @@ function AttendenceGroup({ dataGroup, data, setLoading }) {
             <div className=''>
                 <div className="p-6 bg-gray-100 min-h-screen flex gap-2 w-full">
 
-                    {attendenceGroup.length != 0 ? attendenceGroup.map((item,index) => {
-                        return (
-                            <div className='min-w-[450px]' key={index}>
-                                <h2 className="text-2xl font-bold text-blue-600 mb-4">
-                                    {item[0].group_name} guruhi ro'yhati
-                                </h2>
-                                <div className="flex flex-col min-w-[45%]">
-                                    {/* Left Section */}
-                                    <div className="bg-white shadow-md rounded p-4 w-full  mb-6 lg:mb-0">
-                                        <h3 className="text-xl font-semibold text-blue-600 mb-4">{item[0].group_name}</h3>
-                                        <p className="text-gray-700">
-                                            <strong>O'qituvchi:</strong> {item[1].name}
-                                        </p>
-                                        <p className="text-gray-700">
-                                            <strong>Tel raqam:</strong> {item[1].phone}
-                                        </p>
-                                        <p className="text-gray-700">
-                                            <strong>Dars kunlari:</strong> {item[0].lesson_dates}
-                                        </p>
-                                        <p className="text-gray-700">
-                                            <strong>Dars vaqti:</strong> 14:00-16:00
-                                        </p>
-                                        <p className="text-gray-700">
-                                            <strong>O'quvchilar soni:</strong> {item[0].group_pupils.length}ta
-                                        </p>
-                                        <p className="text-gray-700">
-                                            <strong>To'lov qilganlar:</strong> {item[0].payment_done}ta
-                                        </p>
-                                        <div className="mt-6">
-                                            <h4 className="font-semibold text-blue-600">07.03.2022</h4>
-                                            <p className="text-gray-700 font-semibold mt-2">Darsga kelmaganlar:</p>
-                                            {/* <ul className="list-decimal list-inside text-gray-700 mt-2">
+                    <div className='min-w-[450px]'>
+                        <h2 className="text-2xl font-bold text-blue-600 mb-4">
+                            {attendenceGroup.group_name} guruhi ro'yhati
+                        </h2>
+                        <div className="flex flex-col min-w-[45%]">
+                            {/* Left Section */}
+                            <div className="bg-white shadow-md rounded p-4 w-full  mb-6 lg:mb-0">
+                                <h3 className="text-xl font-semibold text-blue-600 mb-4">{attendenceGroup.group_name}</h3>
+                                <p className="text-gray-700">
+                                    <strong>O'qituvchi:</strong> {attendenceGroup.name}
+                                </p>
+                                <p className="text-gray-700">
+                                    <strong>Tel raqam:</strong> {attendenceGroup.phone}
+                                </p>
+                                <p className="text-gray-700">
+                                    <strong>Dars kunlari:</strong> {attendenceGroup.lesson_dates}
+                                </p>
+                                <p className="text-gray-700">
+                                    <strong>Dars vaqti:</strong> 14:00-16:00
+                                </p>
+                                <p className="text-gray-700">
+                                    <strong>O'quvchilar soni:</strong> {attendenceGroup.group_pupils?.length}ta
+                                </p>
+                                <p className="text-gray-700">
+                                    <strong>To'lov qilganlar:</strong> {attendenceGroup.payment_done}ta
+                                </p>
+                                <div className="mt-6">
+                                    <h4 className="font-semibold text-blue-600">07.03.2022</h4>
+                                    <p className="text-gray-700 font-semibold mt-2">Darsga kelmaganlar:</p>
+                                    {/* <ul className="list-decimal list-inside text-gray-700 mt-2">
                                                 {absentStudents.map((student) => (
                                                     <li key={student.id}>{student.name}</li>
                                                 ))}
                                             </ul> */}
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
-                        )
-                    }) : <h1>No malumot</h1>}
+                        </div>
+                    </div>
                     {/* Right Section */}
                     <div className="bg-white shadow-md rounded p-4 w-full min-w-[650px] mt-12">
                         <table className="table-auto w-full border-collapse border border-gray-300">
@@ -235,34 +213,32 @@ function AttendenceGroup({ dataGroup, data, setLoading }) {
                                     <th className="border border-gray-300 p-2">Davomat</th>
                                 </tr>
                             </thead>
-                            {attendenceGroupPupil.length != 0 ? attendenceGroupPupil.map((item,index) => {
-                                return (
-
-                                    <tbody key={index}>
-                                        {attendenceGroupPupil.map((student,index) => (
-                                            <tr
-                                                key={index}
-                                                className={student.id % 2 === 0 ? "bg-gray-100" : ""}
-                                            >
-                                                <td className="border border-gray-300 p-2 text-center">
-                                                    {index+1}
-                                                </td>
-                                                <td className="border border-gray-300 p-2">{student.name} {student.surname}</td>
-                                                <td className="border border-gray-300 p-2 text-center">
-                                                    <button
-                                                        onClick={() => toggleAttendance(student.id)}
-                                                        className={`text-xl ${student.present ? "text-green-500" : "text-red-500"
-                                                            }`}
-                                                    >
-                                                        {student.present ? "✔" : "✖"}
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-
-                                )
-                            }) : <h1 className='text-center'>No ma'lumot</h1>}
+                            {attendenceGroupPupil.length !== 0 ? (
+                                <tbody>
+                                    {attendenceGroupPupil.map((student, index) => (
+                                        <tr
+                                            key={index}
+                                            className={index % 2 === 0 ? "bg-gray-100" : ""}
+                                        >
+                                            <td className="border border-gray-300 p-2 text-center">
+                                                {index + 1}
+                                            </td>
+                                            <td className="border border-gray-300 p-2">{student.name} {student.surname}</td>
+                                            <td className="border border-gray-300 p-2 text-center">
+                                                <button
+                                                    onClick={() => toggleAttendance(student.id)}
+                                                    className={`text-xl ${student.present ? "text-green-500" : "text-red-500"
+                                                        }`}
+                                                >
+                                                    {student.present ? "✔" : "✖"}
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            ) : (
+                                <h1 className="text-center">Guruhda o'quvchi mavjud emas.</h1>
+                            )}
                         </table>
                         <button className="bg-blue-600 text-white px-4 py-2 rounded mt-4 hover:bg-blue-700">
                             Saqlash

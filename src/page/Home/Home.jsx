@@ -5,7 +5,7 @@ import { FaBars, FaTimes,  FaHome, FaGraduationCap, FaUsers, FaCreditCard, FaUse
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import Report from '../../components/Report/Report';
-import AttendenceGroup from '../../components/Attendance/AttendenceGroup';
+// import AttendenceGroup from '../../components/Attendance/AttendenceGroup';
 import Appeals from '../../components/Appeals/Appeals';
 import Students from '../../components/Students/Students';
 import Groups from '../../components/Groups/Groups';
@@ -115,9 +115,9 @@ function Home({data,dataGroup,dataTeacher,group_id,setGroup_id,setLoading,dataAp
         {pathname == "/" && <Report data={data} dataGroup={dataGroup} dataTeacher={dataTeacher} />}
         {pathname == "/appeals" && <Appeals dataAppeals={dataAppeals} />}
         {pathname == "/payment" && <Payment data={data} setLoading={setLoading}/>}
-        {pathname == "/attandance" && <Attendance setGroup_id={setGroup_id} setLoading={setLoading}/>}
+        {pathname == "/attandance" && <Attendance setGroup_id={setGroup_id} setLoading={setLoading} dataGroup={dataGroup}/>}
         {pathname=="/students" && <Students data={data} dataGroup={dataGroup}/>}
-        {pathname=="/groups" && <Groups dataGroup={dataGroup}/>}
+        {pathname=="/groups" && <Groups dataGroup={dataGroup} setLoading={setLoading}/>}
         {/* {pathname == `/attendenceGroup/${group_id}` && <AttendenceGroup dataGroup={dataGroup} />} */}
       </main>
     </div>

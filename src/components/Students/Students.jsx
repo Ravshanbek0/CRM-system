@@ -1,27 +1,29 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import deleted from "./delete.svg";
 import axios from 'axios';
 
-const Students = ({ data ,dataGroup}) => {
-    const [name,setName]=useState("")
-    const [surname,setSurname]=useState("")
-    const [phone,setPhone]=useState("")
-    const [picture,setPicture]=useState("")
-    const [parents_name,setParents_name]=useState("")
-    const [parents_phone,setParents_phone]=useState("")
-    const [group,setGroup]=useState("")
-    const [payment_done,setPayment_done]=useState(false)
+const Students = ({ dataGroup }) => {
+    const [studentData, setStudentData] = useState()
+    const [studentData0, setStudentData0] = useState()
+
+    const [name, setName] = useState("")
+    const [surname, setSurname] = useState("")
+    const [phone, setPhone] = useState("")
+    const [picture, setPicture] = useState("")
+    const [parents_name, setParents_name] = useState("")
+    const [parents_phone, setParents_phone] = useState("")
+    const [group, setGroup] = useState("")
+    const [payment_done, setPayment_done] = useState(false)
     function addPupil(e) {
         e.preventDefault()
         const formData = new FormData();
         formData.append('name', `${name}`);
-        formData.append('surname', `Nabijonov`);
         formData.append('phone', `${phone}`);
         formData.append('picture', 'https://example.com/image.jpg');
-        formData.append('parents_name', `${parents_name}`);
+        formData.append('surname', `${parents_name}`);
         formData.append('parents_phone', `${parents_phone}`);
         formData.append('group', `${group}`);
-        formData.append('payment_done', false);
+        // formData.append("payment_done", false);
 
         // FormData obyektini JSON ga aylantirish
         const formDataToJson = Object.fromEntries(formData.entries());
@@ -34,12 +36,33 @@ const Students = ({ data ,dataGroup}) => {
         })
             .then((response) => {
                 console.log('Maʼlumot yuborildi:', response.data);
+                setName("")
+                setPhone("")
+                setParents_name("")
+                setParents_phone("")
             })
             .catch((error) => {
                 console.error('Xato yuz berdi:', error);
             });
     }
-
+    const fetchData = async () => {
+        try {
+            const response = await axios.get('https://crm-project.up.railway.app/api/v1/pupil/'); // API URL
+            setStudentData(response.data); // Javobni saqlash
+            setStudentData0(response.data); // Javobni saqlash
+        } catch (err) {
+            console.log(err.massage);
+        }
+    };
+    function searchPupil(name) {
+        const obj = studentData0.filter((item) => {
+            return item.name.includes(name)
+        })
+        setStudentData(obj)
+    }
+    useEffect(() => {
+        fetchData()
+    }, [])
     return (
         <div>
             <h2 className='text-2xl font-semibold text-blue-600'>Yangi o’quvchi qo’shish</h2>
@@ -48,7 +71,9 @@ const Students = ({ data ,dataGroup}) => {
                     <div>
                         <label className="block font-medium">O'quvchi ismi</label>
                         <input
-                            onChange={((e)=>{
+                            value={name}
+
+                            onChange={((e) => {
                                 setName(e.target.value)
                             })}
                             type="text"
@@ -60,7 +85,8 @@ const Students = ({ data ,dataGroup}) => {
                     <div>
                         <label className="block font-medium">Telefon raqam</label>
                         <input
-                            onChange={((e)=>{
+                            value={phone}
+                            onChange={((e) => {
                                 setPhone(e.target.value)
                             })}
                             type="text"
@@ -70,11 +96,11 @@ const Students = ({ data ,dataGroup}) => {
                     </div>
                     <div>
                         <label className="block font-medium">Yo'nalish</label>
-                        <select onChange={((e)=>{
+                        <select onChange={((e) => {
                             setGroup(e.target.value);
-                            
+
                         })} className="w-full p-2 border rounded">
-                            {dataGroup && dataGroup.map((item,index)=>{
+                            {dataGroup && dataGroup.map((item, index) => {
                                 return (<option key={index} value={item._id}>{item.group_name}</option>)
                             })}
                         </select>
@@ -83,7 +109,8 @@ const Students = ({ data ,dataGroup}) => {
                     <div>
                         <label className="block font-medium">Ota-onasining ismi</label>
                         <input
-                            onChange={((e)=>{
+                            value={parents_name}
+                            onChange={((e) => {
                                 setParents_name(e.target.value)
                             })}
                             type="text"
@@ -96,7 +123,8 @@ const Students = ({ data ,dataGroup}) => {
                     <div>
                         <label className="block font-medium">Ota-onasining nomeri</label>
                         <input
-                            onChange={((e)=>{
+                            value={parents_phone}
+                            onChange={((e) => {
                                 setParents_phone(e.target.value)
                             })}
                             type="text"
@@ -126,7 +154,9 @@ const Students = ({ data ,dataGroup}) => {
                 <h2 className="text-2xl font-semibold text-blue-600 mt-8">
                     Bizning o’quvchilar
                 </h2>
-                <input style={{ boxShadow: "0 4px 12px 0px rgba(#00000033)" }} className="px-20 py-3 rounded-2xl mt-8 outline-none " type="text" />
+                <input placeholder='Ismni kiriting...' onChange={((e) => {
+                    searchPupil(e.target.value)
+                })} style={{ boxShadow: "0 4px 12px 0px rgba(#00000033)" }} className="px-4 py-3 rounded-2xl mt-8 outline-none min-w-80 " type="text" />
 
 
 
@@ -146,13 +176,13 @@ const Students = ({ data ,dataGroup}) => {
                     <tbody>
 
 
-                        {data ? data.map((item, index) => {
+                        {studentData ? studentData.map((item, index) => {
                             return (<tr>
                                 <td className="border border-gray-300 p-2">{index + 1}</td>
-                                <td className="border border-gray-300 p-2">{item.name} {item.surname}</td>
+                                <td className="border border-gray-300 p-2">{item.name} </td>
                                 <td className="border border-gray-300 p-2">{item.phone}</td>
                                 <td className="border border-gray-300 p-2">{item.group[0]?.group_name}</td>
-                                <td className="border border-gray-300 p-2">{item.parents_name}</td>
+                                <td className="border border-gray-300 p-2">{item.surname}</td>
                                 <td className="border border-gray-300 p-2">{item.parents_phone}</td>
                             </tr>)
                         }) : <h1>Ma'lumot yo'q.</h1>}
