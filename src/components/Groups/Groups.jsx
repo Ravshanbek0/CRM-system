@@ -3,6 +3,9 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 
 const Groups = ({ setLoading, dataGroup }) => {
+    const [group_name, setGroup_name] = useState("")
+    const [lesson_dates, setLesson_dates] = useState("Du-Chor-Juma")
+    const [lesson_time, setLesson_time] = useState("14:00-16:00")
 
 
     const [disable, setDisable] = useState(false)
@@ -31,12 +34,31 @@ const Groups = ({ setLoading, dataGroup }) => {
             )
         );
     };
-    useEffect(() => {
-        console.log(dataGroup);
 
-    }, [])
+    function addGroup(e) {
+        e.preventDefault()
+        const formData = new FormData();
+        formData.append('group_name', `${group_name}`);
+        formData.append('lesson_dates', `${lesson_dates}`);
+        formData.append('lesson_time', `${lesson_time}`);
+        // formData.append("payment_done", false);
 
+        // FormData obyektini JSON ga aylantirish
+        const formDataToJson = Object.fromEntries(formData.entries());
 
+        // POST so'rovni yuborish
+        axios.post('https://crm-project.up.railway.app/api/v1/group', formDataToJson, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+            .then((response) => {
+                console.log('Maʼlumot yuborildi:', response.data);
+            })
+            .catch((error) => {
+                console.error('Xato yuz berdi:', error);
+            });
+    }
     return (
         <div>
 
@@ -47,59 +69,41 @@ const Groups = ({ setLoading, dataGroup }) => {
                     <div className="grid grid-cols-3 gap-4">
                         <div>
                             <label className="block font-medium">Guruh yo’nalishi</label>
-                            <select className="w-full p-2 border rounded">
-                                <option>Ona-tili</option>
-                                <option>Matematika</option>
+                            <select onChange={(e) => {
+                                setGroup_name(e.target.value)
+                            }} className="w-full p-2 border rounded">
+                                <option value={"Ona tili"}>Ona-tili</option>
+                                <option value={'Biologiya'}>Biologiya</option>
+                                <option value={'Fizika'}>Fizika</option>
+                                <option value={'Kimyo'}>Kimyo</option>
+                                <option value={'Tarix'}>Tarix</option>
                             </select>
                         </div>
 
                         <div>
                             <label className="block font-medium">Dars kunlari</label>
-                            <select className="w-full p-2 border rounded">
-                                <option>DU-CHOR-JUMA</option>
-                                <option>SE-PA-SHANBA</option>
+                            <select onChange={(e) => {
+                                setLesson_dates(e.target.value)
+                            }} className="w-full p-2 border rounded">
+                                <option value={'Du-Chor-Juma'} >DU-CHOR-JUMA</option>
+                                <option value={'Se-Pa-Shanba'}>SE-PA-SHANBA</option>
                             </select>
 
                         </div>
                         <div>
                             <label className="block font-medium">Dars vaqti</label>
-                            <select className="w-full p-2 border rounded">
-                                <option>14:00-16:00</option>
-                                <option>16:00-18:00</option>
+                            <select onChange={(e) => {
+                                setLesson_time(e.target.value)
+                            }} className="w-full p-2 border rounded">
+                                <option value={'14:00-16:00'}>14:00-16:00</option>
+                                <option value={'16:00-18:00'}>16:00-18:00</option>
                             </select>
-                        </div>
-
-                        <div>
-                            <label className="block font-medium">O’qituvchi</label>
-                            <input
-                                type="text"
-                                placeholder="O'qituvchi ismi"
-                                className="w-full p-2 border rounded"
-                            />
-                        </div>
-
-
-                        <div>
-                            <label className="block font-medium">O’qituvchi tel nomeri</label>
-                            <input
-                                type="text"
-                                placeholder="+998 xx xxx xx xx"
-                                className="w-full p-2 border rounded"
-                            />
-                        </div>
-                        <div>
-                            <label className="block font-medium">O’qituvchi rasmi (3x4)</label>
-                            <input
-                                type="file"
-                                placeholder="Yuklash"
-                                className="w-full p-2 border rounded"
-                            />
                         </div>
 
 
                     </div>
                     <div className='flex justify-end'>
-                        <button className="bg-blue-600 text-white px-44 py-3 rounded-md mt-2  hover:bg-blue-700">
+                        <button onClick={addGroup} className="bg-blue-600 text-white px-44 py-3 rounded-md mt-2  hover:bg-blue-700">
                             Qo’shish
                         </button>
                     </div>
