@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
+import { MdDelete } from "react-icons/md";
 
 const Groups = ({ setLoading, dataGroup }) => {
     const [group_name, setGroup_name] = useState("")
@@ -60,10 +61,18 @@ const Groups = ({ setLoading, dataGroup }) => {
                     console.error('Xato yuz berdi:', error);
                 });
             setGroup_name("")
-        }else{
+        } else {
             alert("Ma'lumot to'liq kiritilmagan")
         }
     }
+    const deleteGroup = async (id) => {
+        try {
+            const response = await axios.delete(`https://crm-project.up.railway.app/api/v1/group/${id}`);
+            console.log("Element muvaffaqiyatli o‘chirildi:", response.data);
+        } catch (error) {
+            console.error("Xatolik yuz berdi:", error);
+        }
+    };
     return (
         <div>
 
@@ -132,28 +141,32 @@ const Groups = ({ setLoading, dataGroup }) => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
                     {/* Card 1 */}
                     {dataGroup && dataGroup.map((item, index) => {
-                        return (<Link key={index} to={`/attendenceGroup/${item._id}`}>
+                        return (<div key={index} to={`/attendenceGroup/${item._id}`}>
                             <div className="bg-white cursor-pointer shadow rounded-lg  overflow-hidden border border-gray-200">
-                                <h2 className="text-lg font-bold bg-[#333333] p-2 text-white mb-2 text-center">{item.group_name}</h2>
-                                <div className='p-4'>
-                                    <div className='flex items-center'>
-                                        {/* <img src="./imgs/face.png" alt="" /> */}
-                                        <div>
-                                            {/* <p className="text-sm  text-[#333333] font-semibold mb-2">
+                                <h2 className="text-lg font-bold flex justify-center items-center bg-[#333333] p-2 text-white mb-2 text-center relative">{item.group_name}<span onClick={()=>{
+                                    deleteGroup(item._id)
+                                }} className='absolute right-1'><MdDelete /></span></h2>
+                                <Link to={`/attendenceGroup/${item._id}`}>
+                                    <div className='p-4'>
+                                        <div className='flex items-center'>
+                                            {/* <img src="./imgs/face.png" alt="" /> */}
+                                            <div>
+                                                {/* <p className="text-sm  text-[#333333] font-semibold mb-2">
                                             O'qituvchi: <span className="text-gray-800">Muxamadaliyev Ibroxim</span>
                                         </p>
                                         <p className="text-sm font-semibold text-[#333333] mb-2">
                                             Tel raqam: <a href="tel:+998900113861" className="text-blue-500 "><span className="text-gray-800"> +998900113861</span></a>
                                         </p> */}
+                                            </div>
                                         </div>
+                                        <p className="text-sm text-[#333333] font-semibold  mb-2">Dars kunlari: <span className="text-gray-500">{item.lesson_dates}</span></p>
+                                        <p className="text-sm text-[#333333] font-semibold  mb-2">Dars vaqti: <span className="text-gray-500">{item.lesson_time}</span></p>
+                                        <p className="text-sm text-[#333333] font-semibold  mb-2">O'quvchilar soni:  <span className="text-gray-500">{item.group_pupils.length}</span></p>
+                                        <p className="text-sm text-[#333333] font-semibold ">To'lov qilganlar: <span className="text-gray-500">{item.payment_done}ta</span></p>
                                     </div>
-                                    <p className="text-sm text-[#333333] font-semibold  mb-2">Dars kunlari: <span className="text-gray-500">{item.lesson_dates}</span></p>
-                                    <p className="text-sm text-[#333333] font-semibold  mb-2">Dars vaqti: <span className="text-gray-500">{item.lesson_time}</span></p>
-                                    <p className="text-sm text-[#333333] font-semibold  mb-2">O'quvchilar soni:  <span className="text-gray-500">{item.group_pupils.length}</span></p>
-                                    <p className="text-sm text-[#333333] font-semibold ">To'lov qilganlar: <span className="text-gray-500">{item.payment_done}ta</span></p>
-                                </div>
+                                </Link>
                             </div>
-                        </Link>)
+                        </div>)
                     })}
 
                 </div>
