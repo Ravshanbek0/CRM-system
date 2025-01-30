@@ -16,34 +16,38 @@ const Students = ({ dataGroup }) => {
     const [payment_done, setPayment_done] = useState(false)
     function addPupil(e) {
         e.preventDefault()
-        const formData = new FormData();
-        formData.append('name', `${name}`);
-        formData.append('phone', `${phone}`);
-        formData.append('picture', 'https://example.com/image.jpg');
-        formData.append('surname', `${parents_name}`);
-        formData.append('parents_phone', `${parents_phone}`);
-        formData.append('group', `${group}`);
-        // formData.append("payment_done", false);
+        if (name != "" && phone != "" && parents_name != "" && parents_phone != "") {
+            const formData = new FormData();
+            formData.append('name', `${name}`);
+            formData.append('phone', `${phone}`);
+            formData.append('picture', 'https://example.com/image.jpg');
+            formData.append('surname', `${parents_name}`);
+            formData.append('parents_phone', `${parents_phone}`);
+            formData.append('group', `${group}`);
+            // formData.append("payment_done", false);
 
-        // FormData obyektini JSON ga aylantirish
-        const formDataToJson = Object.fromEntries(formData.entries());
+            // FormData obyektini JSON ga aylantirish
+            const formDataToJson = Object.fromEntries(formData.entries());
 
-        // POST so'rovni yuborish
-        axios.post('https://crm-project.up.railway.app/api/v1/pupil', formDataToJson, {
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
-            .then((response) => {
-                console.log('Maʼlumot yuborildi:', response.data);
-                setName("")
-                setPhone("")
-                setParents_name("")
-                setParents_phone("")
+            // POST so'rovni yuborish
+            axios.post('https://crm-project.up.railway.app/api/v1/pupil', formDataToJson, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
             })
-            .catch((error) => {
-                console.error('Xato yuz berdi:', error);
-            });
+                .then((response) => {
+                    console.log('Maʼlumot yuborildi:', response.data);
+                    setName("")
+                    setPhone("")
+                    setParents_name("")
+                    setParents_phone("")
+                })
+                .catch((error) => {
+                    console.error('Xato yuz berdi:', error);
+                });
+        }else{
+            alert("Ma;lumotlar to'liq kiritilmagan!")
+        }
     }
     const fetchData = async () => {
         try {
@@ -144,7 +148,7 @@ const Students = ({ dataGroup }) => {
 
                 </div>
                 <div className='flex justify-end'>
-                    <button onClick={addPupil} className="bg-[#333333] text-white px-44 py-3 rounded-md mt-2  hover:bg-blue-700">
+                    <button onClick={addPupil} className="bg-[#333333] text-white px-44 py-3 rounded-md mt-2  hover:bg-[#555555]">
                         Qo’shish
                     </button>
                 </div>

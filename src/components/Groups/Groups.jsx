@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 
 const Groups = ({ setLoading, dataGroup }) => {
-    const [group_name, setGroup_name] = useState("Ona-tili")
+    const [group_name, setGroup_name] = useState("")
     const [lesson_dates, setLesson_dates] = useState("Du-Chor-Juma")
     const [lesson_time, setLesson_time] = useState("14:00-16:00")
 
@@ -37,27 +37,32 @@ const Groups = ({ setLoading, dataGroup }) => {
 
     function addGroup(e) {
         e.preventDefault()
-        const formData = new FormData();
-        formData.append('group_name', `${group_name}`);
-        formData.append('lesson_dates', `${lesson_dates}`);
-        formData.append('lesson_time', `${lesson_time}`);
-        // formData.append("payment_done", false);
+        if (group_name != "") {
+            const formData = new FormData();
+            formData.append('group_name', `${group_name}`);
+            formData.append('lesson_dates', `${lesson_dates}`);
+            formData.append('lesson_time', `${lesson_time}`);
+            // formData.append("payment_done", false);
 
-        // FormData obyektini JSON ga aylantirish
-        const formDataToJson = Object.fromEntries(formData.entries());
+            // FormData obyektini JSON ga aylantirish
+            const formDataToJson = Object.fromEntries(formData.entries());
 
-        // POST so'rovni yuborish
-        axios.post('https://crm-project.up.railway.app/api/v1/group', formDataToJson, {
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
-            .then((response) => {
-                console.log('Maʼlumot yuborildi:', response.data);
+            // POST so'rovni yuborish
+            axios.post('https://crm-project.up.railway.app/api/v1/group', formDataToJson, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
             })
-            .catch((error) => {
-                console.error('Xato yuz berdi:', error);
-            });
+                .then((response) => {
+                    console.log('Maʼlumot yuborildi:', response.data);
+                })
+                .catch((error) => {
+                    console.error('Xato yuz berdi:', error);
+                });
+            setGroup_name("")
+        }else{
+            alert("Ma'lumot to'liq kiritilmagan")
+        }
     }
     return (
         <div>
@@ -78,10 +83,10 @@ const Groups = ({ setLoading, dataGroup }) => {
                                 <option value={'Kimyo'}>Kimyo</option>
                                 <option value={'Tarix'}>Tarix</option>
                             </select> */}
-                            <input type="text" onChange={(e)=>{
+                            <input value={group_name} type="text" onChange={(e) => {
                                 setGroup_name(e.target.value)
-                            }} className='w-full p-2 border rounded' 
-                            placeholder='Guruh nomini kiriting...'
+                            }} className='w-full p-2 border rounded'
+                                placeholder='Guruh nomini kiriting...'
                             />
                         </div>
 
@@ -91,7 +96,7 @@ const Groups = ({ setLoading, dataGroup }) => {
                                 setLesson_dates(e.target.value)
                             }} className="w-full p-2 border rounded">
                                 <option value={'Du-Chor-Juma'} >DU-CHOR-JUMA</option>
-                                <option value={'Se-Pa-Shanba'}>SE-PA-SHANBA</option>
+                                <option value={'Se-Pay-Shan'}>SE-PA-SHANBA</option>
                             </select>
 
                         </div>
@@ -127,8 +132,8 @@ const Groups = ({ setLoading, dataGroup }) => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
                     {/* Card 1 */}
                     {dataGroup && dataGroup.map((item, index) => {
-                        return (<Link to={`/attendenceGroup/${item._id}`}>
-                            <div key={index} className="bg-white cursor-pointer shadow rounded-lg  overflow-hidden border border-gray-200">
+                        return (<Link key={index} to={`/attendenceGroup/${item._id}`}>
+                            <div className="bg-white cursor-pointer shadow rounded-lg  overflow-hidden border border-gray-200">
                                 <h2 className="text-lg font-bold bg-[#333333] p-2 text-white mb-2 text-center">{item.group_name}</h2>
                                 <div className='p-4'>
                                     <div className='flex items-center'>
