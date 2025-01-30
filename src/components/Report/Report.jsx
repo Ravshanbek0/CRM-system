@@ -63,16 +63,16 @@ function Report({ data, dataGroup, dataTeacher }) {
   ]
 
   const mainData = {
-    labels: ["Yanvar", "Fevral", "Mart", "Aprel", "May", "Iyun", "Iyul"],
+    labels: ["Yanvar"],
     datasets: [
       {
         label: "Jami o'quvchilar",
-        data: [261, 296, 305, 255, 0, 0, 0], // Jami o'quvchilar ma'lumotlari
+        data: [19], // Jami o'quvchilar ma'lumotlari
         backgroundColor: "#2F49D1", // Moviy rang
       },
       {
         label: "Tark etganlar",
-        data: [46, 30, 46, 60, 0, 0, 0], // Tark etganlar ma'lumotlari
+        data: [0], // Tark etganlar ma'lumotlari
         backgroundColor: "#E84393", // Qizil rang
       }
     ],
@@ -101,7 +101,7 @@ function Report({ data, dataGroup, dataTeacher }) {
       },
       y: {
         beginAtZero: true,
-        max: 400, // Y o'qining maksimum qiymati
+        max: 100, // Y o'qining maksimum qiymati
         grid: {
           display: false, // Y o'qidagi kataklarni o'chirish
         },
@@ -132,10 +132,10 @@ function Report({ data, dataGroup, dataTeacher }) {
       <div className='w-100 h-auto ml-5 sm:ml-16 xl:ml-36 mt-5'>
         <div className='w-11/12 lg:w-10/12 h-auto bg-white relative shadow-md hover:shadow-lg transition'>
           <div className="flex gap-2 justify-center xl:block xl:w-4/12 xl:absolute xl:right-0 xl:top-3">
-            <p className='text-xs sm:text-sm md:text-lg xl:text-2xl font-semibold'>2022-YIL</p>
-            <p className='text-xs sm:text-sm md:text-lg xl:text-2xl font-semibold'><span className='text-blue-700'>Aprel</span> oyigacha bo’lgan statistika</p>
+            <p className='text-xs sm:text-sm md:text-lg xl:text-2xl font-semibold'>2025-YIL</p>
+            <p className='text-xs sm:text-sm md:text-lg xl:text-2xl font-semibold'><span className='text-blue-700'>Yanvar</span> oyigacha bo’lgan statistika</p>
           </div>
-          <div className='w-100 h-96 xl:w-10/12'>
+          <div className='h-96 xl:w-10/12'>
             <Bar data={mainData} options={options} />
           </div>
         </div>

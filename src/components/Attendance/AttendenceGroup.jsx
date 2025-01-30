@@ -12,6 +12,7 @@ function AttendenceGroup({ dataGroup, data, setLoading }) {
     const [activeMenu, setActiveMenu] = useState(`${pathname}`); // Bosilgan menyu elementi
     const [attendenceGroup, setAttendanceGroup] = useState([])
     const [attendenceGroupPupil, setAttendanceGroupPupil] = useState([])
+    const [absentStudents,setAbsentStudents] = useState(true)
 
     const fetchDataGroup = async () => {
         try {
@@ -35,6 +36,7 @@ function AttendenceGroup({ dataGroup, data, setLoading }) {
                 return id == item.group[0]._id
             })
             setAttendanceGroupPupil(obj);
+            setAttendance(obj)
             console.log(response.data);
 
             setLoading(false); // Yuklashni to'xtatish
@@ -45,18 +47,7 @@ function AttendenceGroup({ dataGroup, data, setLoading }) {
     };
 
 
-    const [attendance, setAttendance] = useState([
-        { id: 1, name: "Muxamadaliyev Ibroxim", present: true },
-        { id: 2, name: "Muxamadaliyev Ibroxim", present: true },
-        { id: 3, name: "Muxamadaliyev Ibroxim", present: true },
-        { id: 4, name: "Muxamadaliyev Ibroxim", present: false },
-        { id: 5, name: "Muxamadaliyev Ibroxim", present: true },
-        { id: 6, name: "Muxamadaliyev Ibroxim", present: true },
-        { id: 7, name: "Muxamadaliyev Ibroxim", present: true },
-        { id: 8, name: "Muxamadaliyev Ibroxim", present: true },
-        { id: 9, name: "Muxamadaliyev Ibroxim", present: true },
-        { id: 10, name: "Muxamadaliyev Ibroxim", present: false },
-    ]);
+    const [attendance, setAttendance] = useState([]);
 
     const toggleMenu = () => {
         setMenuCollapsed(!isMenuCollapsed);
@@ -72,11 +63,15 @@ function AttendenceGroup({ dataGroup, data, setLoading }) {
             )
         );
     };
+
+    const today = new Date();
+    const formattedDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+
     useEffect(() => {
         fetchDataGroup()
         fetchDataPupil()
     }, [])
-    const absentStudents = attendance.filter((student) => !student.present);
+    // const absentStudents = attendance.filter((student) => !student.present);
 
 
     return (
@@ -192,7 +187,7 @@ function AttendenceGroup({ dataGroup, data, setLoading }) {
                                     <strong>To'lov qilganlar:</strong> {attendenceGroup.payment_done}ta
                                 </p>
                                 <div className="mt-6">
-                                    <h4 className="font-semibold text-blue-600">07.03.2022</h4>
+                                    <h4 className="font-semibold text-blue-600">{formattedDate}</h4>
                                     <p className="text-gray-700 font-semibold mt-2">Darsga kelmaganlar:</p>
                                     {/* <ul className="list-decimal list-inside text-gray-700 mt-2">
                                                 {absentStudents.map((student) => (
@@ -226,11 +221,14 @@ function AttendenceGroup({ dataGroup, data, setLoading }) {
                                             <td className="border border-gray-300 p-2">{student.name} {student.surname}</td>
                                             <td className="border border-gray-300 p-2 text-center">
                                                 <button
-                                                    onClick={() => toggleAttendance(student.id)}
-                                                    className={`text-xl ${student.present ? "text-green-500" : "text-red-500"
+                                                    // onClick={() => toggleAttendance(student.id)}
+                                                    onClick={()=>{
+                                                        absentStudents ? setAbsentStudents(false) : setAbsentStudents(true)
+                                                    }}
+                                                    className={`text-xl ${absentStudents ? "text-green-500" : "text-red-900"
                                                         }`}
                                                 >
-                                                    {student.present ? "✔" : "✖"}
+                                                    {absentStudents ? "✔" : "✖"}
                                                 </button>
                                             </td>
                                         </tr>
