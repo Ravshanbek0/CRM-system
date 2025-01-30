@@ -65,7 +65,7 @@ const Students = ({ dataGroup }) => {
     }, [])
     return (
         <div>
-            <h2 className='text-2xl font-semibold text-blue-600'>Yangi o’quvchi qo’shish</h2>
+            <h2 className='text-2xl font-semibold text-[#333333]'>Yangi o’quvchi qo’shish</h2>
             <form onSubmit={addPupil} className="space-y-4 mt-4 bg-gray-50 p-4 rounded shadow">
                 <div className="grid grid-cols-3 gap-4">
                     <div>
@@ -144,14 +144,14 @@ const Students = ({ dataGroup }) => {
 
                 </div>
                 <div className='flex justify-end'>
-                    <button onClick={addPupil} className="bg-blue-600 text-white px-44 py-3 rounded-md mt-2  hover:bg-blue-700">
+                    <button onClick={addPupil} className="bg-[#333333] text-white px-44 py-3 rounded-md mt-2  hover:bg-blue-700">
                         Qo’shish
                     </button>
                 </div>
             </form>
 
             <div className='flex justify-between items-center'>
-                <h2 className="text-2xl font-semibold text-blue-600 mt-8">
+                <h2 className="text-2xl font-semibold text-[#333333] mt-8">
                     Bizning o’quvchilar
                 </h2>
                 <input placeholder='Ismni kiriting...' onChange={((e) => {
@@ -164,7 +164,7 @@ const Students = ({ dataGroup }) => {
             <div className="mt-4 bg-gray-50 p-4 rounded shadow">
                 <table className="table-auto w-full border-collapse border border-gray-300">
                     <thead>
-                        <tr className="bg-blue-600 text-white">
+                        <tr className="bg-[#333333] text-white">
                             <th className="border border-gray-300 p-2">№</th>
                             <th className="border border-gray-300 p-2">O'quvchi ismi</th>
                             <th className="border border-gray-300 p-2">Telefon nomer</th>

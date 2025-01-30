@@ -25,15 +25,15 @@ function Appeals({ dataAppeals }) {
 
   return (
     <div>
-      <div className="p-4 bg-blue-100">
+      <div className="p-4 bg-gray">
         <div className="border rounded-lg bg-white">
-          <div className="p-4 border-b bg-blue-100 text-blue-700 text-2xl sm:text-4xl font-semibold">
+          <div className="p-4 border-b  text-[#333333] text-2xl sm:text-4xl font-semibold">
             Bugungi murojaatlar
           </div>
           <div className="shadow-lg hover:shadow-xl transition">
             <div className='overflow-x-scroll xl:overflow-hidden'>
               <table className="table-auto min-w-[900px] xl:min-w-full divide-y divide-gray-200">
-                <thead className="bg-blue-600 text-white">
+                <thead className="bg-[#333333] text-white">
                   <tr>
                     <th className="px-4 py-2 text-left text-sm lg:text-base">№</th>
                     <th className="px-4 py-2 text-left text-sm lg:text-base w-1/12 lg:w-2/12">O'quvchi ismi</th>
@@ -64,13 +64,13 @@ function Appeals({ dataAppeals }) {
 
         {/* <!-- Ikkinchi jadval --> */}
         <div className="border rounded-lg bg-white mt-6">
-          <div className="p-4 border-b bg-blue-100 text-blue-700 text-xl sm:text-3xl font-semibold">
+          <div className="p-4 border-b  text-[#333333] text-xl sm:text-3xl font-semibold">
             26.03.2022 kungi murojaatlar
           </div>
           <div className="shadow-lg hover:shadow-xl transition">
             <div className="overflow-x-scroll xl:overflow-hidden">
               <table className="table-auto min-w-[900px] xl:min-w-full divide-y divide-gray-200">
-                <thead className="bg-blue-600 text-white">
+                <thead className="bg-[#333333] text-white">
                   <tr>
                     <th className="px-4 py-2 text-left text-sm lg:text-base">№</th>
                     <th className="px-4 py-2 text-left text-sm lg:text-base w-1/12 lg:w-2/12">O'quvchi ismi</th>

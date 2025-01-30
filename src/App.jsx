@@ -23,6 +23,8 @@ function App() {
       setLoading(true)
       const response = await axios.get('https://crm-project.up.railway.app/api/v1/pupil/'); // API URL
       setData(response.data); // Javobni saqlash
+      console.log(response.data);
+      
       setLoading(false); // Yuklashni to'xtatish
     } catch (err) {
       setError(err.message); // Xatoni saqlash

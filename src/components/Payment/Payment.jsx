@@ -5,7 +5,7 @@ function Payment({ data,dataGroup ,setLoading}) {
    
 
     return (
-        <div><h2 className="text-2xl font-semibold text-blue-600 text-[40px]">To'lov qilish</h2>
+        <div><h2 className="text-2xl font-semibold text-[#333333] text-[40px]">To'lov qilish</h2>
 
             <form className="space-y-4 mt-4 bg-gray-50 p-4 rounded shadow">
                 <div className="grid grid-cols-2 gap-4">
@@ -40,18 +40,18 @@ function Payment({ data,dataGroup ,setLoading}) {
                         />
                     </div>
                 </div>
-                <button className="bg-blue-600 text-white px-4 py-2 rounded mt-2 hover:bg-blue-700">
+                <button className="bg-[#333333] text-white px-4 py-2 rounded mt-2 hover:bg-[#555555]">
                     To'lov qilish
                 </button>
             </form>
 
-            <h2 className="text-2xl font-semibold text-blue-600 mt-8">
+            <h2 className="text-2xl font-semibold text-[#333333] mt-8">
                 To'lov qilganlar
             </h2>
             <div className="mt-4 bg-gray-50 p-4 rounded shadow">
                 <table className="table-auto w-full border-collapse border border-gray-300">
                     <thead>
-                        <tr className="bg-blue-600 text-white">
+                        <tr className="bg-[#333333] text-white">
                             <th className="border border-gray-300 p-2">№</th>
                             <th className="border border-gray-300 p-2">O'quvchi ismi</th>
                             <th className="border border-gray-300 p-2">Telefon nomer</th>

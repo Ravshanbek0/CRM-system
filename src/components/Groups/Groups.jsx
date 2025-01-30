@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 
 const Groups = ({ setLoading, dataGroup }) => {
-    const [group_name, setGroup_name] = useState("")
+    const [group_name, setGroup_name] = useState("Ona-tili")
     const [lesson_dates, setLesson_dates] = useState("Du-Chor-Juma")
     const [lesson_time, setLesson_time] = useState("14:00-16:00")
 
@@ -64,12 +64,12 @@ const Groups = ({ setLoading, dataGroup }) => {
 
 
             <div className={disable == false ? 'block' : 'hidden'}>
-                <h2 className='text-2xl font-semibold text-blue-600'>Yangi guruh qo’shish</h2>
+                <h2 className='text-2xl font-semibold text-[#333333]'>Yangi guruh qo’shish</h2>
                 <form className="space-y-4 mt-4 bg-gray-50 p-4 rounded shadow">
                     <div className="grid grid-cols-3 gap-4">
                         <div>
                             <label className="block font-medium">Guruh yo’nalishi</label>
-                            <select onChange={(e) => {
+                            {/* <select onChange={(e) => {
                                 setGroup_name(e.target.value)
                             }} className="w-full p-2 border rounded">
                                 <option value={"Ona tili"}>Ona-tili</option>
@@ -77,7 +77,12 @@ const Groups = ({ setLoading, dataGroup }) => {
                                 <option value={'Fizika'}>Fizika</option>
                                 <option value={'Kimyo'}>Kimyo</option>
                                 <option value={'Tarix'}>Tarix</option>
-                            </select>
+                            </select> */}
+                            <input type="text" onChange={(e)=>{
+                                setGroup_name(e.target.value)
+                            }} className='w-full p-2 border rounded' 
+                            placeholder='Guruh nomini kiriting...'
+                            />
                         </div>
 
                         <div>
@@ -103,7 +108,7 @@ const Groups = ({ setLoading, dataGroup }) => {
 
                     </div>
                     <div className='flex justify-end'>
-                        <button onClick={addGroup} className="bg-blue-600 text-white px-44 py-3 rounded-md mt-2  hover:bg-blue-700">
+                        <button onClick={addGroup} className="bg-[#333333] text-white px-44 py-3 rounded-md mt-2  hover:bg-[#555555]">
                             Qo’shish
                         </button>
                     </div>
@@ -111,10 +116,10 @@ const Groups = ({ setLoading, dataGroup }) => {
 
 
                 <div className='flex justify-between items-center'>
-                    <h2 className="text-2xl font-semibold text-blue-600 mt-8">
+                    <h2 className="text-2xl font-semibold text-[#333333] mt-8">
                         Mavjud guruhlar
                     </h2>
-                    <input placeholder='Guruh nomini kiriting' style={{ boxShadow: "0 4px 12px 0px rgba(#00000033)" }} className="px-20 py-3 rounded-2xl mt-8 outline-none placeholder:ml-[-170px] " type="text" />
+                    <input placeholder='Guruh nomini kiriting...' style={{ boxShadow: "0 4px 12px 0px rgba(#00000033)" }} className="px-4 min-w-80 py-3 rounded-2xl mt-8 outline-none placeholder:ml-[-170px] " type="text" />
 
 
 
@@ -124,23 +129,23 @@ const Groups = ({ setLoading, dataGroup }) => {
                     {dataGroup && dataGroup.map((item, index) => {
                         return (<Link to={`/attendenceGroup/${item._id}`}>
                             <div key={index} className="bg-white cursor-pointer shadow rounded-lg  overflow-hidden border border-gray-200">
-                                <h2 className="text-lg font-bold bg-blue-600 p-2 text-white mb-2 text-center">{item.group_name}</h2>
+                                <h2 className="text-lg font-bold bg-[#333333] p-2 text-white mb-2 text-center">{item.group_name}</h2>
                                 <div className='p-4'>
                                     <div className='flex items-center'>
                                         {/* <img src="./imgs/face.png" alt="" /> */}
                                         <div>
-                                            {/* <p className="text-sm  text-blue-800 font-semibold mb-2">
+                                            {/* <p className="text-sm  text-[#333333] font-semibold mb-2">
                                             O'qituvchi: <span className="text-gray-800">Muxamadaliyev Ibroxim</span>
                                         </p>
-                                        <p className="text-sm font-semibold text-blue-800 mb-2">
+                                        <p className="text-sm font-semibold text-[#333333] mb-2">
                                             Tel raqam: <a href="tel:+998900113861" className="text-blue-500 "><span className="text-gray-800"> +998900113861</span></a>
                                         </p> */}
                                         </div>
                                     </div>
-                                    <p className="text-sm text-blue-800 font-semibold  mb-2">Dars kunlari: <span className="text-gray-800">{item.lesson_dates}</span></p>
-                                    <p className="text-sm text-blue-800 font-semibold  mb-2">Dars vaqti: <span className="text-gray-800">{item.lesson_time}</span></p>
-                                    <p className="text-sm text-blue-800 font-semibold  mb-2">O'quvchilar soni:  <span className="text-gray-800">{item.group_pupils.length}</span></p>
-                                    <p className="text-sm text-blue-800 font-semibold ">To'lov qilganlar: <span className="text-gray-800">{item.payment_done}ta</span></p>
+                                    <p className="text-sm text-[#333333] font-semibold  mb-2">Dars kunlari: <span className="text-gray-500">{item.lesson_dates}</span></p>
+                                    <p className="text-sm text-[#333333] font-semibold  mb-2">Dars vaqti: <span className="text-gray-500">{item.lesson_time}</span></p>
+                                    <p className="text-sm text-[#333333] font-semibold  mb-2">O'quvchilar soni:  <span className="text-gray-500">{item.group_pupils.length}</span></p>
+                                    <p className="text-sm text-[#333333] font-semibold ">To'lov qilganlar: <span className="text-gray-500">{item.payment_done}ta</span></p>
                                 </div>
                             </div>
                         </Link>)
@@ -150,29 +155,29 @@ const Groups = ({ setLoading, dataGroup }) => {
             </div>
 
 
-            <div className={disable == false ? 'hidden' : 'block'}>
-                <h2 className='text-2xl font-semibold text-blue-600'>Informatika guruhi ro’yhati</h2>
+            {/* <div className={disable == false ? 'hidden' : 'block'}>
+                <h2 className='text-2xl font-semibold text-[#333333]'>Informatika guruhi ro’yhati</h2>
                 <br />
                 <div className='flex gap-8'>
                     <div>
                         <div className="bg-white shadow w-fit rounded-lg  border border-gray-200">
-                            <h2 className="text-lg font-bold bg-blue-600 p-2 text-white mb-2 text-center">Matematika</h2>
+                            <h2 className="text-lg font-bold bg-[#333333] p-2 text-white mb-2 text-center">Matematika</h2>
                             <div className='p-4'>
                                 <div className='flex items-center'>
                                     <img src="./imgs/face.png" alt="" />
                                     <div>
-                                        <p className="text-sm  text-blue-800 font-semibold mb-2">
+                                        <p className="text-sm  text-[#333333] font-semibold mb-2">
                                             O'qituvchi: <span className="text-gray-800">Muxamadaliyev Ibroxim</span>
                                         </p>
-                                        <p className="text-sm font-semibold text-blue-800 mb-2">
+                                        <p className="text-sm font-semibold text-[#333333] mb-2">
                                             Tel raqam: <a href="tel:+998900113861" className="text-blue-500 "><span className="text-gray-800"> +998900113861</span></a>
                                         </p>
                                     </div>
                                 </div>
-                                <p className="text-sm text-blue-800 font-semibold  mb-2">Dars kunlari: <span className="text-gray-800">DU-CHOR-JUMA</span></p>
-                                <p className="text-sm text-blue-800 font-semibold  mb-2">Dars vaqti: <span className="text-gray-800">14:00-16:00</span></p>
-                                <p className="text-sm text-blue-800 font-semibold  mb-2">O'quvchilar soni:  <span className="text-gray-800">5ta</span></p>
-                                <p className="text-sm text-blue-800 font-semibold ">To'lov qilganlar: <span className="text-gray-800">10ta</span></p>
+                                <p className="text-sm text-[#333333] font-semibold  mb-2">Dars kunlari: <span className="text-gray-800">DU-CHOR-JUMA</span></p>
+                                <p className="text-sm text-[#333333] font-semibold  mb-2">Dars vaqti: <span className="text-gray-800">14:00-16:00</span></p>
+                                <p className="text-sm text-[#333333] font-semibold  mb-2">O'quvchilar soni:  <span className="text-gray-800">5ta</span></p>
+                                <p className="text-sm text-[#333333] font-semibold ">To'lov qilganlar: <span className="text-gray-800">10ta</span></p>
                             </div>
 
                         </div>
@@ -201,7 +206,7 @@ const Groups = ({ setLoading, dataGroup }) => {
 
                     <table className="table-auto w-full border-collapse border border-gray-300">
                         <thead>
-                            <tr className="bg-blue-600 text-white">
+                            <tr className="bg-[#333333] text-white">
                                 <th className="border border-gray-300 p-2">№</th>
                                 <th className="border border-gray-300 p-2">O'quvchi ismi</th>
                                 <th className="border border-gray-300 p-2">Davomat</th>
@@ -232,7 +237,7 @@ const Groups = ({ setLoading, dataGroup }) => {
                     </table>
 
                 </div>
-            </div>
+            </div> */}
 
 
 

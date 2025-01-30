@@ -92,7 +92,7 @@ function Report({ data, dataGroup, dataTeacher }) {
           display: false, // X o'qidagi kataklarni o'chirish
         },
         ticks: {
-          color: "#2F327D", // Oylik nomlar rangini o'zgartirish
+          color: "#333333", // Oylik nomlar rangini o'zgartirish
           font: {
             size: ismobile ? 16 : 20,
             weight: "bold",
@@ -106,7 +106,7 @@ function Report({ data, dataGroup, dataTeacher }) {
           display: false, // Y o'qidagi kataklarni o'chirish
         },
         ticks: {
-          color: "#2F327D",
+          color: "#333333",
           font: {
             size: ismobile ? 16 : 20,
           },
@@ -133,7 +133,7 @@ function Report({ data, dataGroup, dataTeacher }) {
         <div className='w-11/12 lg:w-10/12 h-auto bg-white relative shadow-md hover:shadow-lg transition'>
           <div className="flex gap-2 justify-center xl:block xl:w-4/12 xl:absolute xl:right-0 xl:top-3">
             <p className='text-xs sm:text-sm md:text-lg xl:text-2xl font-semibold'>2025-YIL</p>
-            <p className='text-xs sm:text-sm md:text-lg xl:text-2xl font-semibold'><span className='text-blue-700'>Yanvar</span> oyigacha bo’lgan statistika</p>
+            <p className='text-xs sm:text-sm md:text-lg xl:text-2xl font-semibold'><span className='text-[#ffc100]'>Yanvar</span> oyigacha bo’lgan statistika</p>
           </div>
           <div className='h-96 xl:w-10/12'>
             <Bar data={mainData} options={options} />
