@@ -56,6 +56,8 @@ const Groups = ({ setLoading, dataGroup }) => {
             })
                 .then((response) => {
                     console.log('Maʼlumot yuborildi:', response.data);
+                    window.location.reload();
+
                 })
                 .catch((error) => {
                     console.error('Xato yuz berdi:', error);
@@ -69,6 +71,7 @@ const Groups = ({ setLoading, dataGroup }) => {
         try {
             const response = await axios.delete(`https://crm-project.up.railway.app/api/v1/group/${id}`);
             console.log("Element muvaffaqiyatli o‘chirildi:", response.data);
+            window.location.reload();
         } catch (error) {
             console.error("Xatolik yuz berdi:", error);
         }
@@ -143,7 +146,7 @@ const Groups = ({ setLoading, dataGroup }) => {
                     {dataGroup && dataGroup.map((item, index) => {
                         return (<div key={index} to={`/attendenceGroup/${item._id}`}>
                             <div className="bg-white cursor-pointer shadow rounded-lg  overflow-hidden border border-gray-200">
-                                <h2 className="text-lg font-bold flex justify-center items-center bg-[#333333] p-2 text-white mb-2 text-center relative">{item.group_name}<span onClick={()=>{
+                                <h2 className="text-lg font-bold flex justify-center items-center bg-[#333333] p-2 text-white mb-2 text-center relative">{item.group_name}<span onClick={() => {
                                     deleteGroup(item._id)
                                 }} className='absolute right-1'><MdDelete /></span></h2>
                                 <Link to={`/attendenceGroup/${item._id}`}>
