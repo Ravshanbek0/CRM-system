@@ -41,6 +41,7 @@ const Students = ({ dataGroup }) => {
                     setPhone("")
                     setParents_name("")
                     setParents_phone("")
+                    window.location.reload();
                 })
                 .catch((error) => {
                     console.error('Xato yuz berdi:', error);

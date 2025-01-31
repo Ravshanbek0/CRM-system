@@ -72,7 +72,6 @@ function App() {
     fetchDataGroup()
     fetchDataTeacher()
     fetchDataAppeals()
-    // console.log(dataGroup);
   },[])
 
   return (
