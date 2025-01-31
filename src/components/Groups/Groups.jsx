@@ -148,7 +148,7 @@ const Groups = ({ setLoading, dataGroup }) => {
                             <div className="bg-white cursor-pointer shadow rounded-lg  overflow-hidden border border-gray-200">
                                 <h2 className="text-lg font-bold flex justify-center items-center bg-[#333333] p-2 text-white mb-2 text-center relative">{item.group_name}<span onClick={() => {
                                     deleteGroup(item._id)
-                                }} className='absolute right-1'><MdDelete /></span></h2>
+                                }} className='absolute right-1 text-[22px]'><MdDelete /></span></h2>
                                 <Link to={`/attendenceGroup/${item._id}`}>
                                     <div className='p-4'>
                                         <div className='flex items-center'>
