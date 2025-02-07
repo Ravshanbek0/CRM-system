@@ -1,54 +1,137 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import deleted from "./delete.svg";
 import axios from 'axios';
+import { MdDelete, MdEdit } from "react-icons/md";
 
-const Students = ({ data ,dataGroup}) => {
-    const [name,setName]=useState("")
-    const [surname,setSurname]=useState("")
-    const [phone,setPhone]=useState("")
-    const [picture,setPicture]=useState("")
-    const [parents_name,setParents_name]=useState("")
-    const [parents_phone,setParents_phone]=useState("")
-    const [group,setGroup]=useState("")
-    const [payment_done,setPayment_done]=useState(false)
+
+const Students = ({ dataGroup }) => {
+    const [studentData, setStudentData] = useState()
+    const [studentData0, setStudentData0] = useState()
+    const [name, setName] = useState("")
+    const [phone, setPhone] = useState("")
+    const [parents_name, setParents_name] = useState("")
+    const [parents_phone, setParents_phone] = useState("")
+    const [group, setGroup] = useState("")
+    const [pupilId, setPupilId] = useState("")
+    const [modal, setModal] = useState(false)
+
     function addPupil(e) {
         e.preventDefault()
-        const formData = new FormData();
-        formData.append('name', `${name}`);
-        formData.append('surname', `Nabijonov`);
-        formData.append('phone', `${phone}`);
-        formData.append('picture', 'https://example.com/image.jpg');
-        formData.append('parents_name', `${parents_name}`);
-        formData.append('parents_phone', `${parents_phone}`);
-        formData.append('group', `${group}`);
-        formData.append('payment_done', false);
+        if (name != "" && phone != "" && parents_name != "" && parents_phone != "") {
+            const formData = new FormData();
+            formData.append('name', `${name}`);
+            formData.append('phone', `${phone}`);
+            formData.append('picture', 'https://example.com/image.jpg');
+            formData.append('surname', `${parents_name}`);
+            formData.append('parents_phone', `${parents_phone}`);
+            formData.append('group', `${group}`);
+            // formData.append("payment_done", false);
 
-        // FormData obyektini JSON ga aylantirish
-        const formDataToJson = Object.fromEntries(formData.entries());
+            // FormData obyektini JSON ga aylantirish
+            const formDataToJson = Object.fromEntries(formData.entries());
 
-        // POST so'rovni yuborish
-        axios.post('https://crm-project.up.railway.app/api/v1/pupil', formDataToJson, {
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
-            .then((response) => {
-                console.log('Maʼlumot yuborildi:', response.data);
+            // POST so'rovni yuborish
+            axios.post('https://crm-project.up.railway.app/api/v1/pupil', formDataToJson, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
             })
-            .catch((error) => {
-                console.error('Xato yuz berdi:', error);
-            });
+                .then((response) => {
+                    console.log('Maʼlumot yuborildi:', response.data);
+                    setName("")
+                    setPhone("")
+                    setParents_name("")
+                    setParents_phone("")
+                    window.location.reload();
+                })
+                .catch((error) => {
+                    console.error('Xato yuz berdi:', error);
+                });
+        } else {
+            alert("Ma;lumotlar to'liq kiritilmagan!")
+        }
     }
+    const deletePupil = async (id) => {
+        try {
+            const response = await axios.delete(`https://crm-project.up.railway.app/api/v1/pupil/${id}`);
+            console.log("Element muvaffaqiyatli o‘chirildi:", response.data);
+            window.location.reload();
+        } catch (error) {
+            console.error("Xatolik yuz berdi:", error);
+        }
+    };
+    const updatePupil =  (e) => {
+        e.preventDefault()
+        try {
+            const formData = new FormData();
+            formData.append("name", `${name}`);
+            formData.append("surname", `${parents_name}`);
+            formData.append("phone", phone);
+            formData.append("picture", "example.jpg"); // Rasm fayli
+            formData.append("parents_phone", `${parents_phone}`);
+            formData.append("group", `${group}`);
+            formData.append("apsent", 0);
 
+            const response =  axios.patch(
+                `https://crm-project.up.railway.app/api/v1/pupil/${pupilId}`,
+                formData,
+                {
+                    headers: { "Content-Type": "application/json" },
+                }
+            );
+
+            console.log("Yangilangan ma'lumot:", response.data);
+            alert("O'quvchi ma'lumotlari yangilandi!");
+            setName("")
+            setPhone("")
+            setParents_name("")
+            setParents_phone("")
+        } catch (error) {
+            console.error("Xatolik yuz berdi:", error);
+        }
+    };
+    const fetchData = async () => {
+        try {
+            const response = await axios.get('https://crm-project.up.railway.app/api/v1/pupil/'); // API URL
+            setStudentData(response.data); // Javobni saqlash
+            setStudentData0(response.data); // Javobni saqlash
+        } catch (err) {
+            console.log(err.massage);
+        }
+    };
+    const getPupilById = async (id) => {
+        try {
+            const response = await axios.get(`https://crm-project.up.railway.app/api/v1/pupil/${id}`); // API URL
+
+            setName(response.data.name)
+            setPhone(response.data.phone)
+            setParents_name(response.data.surname)
+            setParents_phone(response.data.parents_phone)
+            setGroup(response.data.group[0]?._id)
+        } catch (err) {
+            console.log(err.massage);
+        }
+    };
+    function searchPupil(name) {
+        const obj = studentData0.filter((item) => {
+            return item.name.includes(name)
+        })
+        setStudentData(obj)
+    }
+    useEffect(() => {
+        fetchData()
+    }, [])
     return (
-        <div className=''>
+        <div>
             <h2 className='text-2xl font-semibold text-blue-600'>Yangi o’quvchi qo’shish</h2>
             <form onSubmit={addPupil} className="space-y-4 mt-4 bg-gray-50 p-4 rounded shadow">
                 <div className="grid sm:grid-cols-3 gap-4">
                     <div>
                         <label className="block font-medium">O'quvchi ismi</label>
                         <input
-                            onChange={((e)=>{
+                            value={name}
+
+                            onChange={((e) => {
                                 setName(e.target.value)
                             })}
                             type="text"
@@ -60,7 +143,8 @@ const Students = ({ data ,dataGroup}) => {
                     <div>
                         <label className="block font-medium">Telefon raqam</label>
                         <input
-                            onChange={((e)=>{
+                            value={phone}
+                            onChange={((e) => {
                                 setPhone(e.target.value)
                             })}
                             type="text"
@@ -70,11 +154,11 @@ const Students = ({ data ,dataGroup}) => {
                     </div>
                     <div>
                         <label className="block font-medium">Yo'nalish</label>
-                        <select onChange={((e)=>{
+                        <select onChange={((e) => {
                             setGroup(e.target.value);
-                            
+
                         })} className="w-full p-2 border rounded">
-                            {dataGroup && dataGroup.map((item,index)=>{
+                            {dataGroup && dataGroup.map((item, index) => {
                                 return (<option key={index} value={item._id}>{item.group_name}</option>)
                             })}
                         </select>
@@ -83,7 +167,8 @@ const Students = ({ data ,dataGroup}) => {
                     <div>
                         <label className="block font-medium">Ota-onasining ismi</label>
                         <input
-                            onChange={((e)=>{
+                            value={parents_name}
+                            onChange={((e) => {
                                 setParents_name(e.target.value)
                             })}
                             type="text"
@@ -96,7 +181,8 @@ const Students = ({ data ,dataGroup}) => {
                     <div>
                         <label className="block font-medium">Ota-onasining nomeri</label>
                         <input
-                            onChange={((e)=>{
+                            value={parents_phone}
+                            onChange={((e) => {
                                 setParents_phone(e.target.value)
                             })}
                             type="text"
@@ -134,26 +220,33 @@ const Students = ({ data ,dataGroup}) => {
             <div className="overflow-x-auto mx-auto w-11/12 mt-4 bg-gray-50 p-4 rounded shadow">
                 <table className="table-auto sm:w-full border-collapse border border-gray-300">
                     <thead>
-                        <tr className="bg-blue-600 text-white">
+                        <tr className="bg-[#333333] text-white">
                             <th className="border border-gray-300 p-2">№</th>
                             <th className="border border-gray-300 p-2">O'quvchi ismi</th>
                             <th className="border border-gray-300 p-2">Telefon nomer</th>
                             <th className="border border-gray-300 p-2">Yo'nalish</th>
                             <th className="border border-gray-300 p-2">Ota-ona(F.I.SH)</th>
                             <th className="border border-gray-300 p-2">Ota-ona (Tel)</th>
+                            <th className="border border-gray-300 p-2">/</th>
                         </tr>
                     </thead>
                     <tbody>
 
 
-                        {data ? data.map((item, index) => {
+                        {studentData ? studentData.map((item, index) => {
                             return (<tr>
                                 <td className="border border-gray-300 p-2">{index + 1}</td>
-                                <td className="border border-gray-300 p-2">{item.name} {item.surname}</td>
+                                <td className="border border-gray-300 p-2">{item.name} </td>
                                 <td className="border border-gray-300 p-2">{item.phone}</td>
                                 <td className="border border-gray-300 p-2">{item.group[0]?.group_name}</td>
-                                <td className="border border-gray-300 p-2">{item.parents_name}</td>
+                                <td className="border border-gray-300 p-2">{item.surname}</td>
                                 <td className="border border-gray-300 p-2">{item.parents_phone}</td>
+                                <td className='p-2 flex justify-evenly items-center'><span onClick={() => { deletePupil(item._id) }} className='text-[25px] text-red-600 cursor-pointer'><MdDelete /></span></td>
+                                {/* <span onClick={() => {
+                                    setModal(true)
+                                    getPupilById(item._id)
+                                    setPupilId(item._id)
+                                }} className='text-[25px] text-blue-600 cursor-pointer'><MdEdit /></span> */}
                             </tr>)
                         }) : <h1>Ma'lumot yo'q.</h1>}
                     </tbody>

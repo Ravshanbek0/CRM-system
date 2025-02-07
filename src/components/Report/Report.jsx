@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import stat from '../../assets/icons/stats.svg';
 import { Bar } from 'react-chartjs-2';
+import axios from 'axios';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -21,15 +22,33 @@ ChartJS.register(
 );
 
 function Report({ data, dataGroup, dataTeacher }) {
+  const [tarkPupil,setTarkPupil]=useState([])
+  const getReport = async () => {
+    try {
+      // setLoading(true)
+
+      const response = await axios.get('https://crm-project.up.railway.app/api/v1/report'); // API URL
+      // setDataGroup(response.data); // Javobni saqlash
+      console.log(response.data);
+      setTarkPupil(response.data)
+      // setLoading(false); // Yuklashni to'xtatish
+    } catch (err) {
+      console.error(err.message); // Xatoni saqlash
+      // setLoading(false); // Yuklashni to'xtatish
+    }
+  };
+
 
   useEffect(() => {
+    getReport()
+
     if (data && dataGroup && dataTeacher) {
       console.log(data, dataGroup, dataTeacher);
     } else {
       console.log("Ma'lumotlar hali yuklanmagan");
     }
   }, [data, dataGroup, dataTeacher]);
-  
+
 
   const [ismobile, setIsMobile] = useState(window.innerWidth < 1024)
 
@@ -63,16 +82,16 @@ function Report({ data, dataGroup, dataTeacher }) {
   ]
 
   const mainData = {
-    labels: ["Yanvar", "Fevral", "Mart", "Aprel", "May", "Iyun", "Iyul"],
+    labels: ["Yanvar"],
     datasets: [
       {
         label: "Jami o'quvchilar",
-        data: [261, 296, 305, 255, 0, 0, 0], // Jami o'quvchilar ma'lumotlari
+        data: [data.length], // Jami o'quvchilar ma'lumotlari
         backgroundColor: "#2F49D1", // Moviy rang
       },
       {
         label: "Tark etganlar",
-        data: [46, 30, 46, 60, 0, 0, 0], // Tark etganlar ma'lumotlari
+        data: [tarkPupil[0]?.romovedPupilsCount], // Tark etganlar ma'lumotlari
         backgroundColor: "#E84393", // Qizil rang
       }
     ],
@@ -92,7 +111,7 @@ function Report({ data, dataGroup, dataTeacher }) {
           display: false, // X o'qidagi kataklarni o'chirish
         },
         ticks: {
-          color: "#2F327D", // Oylik nomlar rangini o'zgartirish
+          color: "#333333", // Oylik nomlar rangini o'zgartirish
           font: {
             size: ismobile ? 16 : 20,
             weight: "bold",
@@ -101,12 +120,12 @@ function Report({ data, dataGroup, dataTeacher }) {
       },
       y: {
         beginAtZero: true,
-        max: 400, // Y o'qining maksimum qiymati
+        max: 100, // Y o'qining maksimum qiymati
         grid: {
           display: false, // Y o'qidagi kataklarni o'chirish
         },
         ticks: {
-          color: "#2F327D",
+          color: "#333333",
           font: {
             size: ismobile ? 16 : 20,
           },
@@ -122,9 +141,9 @@ function Report({ data, dataGroup, dataTeacher }) {
         {data1.map((item, index) => (
           <div key={index} className="w-11/12 sm:w-5/12 h-28 sm:h-44 border p-3 lg:rounded-xl bg-white relative shadow-md hover:shadow-lg transition-shadow">
             <h1 className='text-xs sm:text-base lg:text-xl xl:text-2xl font-medium'>{ismobile ? item.minTitle : item.title}:</h1>
-            <p className='sm:text-xl lg:text-2xl xl:text-3xl font-bold mt-1'>{data.length} ta</p>
+            <p className='sm:text-xl lg:text-2xl xl:text-3xl font-bold mt-1'>{item.title === "Jami o'quvchilar soni" ? data.length : item.title === "O’qituvchilar soni" ? dataTeacher.length : item.title === "Jami guruhlar soni" ? dataGroup.length : item.title === "Shu oy tark etganlar" ? tarkPupil[0]?.romovedPupilsCount : ""} ta</p>
             <div className="w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-16 xl:w-24 xl:h-24 rounded-full flex justify-center content-center absolute right-5 bottom-5 hover:cursor-pointer bg-main-lg">
-              <img onClick={()=>console.log(data)} className='w-3 sm:w-4 lg:w-6 xl:w-8' src={stat} alt="" />
+              <img onClick={() => console.log(data)} className='w-3 sm:w-4 lg:w-6 xl:w-8' src={stat} alt="" />
             </div>
           </div>
         ))}
@@ -132,10 +151,10 @@ function Report({ data, dataGroup, dataTeacher }) {
       <div className='w-100 h-auto ml-5 sm:ml-16 xl:ml-36 mt-5'>
         <div className='w-11/12 sm:w-10/12 h-auto bg-white relative shadow-md hover:shadow-lg transition'>
           <div className="flex gap-2 justify-center xl:block xl:w-4/12 xl:absolute xl:right-0 xl:top-3">
-            <p className='text-xs sm:text-sm md:text-lg xl:text-2xl font-semibold'>2022-YIL</p>
-            <p className='text-xs sm:text-sm md:text-lg xl:text-2xl font-semibold'><span className='text-blue-700'>Aprel</span> oyigacha bo’lgan statistika</p>
+            <p className='text-xs sm:text-sm md:text-lg xl:text-2xl font-semibold'>2025-YIL</p>
+            <p className='text-xs sm:text-sm md:text-lg xl:text-2xl font-semibold'><span className='text-[#ffc100]'>Yanvar</span> oyigacha bo’lgan statistika</p>
           </div>
-          <div className='w-100 h-96 xl:w-10/12'>
+          <div className='h-96 xl:w-10/12'>
             <Bar data={mainData} options={options} />
           </div>
         </div>

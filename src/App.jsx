@@ -23,6 +23,8 @@ function App() {
       setLoading(true)
       const response = await axios.get('https://crm-project.up.railway.app/api/v1/pupil/'); // API URL
       setData(response.data); // Javobni saqlash
+      console.log(response.data);
+      
       setLoading(false); // Yuklashni to'xtatish
     } catch (err) {
       setError(err.message); // Xatoni saqlash
@@ -70,7 +72,6 @@ function App() {
     fetchDataGroup()
     fetchDataTeacher()
     fetchDataAppeals()
-    console.log(dataGroup);
   },[])
 
   return (
@@ -82,9 +83,9 @@ function App() {
           <Route path='/report' element={<Home data={data} dataGroup={dataGroup} dataTeacher={dataTeacher} />} />
           <Route path='/appeals' element={<Home dataAppeals={dataAppeals} />} />
           <Route path='/payment' element={<Home data={data} setLoading={setLoading} />} />
-          <Route path='/attandance' element={<Home  setLoading={setLoading} setGroup_id={setGroup_id}/>} />
-          <Route path='/students' element={<Home data={data} dataGroup={dataGroup} />} />
-          <Route path='/groups' element={<Home dataGroup={dataGroup} />} />
+          <Route path='/attandance' element={<Home  setLoading={setLoading} setGroup_id={setGroup_id} dataGroup={dataGroup}/>} />
+          <Route path='/students' element={<Home data={data} setLoading={setLoading} dataGroup={dataGroup} />} />
+          <Route path='/groups' element={<Home dataGroup={dataGroup} setLoading={setLoading} />} />
           <Route path='/attendenceGroup/:id' element={<AttendenceGroup setLoading={setLoading} dataGroup={dataGroup} group_id={group_id} data={data}/>} />
         </Routes>
       </BrowserRouter>
