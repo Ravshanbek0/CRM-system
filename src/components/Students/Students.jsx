@@ -41,10 +41,10 @@ const Students = ({ data ,dataGroup}) => {
     }
 
     return (
-        <div>
+        <div className=''>
             <h2 className='text-2xl font-semibold text-blue-600'>Yangi o’quvchi qo’shish</h2>
             <form onSubmit={addPupil} className="space-y-4 mt-4 bg-gray-50 p-4 rounded shadow">
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid sm:grid-cols-3 gap-4">
                     <div>
                         <label className="block font-medium">O'quvchi ismi</label>
                         <input
@@ -116,23 +116,23 @@ const Students = ({ data ,dataGroup}) => {
 
                 </div>
                 <div className='flex justify-end'>
-                    <button onClick={addPupil} className="bg-blue-600 text-white px-44 py-3 rounded-md mt-2  hover:bg-blue-700">
+                    <button onClick={addPupil} className="bg-blue-600 text-white px-6 sm:px-10 md:px-20 lg:px-32 xl:px-44 py-3 rounded-md mt-2  hover:bg-blue-700">
                         Qo’shish
                     </button>
                 </div>
             </form>
 
-            <div className='flex justify-between items-center'>
+            <div className='flex justify-center sm:justify-between items-center flex-wrap'>
                 <h2 className="text-2xl font-semibold text-blue-600 mt-8">
                     Bizning o’quvchilar
                 </h2>
-                <input style={{ boxShadow: "0 4px 12px 0px rgba(#00000033)" }} className="px-20 py-3 rounded-2xl mt-8 outline-none " type="text" />
+                <input style={{ boxShadow: "0 4px 12px 0px rgba(#00000033)" }} className="w-2/3 sm:w-64 md:w-80 lg:w-96 py-3 rounded-2xl mt-8 outline-none " type="text" />
 
 
 
             </div>
-            <div className="mt-4 bg-gray-50 p-4 rounded shadow">
-                <table className="table-auto w-full border-collapse border border-gray-300">
+            <div className="overflow-x-auto mx-auto w-11/12 mt-4 bg-gray-50 p-4 rounded shadow">
+                <table className="table-auto sm:w-full border-collapse border border-gray-300">
                     <thead>
                         <tr className="bg-blue-600 text-white">
                             <th className="border border-gray-300 p-2">№</th>

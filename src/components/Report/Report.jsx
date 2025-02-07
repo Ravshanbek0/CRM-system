@@ -117,10 +117,10 @@ function Report({ data, dataGroup, dataTeacher }) {
   };
 
   return (
-    <div className='bg-main pt-6'>
+    <div className='bg-main py-6'>
       <div className="flex flex-wrap w-100 ml-5 sm:ml-16 xl:ml-36 gap-5">
         {data1.map((item, index) => (
-          <div key={index} className="w-5/12 h-28 sm:h-44 border p-3 lg:rounded-xl bg-white relative shadow-md hover:shadow-lg transition-shadow">
+          <div key={index} className="w-11/12 sm:w-5/12 h-28 sm:h-44 border p-3 lg:rounded-xl bg-white relative shadow-md hover:shadow-lg transition-shadow">
             <h1 className='text-xs sm:text-base lg:text-xl xl:text-2xl font-medium'>{ismobile ? item.minTitle : item.title}:</h1>
             <p className='sm:text-xl lg:text-2xl xl:text-3xl font-bold mt-1'>{data.length} ta</p>
             <div className="w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-16 xl:w-24 xl:h-24 rounded-full flex justify-center content-center absolute right-5 bottom-5 hover:cursor-pointer bg-main-lg">
@@ -130,7 +130,7 @@ function Report({ data, dataGroup, dataTeacher }) {
         ))}
       </div>
       <div className='w-100 h-auto ml-5 sm:ml-16 xl:ml-36 mt-5'>
-        <div className='w-11/12 lg:w-10/12 h-auto bg-white relative shadow-md hover:shadow-lg transition'>
+        <div className='w-11/12 sm:w-10/12 h-auto bg-white relative shadow-md hover:shadow-lg transition'>
           <div className="flex gap-2 justify-center xl:block xl:w-4/12 xl:absolute xl:right-0 xl:top-3">
             <p className='text-xs sm:text-sm md:text-lg xl:text-2xl font-semibold'>2022-YIL</p>
             <p className='text-xs sm:text-sm md:text-lg xl:text-2xl font-semibold'><span className='text-blue-700'>Aprel</span> oyigacha bo’lgan statistika</p>

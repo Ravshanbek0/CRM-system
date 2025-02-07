@@ -30,13 +30,13 @@ function Home({data,dataGroup,dataTeacher,group_id,setGroup_id,setLoading,dataAp
     <div className="bg-gray-100 h-auto flex">
       {/* Sidebar */}
       <aside
-        className={`${isMenuCollapsed ? "w-16" : "w-64"
-          } bg-blue-800 text-white h-screen sticky top-0 transition-all duration-300`}
+        className={`${isMenuCollapsed ? "w-10" : "w-64"
+          } bg-blue-800 text-white h-full fixed z-10 top-0 transition-all duration-300`}
       >
         {/* Menu Button */}
         <button
           onClick={toggleMenu}
-          className="absolute top-4 right-4 text-white text-2xl focus:outline-none hover:bg-blue-600 p-2 rounded-full"
+          className="absolute top-4 right-0 text-white text-2xl focus:outline-none hover:bg-blue-600 p-2 rounded-full"
         >
           {isMenuCollapsed ? <FaBars /> : <FaTimes />}
         </button>
@@ -111,7 +111,7 @@ function Home({data,dataGroup,dataTeacher,group_id,setGroup_id,setLoading,dataAp
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 p-6 ml-4">
+      <main className="flex-1 pl-11 w-100">
         {pathname == "/" && <Report data={data} dataGroup={dataGroup} dataTeacher={dataTeacher} />}
         {pathname == "/appeals" && <Appeals dataAppeals={dataAppeals} />}
         {pathname == "/payment" && <Payment data={data} setLoading={setLoading}/>}
