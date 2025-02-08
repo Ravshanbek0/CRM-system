@@ -30,16 +30,19 @@ function Home({ data, dataGroup, dataTeacher, group_id, setGroup_id, setLoading,
     <div className="bg-gray-100 h-auto flex">
       {/* Sidebar */}
       <aside
-        className={`${isMenuCollapsed ? "w-10" : "w-64"
-          } bg-blue-800 text-white h-full fixed z-10 top-0 transition-all duration-300`}
+        className={`${isMenuCollapsed ? "w-16" : "w-64"
+          } bg-[#333333] text-white h-screen sticky top-0 transition-all duration-300`}
       >
         {/* Menu Button */}
-        <button
-          onClick={toggleMenu}
-          className="absolute top-4 right-0 text-white text-2xl focus:outline-none hover:bg-blue-600 p-2 rounded-full"
-        >
-          {isMenuCollapsed ? <FaBars /> : <FaTimes />}
-        </button>
+        <div className='flex items-center pt-4'>
+          {isMenuCollapsed ? "" : <img className='max-w-[150px] object-contain' src="./imgs/logo.png" alt="" />}
+          <button
+            onClick={toggleMenu}
+            className="absolute top-4 right-4 text-white text-2xl focus:outline-none hover:bg-[#555555] p-2 rounded-full"
+          >
+            {isMenuCollapsed ? <FaBars /> : <FaTimes />}
+          </button>
+        </div>
 
         <nav className={`mt-6 px-4 space-y-4 ${isMenuCollapsed ? "hidden" : "block"}`}>
           {/* Xisobot */}
@@ -111,7 +114,7 @@ function Home({ data, dataGroup, dataTeacher, group_id, setGroup_id, setLoading,
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 pl-11 w-100">
+      <main className="flex-1 p-6 ml-4">
         {pathname == "/" && <Report data={data} dataGroup={dataGroup} dataTeacher={dataTeacher} />}
         {pathname == "/appeals" && <Appeals dataAppeals={dataAppeals} />}
         {pathname == "/payment" && <Payment data={data} setLoading={setLoading} />}
