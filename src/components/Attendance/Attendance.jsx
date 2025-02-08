@@ -2,14 +2,22 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
-function Attendance({ setGroup_id, setLoading,dataGroup }) {
+function Attendance({ setGroup_id, setLoading, dataGroup }) {
     const [combinedData, setCombinedData] = useState([]);
     const fetchData = async () => {
         try {
             // API so'rovlarini parallel bajarish
             const [teachersResponse, groupResponse] = await Promise.all([
-                axios.get('https://crm-project.up.railway.app/api/v1/teacher/'), // Teachers API URL
-                axios.get('https://crm-project.up.railway.app/api/v1/group/'),   // group API URL
+                axios.get('https://crm-project.up.railway.app/api/v1/teacher/', {
+                    headers: {
+                        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N2E0ZGRlYzA4NWUxZWE0ODE5NTFjY2YiLCJ1c2VybmFtZSI6InVzZXJfbmFtZTIiLCJpYXQiOjE3Mzg5MjAxNDEsImV4cCI6MTczOTUyNDk0MX0.CrHCQ3c81tGPteUCznpxeUlPn6rmS3Dfq1Gevrqs9mU`
+                    }
+                }), // Teachers API URL
+                axios.get('https://crm-project.up.railway.app/api/v1/group/', {
+                    headers: {
+                        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N2E0ZGRlYzA4NWUxZWE0ODE5NTFjY2YiLCJ1c2VybmFtZSI6InVzZXJfbmFtZTIiLCJpYXQiOjE3Mzg5MjAxNDEsImV4cCI6MTczOTUyNDk0MX0.CrHCQ3c81tGPteUCznpxeUlPn6rmS3Dfq1Gevrqs9mU`
+                    }
+                }),   // group API URL
             ]);
 
             // Ma'lumotlarni massivlar bo'yicha birlashtirish
@@ -20,7 +28,7 @@ function Attendance({ setGroup_id, setLoading,dataGroup }) {
 
             setCombinedData(combinedData);
             console.log(combinedData);
-            
+
         } catch (err) {
             console.error(err);
             setError('Ma\'lumotlarni olishda xatolik yuz berdi.');
@@ -49,7 +57,7 @@ function Attendance({ setGroup_id, setLoading,dataGroup }) {
 
                     {dataGroup && dataGroup.map((item, index) => {
                         console.log(item);
-                        
+
                         return (<Link onClick={() => {
 
                             // setGroup_id(item.group._id)

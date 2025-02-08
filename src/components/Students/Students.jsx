@@ -4,7 +4,7 @@ import axios from 'axios';
 import { MdDelete, MdEdit } from "react-icons/md";
 
 
-const Students = ({ dataGroup }) => {
+const Students = ({ dataGroup, token }) => {
     const [studentData, setStudentData] = useState()
     const [studentData0, setStudentData0] = useState()
     const [name, setName] = useState("")
@@ -33,8 +33,8 @@ const Students = ({ dataGroup }) => {
             // POST so'rovni yuborish
             axios.post('https://crm-project.up.railway.app/api/v1/pupil', formDataToJson, {
                 headers: {
-                    'Content-Type': 'application/json',
-                },
+                    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N2E0ZGRlYzA4NWUxZWE0ODE5NTFjY2YiLCJ1c2VybmFtZSI6InVzZXJfbmFtZTIiLCJpYXQiOjE3Mzg5MjAxNDEsImV4cCI6MTczOTUyNDk0MX0.CrHCQ3c81tGPteUCznpxeUlPn6rmS3Dfq1Gevrqs9mU` // Tokenni 'Authorization' headeriga qo‘shish
+                }
             })
                 .then((response) => {
                     console.log('Maʼlumot yuborildi:', response.data);
@@ -53,14 +53,18 @@ const Students = ({ dataGroup }) => {
     }
     const deletePupil = async (id) => {
         try {
-            const response = await axios.delete(`https://crm-project.up.railway.app/api/v1/pupil/${id}`);
+            const response = await axios.delete(`https://crm-project.up.railway.app/api/v1/pupil/${id}`, {
+                headers: {
+                    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N2E0ZGRlYzA4NWUxZWE0ODE5NTFjY2YiLCJ1c2VybmFtZSI6InVzZXJfbmFtZTIiLCJpYXQiOjE3Mzg5MjAxNDEsImV4cCI6MTczOTUyNDk0MX0.CrHCQ3c81tGPteUCznpxeUlPn6rmS3Dfq1Gevrqs9mU` // Tokenni 'Authorization' headeriga qo‘shish
+                }
+            });
             console.log("Element muvaffaqiyatli o‘chirildi:", response.data);
             window.location.reload();
         } catch (error) {
             console.error("Xatolik yuz berdi:", error);
         }
     };
-    const updatePupil =  (e) => {
+    const updatePupil = (e) => {
         e.preventDefault()
         try {
             const formData = new FormData();
@@ -72,11 +76,13 @@ const Students = ({ dataGroup }) => {
             formData.append("group", `${group}`);
             formData.append("apsent", 0);
 
-            const response =  axios.patch(
+            const response = axios.patch(
                 `https://crm-project.up.railway.app/api/v1/pupil/${pupilId}`,
                 formData,
                 {
                     headers: { "Content-Type": "application/json" },
+                    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N2E0ZGRlYzA4NWUxZWE0ODE5NTFjY2YiLCJ1c2VybmFtZSI6InVzZXJfbmFtZTIiLCJpYXQiOjE3Mzg5MjAxNDEsImV4cCI6MTczOTUyNDk0MX0.CrHCQ3c81tGPteUCznpxeUlPn6rmS3Dfq1Gevrqs9mU` // Tokenni 'Authorization' headeriga qo‘shish
+
                 }
             );
 
@@ -92,7 +98,11 @@ const Students = ({ dataGroup }) => {
     };
     const fetchData = async () => {
         try {
-            const response = await axios.get('https://crm-project.up.railway.app/api/v1/pupil/'); // API URL
+            const response = await axios.get('https://crm-project.up.railway.app/api/v1/pupil/', {
+                headers: {
+                    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N2E0ZGRlYzA4NWUxZWE0ODE5NTFjY2YiLCJ1c2VybmFtZSI6InVzZXJfbmFtZTIiLCJpYXQiOjE3Mzg5MjAxNDEsImV4cCI6MTczOTUyNDk0MX0.CrHCQ3c81tGPteUCznpxeUlPn6rmS3Dfq1Gevrqs9mU` // Tokenni 'Authorization' headeriga qo‘shish
+                }
+            }); // API URL
             setStudentData(response.data); // Javobni saqlash
             setStudentData0(response.data); // Javobni saqlash
         } catch (err) {
@@ -101,7 +111,11 @@ const Students = ({ dataGroup }) => {
     };
     const getPupilById = async (id) => {
         try {
-            const response = await axios.get(`https://crm-project.up.railway.app/api/v1/pupil/${id}`); // API URL
+            const response = await axios.get(`https://crm-project.up.railway.app/api/v1/pupil/${id}`, {
+                headers: {
+                    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N2E0ZGRlYzA4NWUxZWE0ODE5NTFjY2YiLCJ1c2VybmFtZSI6InVzZXJfbmFtZTIiLCJpYXQiOjE3Mzg5MjAxNDEsImV4cCI6MTczOTUyNDk0MX0.CrHCQ3c81tGPteUCznpxeUlPn6rmS3Dfq1Gevrqs9mU` // Tokenni 'Authorization' headeriga qo‘shish
+                }
+            }); // API URL
 
             setName(response.data.name)
             setPhone(response.data.phone)

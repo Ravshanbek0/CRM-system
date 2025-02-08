@@ -22,12 +22,16 @@ ChartJS.register(
 );
 
 function Report({ data, dataGroup, dataTeacher }) {
-  const [tarkPupil,setTarkPupil]=useState([])
+  const [tarkPupil, setTarkPupil] = useState([])
   const getReport = async () => {
     try {
       // setLoading(true)
 
-      const response = await axios.get('https://crm-project.up.railway.app/api/v1/report'); // API URL
+      const response = await axios.get('https://crm-project.up.railway.app/api/v1/report', {
+        headers: {
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N2E0ZGRlYzA4NWUxZWE0ODE5NTFjY2YiLCJ1c2VybmFtZSI6InVzZXJfbmFtZTIiLCJpYXQiOjE3Mzg5MjAxNDEsImV4cCI6MTczOTUyNDk0MX0.CrHCQ3c81tGPteUCznpxeUlPn6rmS3Dfq1Gevrqs9mU`
+        }
+      }); // API URL
       // setDataGroup(response.data); // Javobni saqlash
       console.log(response.data);
       setTarkPupil(response.data)

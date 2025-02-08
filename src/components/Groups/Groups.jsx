@@ -6,7 +6,7 @@ import { MdDelete } from "react-icons/md";
 const Groups = ({ setLoading, dataGroup }) => {
     const [group_name, setGroup_name] = useState("")
     const [lesson_dates, setLesson_dates] = useState("Du-Chor-Juma")
-    const [lesson_time, setLesson_time] = useState("14:00-16:00")
+    const [lesson_time, setLesson_time] = useState("14:00 - 16:00")
 
 
     const [disable, setDisable] = useState(false)
@@ -52,6 +52,8 @@ const Groups = ({ setLoading, dataGroup }) => {
             axios.post('https://crm-project.up.railway.app/api/v1/group', formDataToJson, {
                 headers: {
                     'Content-Type': 'application/json',
+                    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N2E0ZGRlYzA4NWUxZWE0ODE5NTFjY2YiLCJ1c2VybmFtZSI6InVzZXJfbmFtZTIiLCJpYXQiOjE3Mzg5MjAxNDEsImV4cCI6MTczOTUyNDk0MX0.CrHCQ3c81tGPteUCznpxeUlPn6rmS3Dfq1Gevrqs9mU`
+
                 },
             })
                 .then((response) => {
@@ -69,7 +71,11 @@ const Groups = ({ setLoading, dataGroup }) => {
     }
     const deleteGroup = async (id) => {
         try {
-            const response = await axios.delete(`https://crm-project.up.railway.app/api/v1/group/${id}`);
+            const response = await axios.delete(`https://crm-project.up.railway.app/api/v1/group/${id}`, {
+                headers: {
+                    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N2E0ZGRlYzA4NWUxZWE0ODE5NTFjY2YiLCJ1c2VybmFtZSI6InVzZXJfbmFtZTIiLCJpYXQiOjE3Mzg5MjAxNDEsImV4cCI6MTczOTUyNDk0MX0.CrHCQ3c81tGPteUCznpxeUlPn6rmS3Dfq1Gevrqs9mU`
+                }
+            });
             console.log("Element muvaffaqiyatli o‘chirildi:", response.data);
             window.location.reload();
         } catch (error) {
@@ -117,8 +123,8 @@ const Groups = ({ setLoading, dataGroup }) => {
                             <select onChange={(e) => {
                                 setLesson_time(e.target.value)
                             }} className="w-full p-2 border rounded">
-                                <option value={'14:00-16:00'}>14:00-16:00</option>
-                                <option value={'16:00-18:00'}>16:00-18:00</option>
+                                <option value={'14:00 - 16:00'}>14:00-16:00</option>
+                                <option value={'16:00 - 18:00'}>16:00-18:00</option>
                             </select>
                         </div>
 
