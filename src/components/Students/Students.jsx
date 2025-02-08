@@ -137,9 +137,98 @@ const Students = ({ dataGroup, token }) => {
     }, [])
     return (
         <div>
-            <h2 className='text-2xl font-semibold text-blue-600'>Yangi o’quvchi qo’shish</h2>
+            {/* Modal */}
+            {modal && <div className='fixed z-50 w-full h-screen top-0 left-0 bg-black flex bg-opacity-80 justify-center items-center'>
+                <p onClick={() => { setModal(!modal) }} className='text-white text-2xl absolute right-32 top-40 cursor-pointer'>x</p>
+                <form onSubmit={updatePupil} className="space-y-4 mt-4 bg-gray-50 p-4 rounded shadow">
+                    <div className="grid grid-cols-3 gap-4">
+                        <div>
+                            <label className="block font-medium">O'quvchi ismi</label>
+                            <input
+                                value={name}
+
+                                onChange={((e) => {
+                                    setName(e.target.value)
+                                })}
+                                type="text"
+                                placeholder="Ismni kiriting"
+                                className="w-full p-2 border rounded"
+                            />
+                        </div>
+
+                        <div>
+                            <label className="block font-medium">Telefon raqam</label>
+                            <input
+                                value={phone}
+                                onChange={((e) => {
+                                    setPhone(e.target.value)
+                                })}
+                                type="text"
+                                placeholder="+998 xx xxx xx xx"
+                                className="w-full p-2 border rounded"
+                            />
+                        </div>
+                        <div>
+                            <label className="block font-medium">Yo'nalish</label>
+                            <select onChange={((e) => {
+                                setGroup(e.target.value);
+
+                            })} className="w-full p-2 border rounded">
+                                {dataGroup && dataGroup.map((item, index) => {
+                                    return (<option key={index} value={item._id}>{item.group_name}</option>)
+                                })}
+                            </select>
+                        </div>
+
+                        <div>
+                            <label className="block font-medium">Ota-onasining ismi</label>
+                            <input
+                                value={parents_name}
+                                onChange={((e) => {
+                                    setParents_name(e.target.value)
+                                })}
+                                type="text"
+                                placeholder='Ota-onasining ismi'
+                                className="w-full p-2 border rounded"
+                            />
+                        </div>
+
+
+                        <div>
+                            <label className="block font-medium">Ota-onasining nomeri</label>
+                            <input
+                                value={parents_phone}
+                                onChange={((e) => {
+                                    setParents_phone(e.target.value)
+                                })}
+                                type="text"
+                                placeholder="+998 xx xxx xx xx"
+                                className="w-full p-2 border rounded"
+                            />
+                        </div>
+                        <div>
+                            <label className="block font-medium">Rasm 3x4</label>
+                            <input
+                                type="file"
+                                placeholder="Yuklash"
+                                className="w-full p-2 border rounded"
+                            />
+                        </div>
+
+
+                    </div>
+                    <div className='flex justify-end'>
+                        <button onClick={updatePupil} className="bg-[#333333] text-white px-44 py-3 rounded-md mt-2  hover:bg-[#555555]">
+                            O'zgartirish
+                        </button>
+                    </div>
+                </form>
+            </div>}
+            {/* Modal */}
+
+            <h2 className='text-2xl font-semibold text-[#333333]'>Yangi o’quvchi qo’shish</h2>
             <form onSubmit={addPupil} className="space-y-4 mt-4 bg-gray-50 p-4 rounded shadow">
-                <div className="grid sm:grid-cols-3 gap-4">
+                <div className="grid grid-cols-3 gap-4">
                     <div>
                         <label className="block font-medium">O'quvchi ismi</label>
                         <input
@@ -216,23 +305,25 @@ const Students = ({ dataGroup, token }) => {
 
                 </div>
                 <div className='flex justify-end'>
-                    <button onClick={addPupil} className="bg-blue-600 text-white px-6 sm:px-10 md:px-20 lg:px-32 xl:px-44 py-3 rounded-md mt-2  hover:bg-blue-700">
+                    <button onClick={addPupil} className="bg-[#333333] text-white px-44 py-3 rounded-md mt-2  hover:bg-[#555555]">
                         Qo’shish
                     </button>
                 </div>
             </form>
 
-            <div className='flex justify-center sm:justify-between items-center flex-wrap'>
-                <h2 className="text-2xl font-semibold text-blue-600 mt-8">
+            <div className='flex justify-between items-center'>
+                <h2 className="text-2xl font-semibold text-[#333333] mt-8">
                     Bizning o’quvchilar
                 </h2>
-                <input style={{ boxShadow: "0 4px 12px 0px rgba(#00000033)" }} className="w-2/3 sm:w-64 md:w-80 lg:w-96 py-3 rounded-2xl mt-8 outline-none " type="text" />
+                <input placeholder='Ismni kiriting...' onChange={((e) => {
+                    searchPupil(e.target.value)
+                })} style={{ boxShadow: "0 4px 12px 0px rgba(#00000033)" }} className="px-4 py-3 rounded-2xl mt-8 outline-none min-w-80 " type="text" />
 
 
 
             </div>
-            <div className="overflow-x-auto mx-auto w-11/12 mt-4 bg-gray-50 p-4 rounded shadow">
-                <table className="table-auto sm:w-full border-collapse border border-gray-300">
+            <div className="mt-4 bg-gray-50 p-4 rounded shadow">
+                <table className="table-auto w-full border-collapse border border-gray-300">
                     <thead>
                         <tr className="bg-[#333333] text-white">
                             <th className="border border-gray-300 p-2">№</th>
