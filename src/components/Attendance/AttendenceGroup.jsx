@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { FaBars, FaTimes, FaHome, FaGraduationCap, FaUsers, FaCreditCard, FaUser, FaComments } from "react-icons/fa";
 import axios from 'axios';
 import AttendanceStudent from './AttendanceStudent';
+import { IoIosLogOut } from "react-icons/io";
+
 
 
 function AttendenceGroup({ dataGroup, data, setLoading }) {
+  const navigate = useNavigate()
   const { id } = useParams()
   const { pathname } = useLocation()
   const [error, setError] = useState()
@@ -90,7 +93,7 @@ function AttendenceGroup({ dataGroup, data, setLoading }) {
       >
         {/* Menu Button */}
         <div className='flex items-center pt-4'>
-          {isMenuCollapsed ? "" : <img className='max-w-[150px] object-contain' src="../imgs/logo.png" alt="" />}
+          {isMenuCollapsed ? "" : <h1 className='text-3xl font-bold px-4'>Ta'lim.uz</h1>}
           {/* <img className='max-w-[150px] object-contain' src="../imgs/logo.png" alt="" /> */}
           <button
             onClick={toggleMenu}
@@ -100,7 +103,7 @@ function AttendenceGroup({ dataGroup, data, setLoading }) {
           </button>
         </div>
 
-        <nav className={`mt-6 space-y-4 ${isMenuCollapsed ? "hidden" : "block"}`}>
+        <nav className={`mt-6 space-y-4 px-4 ${isMenuCollapsed ? "hidden" : "block"}`}>
           {/* Xisobot */}
           <Link
             to={"/"}
@@ -166,6 +169,11 @@ function AttendenceGroup({ dataGroup, data, setLoading }) {
             <FaComments className="text-xl" />
             <span className="font-medium">Murojatlar</span>
           </Link>
+          <span onClick={() => {
+            localStorage.clear()
+            navigate('/')
+            window.location.reload()
+          }} className='absolute bottom-4 mt-8 flex items-center gap-1 cursor-pointer'><IoIosLogOut className='text-4xl' />chiqish</span>
         </nav>
       </aside>
       <div className=''>

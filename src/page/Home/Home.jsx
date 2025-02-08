@@ -2,18 +2,19 @@ import React, { useState } from 'react'
 import Payment from '../../components/Payment/Payment';
 import Attendance from '../../components/Attendance/Attendance';
 import { FaBars, FaTimes, FaHome, FaGraduationCap, FaUsers, FaCreditCard, FaUser, FaComments } from "react-icons/fa";
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import Report from '../../components/Report/Report';
 // import AttendenceGroup from '../../components/Attendance/AttendenceGroup';
 import Appeals from '../../components/Appeals/Appeals';
 import Students from '../../components/Students/Students';
 import Groups from '../../components/Groups/Groups';
+import { IoIosLogOut } from "react-icons/io";
 
 
-
-function Home({ data, dataGroup, dataTeacher, group_id, setGroup_id, setLoading, dataAppeals,token }) {
+function Home({ data, dataGroup, dataTeacher, group_id, setGroup_id, setLoading, dataAppeals, token }) {
   const { pathname } = useLocation()
+  const navigate = useNavigate()
 
   const [isMenuCollapsed, setMenuCollapsed] = useState(false);
   const [activeMenu, setActiveMenu] = useState(`${pathname}`); // Bosilgan menyu elementi
@@ -35,7 +36,8 @@ function Home({ data, dataGroup, dataTeacher, group_id, setGroup_id, setLoading,
       >
         {/* Menu Button */}
         <div className='flex items-center pt-4'>
-          {isMenuCollapsed ? "" : <img className='max-w-[150px] object-contain' src="./imgs/logo.png" alt="" />}
+          {isMenuCollapsed ? "" : <h1 className='text-3xl font-bold px-4'>Ta'lim.uz</h1>}
+          {/* <img className='max-w-[150px] object-contain' src="./imgs/logo.png" alt="" /> */}
           <button
             onClick={toggleMenu}
             className="absolute top-4 right-4 text-white text-2xl focus:outline-none hover:bg-[#555555] p-2 rounded-full"
@@ -110,6 +112,11 @@ function Home({ data, dataGroup, dataTeacher, group_id, setGroup_id, setLoading,
             <FaComments className="text-xl" />
             <span className="font-medium">Murojatlar</span>
           </Link>
+          <span onClick={()=>{
+            localStorage.clear()
+            navigate("/")
+            window.location.reload()
+          }} className='absolute bottom-4 mt-8 flex items-center gap-1 cursor-pointer'><IoIosLogOut className='text-4xl' />chiqish</span>
         </nav>
       </aside>
 
