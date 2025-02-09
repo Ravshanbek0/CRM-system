@@ -86,7 +86,7 @@ function Report({ data, dataGroup, dataTeacher }) {
   ]
 
   const mainData = {
-    labels: ["Yanvar"],
+    labels: ["Fevral"],
     datasets: [
       {
         label: "Jami o'quvchilar",
@@ -95,7 +95,7 @@ function Report({ data, dataGroup, dataTeacher }) {
       },
       {
         label: "Tark etganlar",
-        data: [tarkPupil[0]?.romovedPupilsCount], // Tark etganlar ma'lumotlari
+        data: [tarkPupil[1]?.romovedPupilsCount], // Tark etganlar ma'lumotlari
         backgroundColor: "#E84393", // Qizil rang
       }
     ],
@@ -145,7 +145,7 @@ function Report({ data, dataGroup, dataTeacher }) {
         {data1.map((item, index) => (
           <div key={index} className="w-11/12 sm:w-5/12 h-28 sm:h-44 border p-3 lg:rounded-xl bg-white relative shadow-md hover:shadow-lg transition-shadow">
             <h1 className='text-xs sm:text-base lg:text-xl xl:text-2xl font-medium'>{ismobile ? item.minTitle : item.title}:</h1>
-            <p className='sm:text-xl lg:text-2xl xl:text-3xl font-bold mt-1'>{item.title === "Jami o'quvchilar soni" ? data.length : item.title === "O’qituvchilar soni" ? dataTeacher.length : item.title === "Jami guruhlar soni" ? dataGroup.length : item.title === "Shu oy tark etganlar" ? tarkPupil[0]?.romovedPupilsCount : ""} ta</p>
+            <p className='sm:text-xl lg:text-2xl xl:text-3xl font-bold mt-1'>{item.title === "Jami o'quvchilar soni" ? data.length : item.title === "O’qituvchilar soni" ? dataTeacher.length : item.title === "Jami guruhlar soni" ? dataGroup.length : item.title === "Shu oy tark etganlar" ? tarkPupil[1]?.romovedPupilsCount : ""} ta</p>
             <div className="w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-16 xl:w-24 xl:h-24 rounded-full flex justify-center content-center absolute right-5 bottom-5 hover:cursor-pointer bg-main-lg">
               <img onClick={() => console.log(data)} className='w-3 sm:w-4 lg:w-6 xl:w-8' src={stat} alt="" />
             </div>
@@ -156,7 +156,7 @@ function Report({ data, dataGroup, dataTeacher }) {
         <div className='w-11/12 sm:w-10/12 h-auto bg-white relative shadow-md hover:shadow-lg transition'>
           <div className="flex gap-2 justify-center xl:block xl:w-4/12 xl:absolute xl:right-0 xl:top-3">
             <p className='text-xs sm:text-sm md:text-lg xl:text-2xl font-semibold'>2025-YIL</p>
-            <p className='text-xs sm:text-sm md:text-lg xl:text-2xl font-semibold'><span className='text-[#ffc100]'>Yanvar</span> oyigacha bo’lgan statistika</p>
+            <p className='text-xs sm:text-sm md:text-lg xl:text-2xl font-semibold'><span className='text-[#ffc100]'>Fevral</span> oyigacha bo’lgan statistika</p>
           </div>
           <div className='h-96 xl:w-10/12'>
             <Bar data={mainData} options={options} />
