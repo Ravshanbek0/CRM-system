@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
-function Attendance({ setGroup_id, setLoading, dataGroup }) {
+function Attendance({ setGroup_id, setLoading, dataGroup, access_token }) {
     const [combinedData, setCombinedData] = useState([]);
     const fetchData = async () => {
         try {
@@ -10,12 +10,12 @@ function Attendance({ setGroup_id, setLoading, dataGroup }) {
             const [teachersResponse, groupResponse] = await Promise.all([
                 axios.get('https://crm-project.up.railway.app/api/v1/teacher/', {
                     headers: {
-                        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N2E0ZGRlYzA4NWUxZWE0ODE5NTFjY2YiLCJ1c2VybmFtZSI6InVzZXJfbmFtZTIiLCJpYXQiOjE3Mzg5MjAxNDEsImV4cCI6MTczOTUyNDk0MX0.CrHCQ3c81tGPteUCznpxeUlPn6rmS3Dfq1Gevrqs9mU`
+                        Authorization: `Bearer ${access_token}`
                     }
                 }), // Teachers API URL
                 axios.get('https://crm-project.up.railway.app/api/v1/group/', {
                     headers: {
-                        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N2E0ZGRlYzA4NWUxZWE0ODE5NTFjY2YiLCJ1c2VybmFtZSI6InVzZXJfbmFtZTIiLCJpYXQiOjE3Mzg5MjAxNDEsImV4cCI6MTczOTUyNDk0MX0.CrHCQ3c81tGPteUCznpxeUlPn6rmS3Dfq1Gevrqs9mU`
+                        Authorization: `Bearer ${access_token}`
                     }
                 }),   // group API URL
             ]);
@@ -55,7 +55,7 @@ function Attendance({ setGroup_id, setLoading, dataGroup }) {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     {/* Card 1 */}
 
-                    {dataGroup && dataGroup.map((item, index) => {
+                    {dataGroup.length > 0 ? dataGroup.map((item, index) => {
                         console.log(item);
 
                         return (<Link onClick={() => {
@@ -83,7 +83,7 @@ function Attendance({ setGroup_id, setLoading, dataGroup }) {
                                 </div>
                             </div>
                         </Link>)
-                    })}
+                    }): <h1 className='text-red-600 font-semibold text-center p-2'>Ma'lumot yo'q!</h1>}
 
 
 

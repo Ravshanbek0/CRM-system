@@ -15,6 +15,7 @@ import { IoIosLogOut } from "react-icons/io";
 function Home({ data, dataGroup, dataTeacher, group_id, setGroup_id, setLoading, dataAppeals, token }) {
   const { pathname } = useLocation()
   const navigate = useNavigate()
+  const [access_token, setAccess_token] = useState(localStorage.getItem("token") ? localStorage.getItem("token") : false)
 
   const [isMenuCollapsed, setMenuCollapsed] = useState(false);
   const [activeMenu, setActiveMenu] = useState(`${pathname}`); // Bosilgan menyu elementi
@@ -112,7 +113,7 @@ function Home({ data, dataGroup, dataTeacher, group_id, setGroup_id, setLoading,
             <FaComments className="text-xl" />
             <span className="font-medium">Murojatlar</span>
           </Link>
-          <span onClick={()=>{
+          <span onClick={() => {
             localStorage.clear()
             navigate("/")
             window.location.reload()
@@ -122,12 +123,12 @@ function Home({ data, dataGroup, dataTeacher, group_id, setGroup_id, setLoading,
 
       {/* Main Content */}
       <main className="flex-1 p-6 ml-4">
-        {pathname == "/" && <Report data={data} dataGroup={dataGroup} dataTeacher={dataTeacher} />}
-        {pathname == "/appeals" && <Appeals dataAppeals={dataAppeals} />}
-        {pathname == "/payment" && <Payment data={data} setLoading={setLoading} />}
-        {pathname == "/attandance" && <Attendance setGroup_id={setGroup_id} setLoading={setLoading} dataGroup={dataGroup} />}
-        {pathname == "/students" && <Students token={token} data={data} dataGroup={dataGroup} />}
-        {pathname == "/groups" && <Groups dataGroup={dataGroup} setLoading={setLoading} />}
+        {pathname == "/" && <Report access_token={access_token} data={data} dataGroup={dataGroup} dataTeacher={dataTeacher} />}
+        {pathname == "/appeals" && <Appeals access_token={access_token} dataAppeals={dataAppeals} />}
+        {pathname == "/payment" && <Payment access_token={access_token} data={data} setLoading={setLoading} />}
+        {pathname == "/attandance" && <Attendance access_token={access_token} setGroup_id={setGroup_id} setLoading={setLoading} dataGroup={dataGroup} />}
+        {pathname == "/students" && <Students access_token={access_token} token={token} data={data} dataGroup={dataGroup} />}
+        {pathname == "/groups" && <Groups access_token={access_token} dataGroup={dataGroup} setLoading={setLoading} />}
         {/* {pathname == `/attendenceGroup/${group_id}` && <AttendenceGroup dataGroup={dataGroup} />} */}
       </main>
     </div>

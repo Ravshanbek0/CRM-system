@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import { MdDelete } from "react-icons/md";
 
-const Groups = ({ setLoading, dataGroup }) => {
+const Groups = ({ setLoading, dataGroup, access_token }) => {
     const [group_name, setGroup_name] = useState("")
     const [lesson_dates, setLesson_dates] = useState("Du-Chor-Juma")
     const [lesson_time, setLesson_time] = useState("14:00 - 16:00")
@@ -52,7 +52,7 @@ const Groups = ({ setLoading, dataGroup }) => {
             axios.post('https://crm-project.up.railway.app/api/v1/group', formDataToJson, {
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N2E0ZGRlYzA4NWUxZWE0ODE5NTFjY2YiLCJ1c2VybmFtZSI6InVzZXJfbmFtZTIiLCJpYXQiOjE3Mzg5MjAxNDEsImV4cCI6MTczOTUyNDk0MX0.CrHCQ3c81tGPteUCznpxeUlPn6rmS3Dfq1Gevrqs9mU`
+                    Authorization: `Bearer ${access_token}`
 
                 },
             })
@@ -73,7 +73,7 @@ const Groups = ({ setLoading, dataGroup }) => {
         try {
             const response = await axios.delete(`https://crm-project.up.railway.app/api/v1/group/${id}`, {
                 headers: {
-                    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N2E0ZGRlYzA4NWUxZWE0ODE5NTFjY2YiLCJ1c2VybmFtZSI6InVzZXJfbmFtZTIiLCJpYXQiOjE3Mzg5MjAxNDEsImV4cCI6MTczOTUyNDk0MX0.CrHCQ3c81tGPteUCznpxeUlPn6rmS3Dfq1Gevrqs9mU`
+                    Authorization: `Bearer ${access_token}`
                 }
             });
             console.log("Element muvaffaqiyatli o‘chirildi:", response.data);
@@ -149,13 +149,13 @@ const Groups = ({ setLoading, dataGroup }) => {
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
                     {/* Card 1 */}
-                    {dataGroup && dataGroup.map((item, index) => {
+                    {dataGroup?.length > 0 ? dataGroup.map((item, index) => {
                         return (<div key={index} to={`/attendenceGroup/${item._id}`}>
                             <div className="bg-white cursor-pointer shadow rounded-lg  overflow-hidden border border-gray-200">
                                 <h2 className="text-lg font-bold flex justify-center items-center bg-[#333333] p-2 text-white mb-2 text-center relative">{item.group_name}<span onClick={() => {
                                     deleteGroup(item._id)
                                 }} className='absolute right-1 text-[22px]'><MdDelete /></span></h2>
-                                <Link to={`/attendenceGroup/${item._id}`}>
+                                <Link to={`/attendenceGroup/${item.admin_id}`}>
                                     <div className='p-4'>
                                         <div className='flex items-center'>
                                             {/* <img src="./imgs/face.png" alt="" /> */}
@@ -176,7 +176,7 @@ const Groups = ({ setLoading, dataGroup }) => {
                                 </Link>
                             </div>
                         </div>)
-                    })}
+                    }) : <h1 className='text-center text-red-600 p-2 font-semibold'>Ma'lumot yo'q!</h1>}
 
                 </div>
             </div>

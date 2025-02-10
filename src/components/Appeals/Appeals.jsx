@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-function Appeals({ dataAppeals }) {
+function Appeals({ dataAppeals,access_token }) {
   const [dataToday, setDataToday] = useState([]);
   const [dataYesterday, setDataYesterday] = useState([]);
 

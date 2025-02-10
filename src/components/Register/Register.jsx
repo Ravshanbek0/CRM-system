@@ -6,52 +6,49 @@ function Register({ token, setToken }) {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [fullName, setFullName] = useState("");
-    // const loginUser = async (e) => {
-    //     e.preventDefault();
-    //     try {
-    //         const formData = new FormData();
-    //         formData.append("user_name", username);
-    //         formData.append("password", password);
+    const loginUser = async (e) => {
+        e.preventDefault();
+        try {
+            const formData = new FormData();
+            formData.append("user_name", username);
+            formData.append("password", password);
 
-    //         const response = await axios.post("https://crm-project.up.railway.app/api/v1/auth/login", formData, {
-    //             headers: {
-    //                 "Content-Type": "application/json",
-    //             },
-    //         });
-    //         localStorage.setItem("token", response.data.access_token)
-    //         setToken(response.data.access_token)
-    //         setUsername("")
-    //         setPassword("")
-    //         console.log("Login Success:", response.data);
-    //     } catch (error) {
-    //         console.error("Login Failed:", error);
-    //     }
-    // };
-    function checkLogin() {
-        if (username==="admin" && password==="1234") {
-            localStorage.setItem("admin",true)
-            setToken(true)
+            const response = await axios.post("https://crm-project.up.railway.app/api/v1/auth/login", formData, {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            localStorage.setItem("token", response.data.access_token)
+            localStorage.setItem("ref_token", response.data.refresh_token)
+            setToken(response.data.access_token)
+            setUsername("")
+            setPassword("")
+            console.log("Login Success:", response.data);
+        } catch (error) {
+            console.error("Login Failed:", error);
         }
-    }
+    };
+
     const handleSignup = async (e) => {
         e.preventDefault();
-        console.log("Sing up");
 
-        // try {
-        //     const formData = new FormData();
-        //     formData.append("user_name", username);
-        //     formData.append("email", email);
-        //     formData.append("password", password);
+        try {
+            const formData = new FormData();
+            formData.append("user_name", username);
+            formData.append("full_name", fullName);
+            formData.append("password", password);
 
-        //     const response = await axios.post("https://your-api-endpoint.com/signup", formData, {
-        //         headers: {
-        //             "Content-Type": "multipart/form-data",
-        //         },
-        //     });
-        //     console.log("Signup Success:", response.data);
-        // } catch (error) {
-        //     console.error("Signup Failed:", error);
-        // }
+            const response = await axios.post("https://crm-project.up.railway.app/api/v1/admin", formData, {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            console.log("Signup Success:", response.data);
+            localStorage.setItem("token", response.data.acc_token)
+            setToken(response.data.acc_token)
+        } catch (error) {
+            console.error("Signup Failed:", error);
+        }
     };
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-900 p-4">
@@ -60,7 +57,7 @@ function Register({ token, setToken }) {
                     {isLogin ? "Login" : "Sign Up"}
                 </h2>
                 {isLogin ? (
-                    <form className="space-y-4" onSubmit={checkLogin}>
+                    <form className="space-y-4" onSubmit={loginUser}>
                         <input
                             type="text"
                             placeholder="Username"
@@ -77,7 +74,7 @@ function Register({ token, setToken }) {
                         />
                         <button
                             type="submit"
-                            onClick={checkLogin}
+                            onClick={loginUser}
                             className="w-full p-3 bg-[#555555] text-white rounded-lg hover:bg-gray-700 transition"
                         >
                             Login
@@ -115,7 +112,7 @@ function Register({ token, setToken }) {
                         </button>
                     </form>
                 )}
-                {/* <p className="text-center text-gray-400 mt-4">
+                <p className="text-center text-gray-400 mt-4">
                     {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
                     <button
                         className="text-blue-400 hover:underline"
@@ -123,7 +120,7 @@ function Register({ token, setToken }) {
                     >
                         {isLogin ? "Sign Up" : "Login"}
                     </button>
-                </p> */}
+                </p>
             </div>
         </div>
     )

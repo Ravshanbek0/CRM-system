@@ -4,7 +4,7 @@ import axios from 'axios';
 import { MdDelete, MdEdit } from "react-icons/md";
 
 
-const Students = ({ dataGroup, token }) => {
+const Students = ({ dataGroup, token, access_token }) => {
     const [studentData, setStudentData] = useState()
     const [studentData0, setStudentData0] = useState()
     const [name, setName] = useState("")
@@ -31,9 +31,9 @@ const Students = ({ dataGroup, token }) => {
             const formDataToJson = Object.fromEntries(formData.entries());
 
             // POST so'rovni yuborish
-            axios.post('https://crm-project.up.railway.app/api/v1/pupil', formDataToJson, {
+            axios.post('https://crm-project.up.railway.app/api/v1/pupil',  formDataToJson, {
                 headers: {
-                    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N2E0ZGRlYzA4NWUxZWE0ODE5NTFjY2YiLCJ1c2VybmFtZSI6InVzZXJfbmFtZTIiLCJpYXQiOjE3Mzg5MjAxNDEsImV4cCI6MTczOTUyNDk0MX0.CrHCQ3c81tGPteUCznpxeUlPn6rmS3Dfq1Gevrqs9mU` // Tokenni 'Authorization' headeriga qo‘shish
+                    Authorization: `Bearer ${access_token}` // Tokenni 'Authorization' headeriga qo‘shish
                 }
             })
                 .then((response) => {
@@ -55,7 +55,7 @@ const Students = ({ dataGroup, token }) => {
         try {
             const response = await axios.delete(`https://crm-project.up.railway.app/api/v1/pupil/${id}`, {
                 headers: {
-                    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N2E0ZGRlYzA4NWUxZWE0ODE5NTFjY2YiLCJ1c2VybmFtZSI6InVzZXJfbmFtZTIiLCJpYXQiOjE3Mzg5MjAxNDEsImV4cCI6MTczOTUyNDk0MX0.CrHCQ3c81tGPteUCznpxeUlPn6rmS3Dfq1Gevrqs9mU` // Tokenni 'Authorization' headeriga qo‘shish
+                    Authorization: `Bearer ${access_token}` // Tokenni 'Authorization' headeriga qo‘shish
                 }
             });
             console.log("Element muvaffaqiyatli o‘chirildi:", response.data);
@@ -81,7 +81,7 @@ const Students = ({ dataGroup, token }) => {
                 formData,
                 {
                     headers: { "Content-Type": "application/json" },
-                    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N2E0ZGRlYzA4NWUxZWE0ODE5NTFjY2YiLCJ1c2VybmFtZSI6InVzZXJfbmFtZTIiLCJpYXQiOjE3Mzg5MjAxNDEsImV4cCI6MTczOTUyNDk0MX0.CrHCQ3c81tGPteUCznpxeUlPn6rmS3Dfq1Gevrqs9mU` // Tokenni 'Authorization' headeriga qo‘shish
+                    Authorization: `Bearer ${access_token}` // Tokenni 'Authorization' headeriga qo‘shish
 
                 }
             );
@@ -100,20 +100,20 @@ const Students = ({ dataGroup, token }) => {
         try {
             const response = await axios.get('https://crm-project.up.railway.app/api/v1/pupil/', {
                 headers: {
-                    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N2E0ZGRlYzA4NWUxZWE0ODE5NTFjY2YiLCJ1c2VybmFtZSI6InVzZXJfbmFtZTIiLCJpYXQiOjE3Mzg5MjAxNDEsImV4cCI6MTczOTUyNDk0MX0.CrHCQ3c81tGPteUCznpxeUlPn6rmS3Dfq1Gevrqs9mU` // Tokenni 'Authorization' headeriga qo‘shish
+                    Authorization: `Bearer ${access_token}` // Tokenni 'Authorization' headeriga qo‘shish
                 }
             }); // API URL
             setStudentData(response.data); // Javobni saqlash
             setStudentData0(response.data); // Javobni saqlash
         } catch (err) {
-            console.log(err.massage);
+            console.log(err);
         }
     };
     const getPupilById = async (id) => {
         try {
             const response = await axios.get(`https://crm-project.up.railway.app/api/v1/pupil/${id}`, {
                 headers: {
-                    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N2E0ZGRlYzA4NWUxZWE0ODE5NTFjY2YiLCJ1c2VybmFtZSI6InVzZXJfbmFtZTIiLCJpYXQiOjE3Mzg5MjAxNDEsImV4cCI6MTczOTUyNDk0MX0.CrHCQ3c81tGPteUCznpxeUlPn6rmS3Dfq1Gevrqs9mU` // Tokenni 'Authorization' headeriga qo‘shish
+                    Authorization: `Bearer ${access_token}` // Tokenni 'Authorization' headeriga qo‘shish
                 }
             }); // API URL
 
@@ -338,8 +338,8 @@ const Students = ({ dataGroup, token }) => {
                     <tbody>
 
 
-                        {studentData ? studentData.map((item, index) => {
-                            return (<tr>
+                        {studentData?.length > 0 ? studentData.map((item, index) => {
+                            return (<tr key={index}>
                                 <td className="border border-gray-300 p-2">{index + 1}</td>
                                 <td className="border border-gray-300 p-2">{item.name} </td>
                                 <td className="border border-gray-300 p-2">{item.phone}</td>
@@ -353,7 +353,7 @@ const Students = ({ dataGroup, token }) => {
                                     setPupilId(item._id)
                                 }} className='text-[25px] text-blue-600 cursor-pointer'><MdEdit /></span> */}
                             </tr>)
-                        }) : <h1>Ma'lumot yo'q.</h1>}
+                        }) : <h1 className='text-center text-red-600 p-2 font-semibold'>Ma'lumot yo'q.</h1>}
                     </tbody>
                 </table>
             </div>

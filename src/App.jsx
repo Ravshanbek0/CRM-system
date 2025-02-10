@@ -18,7 +18,8 @@ function App() {
 
   const [group_id, setGroup_id] = useState("")
 
-  const [token, setToken] = useState(localStorage.getItem("admin") ? localStorage.getItem("admin") : false)
+  const [token, setToken] = useState(localStorage.getItem("token") ? localStorage.getItem("token") : false)
+
 
 
   const fetchData = async () => {
@@ -29,7 +30,7 @@ function App() {
         setLoading(true)
         const response = await axios.get('https://crm-project.up.railway.app/api/v1/pupil', {
           headers: {
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N2E0ZGRlYzA4NWUxZWE0ODE5NTFjY2YiLCJ1c2VybmFtZSI6InVzZXJfbmFtZTIiLCJpYXQiOjE3Mzg5MjAxNDEsImV4cCI6MTczOTUyNDk0MX0.CrHCQ3c81tGPteUCznpxeUlPn6rmS3Dfq1Gevrqs9mU` // Tokenni 'Authorization' headeriga qo‘shish
+            Authorization: `Bearer ${token}` // Tokenni 'Authorization' headeriga qo‘shish
           }
         }); // API URL
         setData(response.data); // Javobni saqlash
@@ -48,11 +49,13 @@ function App() {
 
       const response = await axios.get('https://crm-project.up.railway.app/api/v1/group/', {
         headers: {
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N2E0ZGRlYzA4NWUxZWE0ODE5NTFjY2YiLCJ1c2VybmFtZSI6InVzZXJfbmFtZTIiLCJpYXQiOjE3Mzg5MjAxNDEsImV4cCI6MTczOTUyNDk0MX0.CrHCQ3c81tGPteUCznpxeUlPn6rmS3Dfq1Gevrqs9mU` // Tokenni 'Authorization' headeriga qo‘shish
+          Authorization: `Bearer ${token}` // Tokenni 'Authorization' headeriga qo‘shish
         }
       }); // API URL
       setDataGroup(response.data); // Javobni saqlash
       setLoading(false); // Yuklashni to'xtatish
+      console.log(response.data);
+      
     } catch (err) {
       setError(err.message); // Xatoni saqlash
       setLoading(false); // Yuklashni to'xtatish
@@ -64,7 +67,7 @@ function App() {
 
       const response = await axios.get('https://crm-project.up.railway.app/api/v1/teacher/', {
         headers: {
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N2E0ZGRlYzA4NWUxZWE0ODE5NTFjY2YiLCJ1c2VybmFtZSI6InVzZXJfbmFtZTIiLCJpYXQiOjE3Mzg5MjAxNDEsImV4cCI6MTczOTUyNDk0MX0.CrHCQ3c81tGPteUCznpxeUlPn6rmS3Dfq1Gevrqs9mU` // Tokenni 'Authorization' headeriga qo‘shish
+          Authorization: `Bearer ${token}` // Tokenni 'Authorization' headeriga qo‘shish
         }
       }); // API URL
       setDataTeacher(response.data); // Javobni saqlash
@@ -80,7 +83,7 @@ function App() {
 
       const response = await axios.get('https://crm-project.up.railway.app/api/v1/appeal', {
         headers: {
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N2E0ZGRlYzA4NWUxZWE0ODE5NTFjY2YiLCJ1c2VybmFtZSI6InVzZXJfbmFtZTIiLCJpYXQiOjE3Mzg5MjAxNDEsImV4cCI6MTczOTUyNDk0MX0.CrHCQ3c81tGPteUCznpxeUlPn6rmS3Dfq1Gevrqs9mU` // Tokenni 'Authorization' headeriga qo‘shish
+          Authorization: `Bearer ${token}` // Tokenni 'Authorization' headeriga qo‘shish
         }
       }); // API URL
       setDataAppeals(response.data); // Javobni saqlash
@@ -91,13 +94,54 @@ function App() {
     }
   };
 
-  useEffect(() => {
+  const refToken = async () => {
+    const token2 = localStorage.getItem("token");
+    console.log("LocalStorage token:", token2);
 
-    fetchData()
-    fetchDataGroup()
-    fetchDataTeacher()
-    fetchDataAppeals()
+    if (token2) {
+      if (!token2) {
+        alert("Token mavjud emas!");
+        return;
+      }
+
+      try {
+        const response = await axios.post(
+          "https://crm-project.up.railway.app/api/v1/auth/refresh-token/",
+          null, // Body yubormaslik uchun `null` ishlatamiz
+          {
+            headers: {
+              Authorization: `Bearer ${token2}`,
+              Accept: "application/json",
+            },
+          }
+        );
+
+        console.log("✅ Server javobi:", response);
+        console.log("✅ Serverdan kelgan data:", response.data);
+        if (response.data) {
+          localStorage.setItem("token", response.data.access_token)
+        }
+      } catch (error) {
+        console.error("❌ Xatolik:", error.response?.data || error.message);
+        console.error("❌ Server xatosi:", error.response);
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (token) {
+      fetchData()
+      fetchDataGroup()
+      fetchDataTeacher()
+      fetchDataAppeals()
+    }
+    // refToken()
+    const interval = setInterval(refToken, 100000);
+
+    return () => clearInterval(interval);
   }, [token])
+
+
 
   return (
     <>

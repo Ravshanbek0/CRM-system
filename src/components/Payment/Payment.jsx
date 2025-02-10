@@ -1,8 +1,15 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
-function Payment({ data,dataGroup ,setLoading}) {
-   
-   
+function Payment({ data, dataGroup, setLoading, access_token }) {
+    const [paymentData, setPayementData] = useState([])
+    useEffect(() => {
+        const obj = data.filter((item) => {
+            return item.payment_done == true
+        })
+        setPayementData(obj)
+    }, [])
+
+
 
     return (
         <div><h2 className="text-2xl font-semibold text-[#333333] text-[40px]">To'lov qilish</h2>
@@ -61,7 +68,9 @@ function Payment({ data,dataGroup ,setLoading}) {
                         </tr>
                     </thead>
                     <tbody>
-                        {data ? data.map((item) => {
+                        {paymentData.lenght > 0 ? paymentData.map((item) => {
+                            console.log(item);
+
                             return (<tr>
                                 <td className="border border-gray-300 p-2">1</td>
                                 <td className="border border-gray-300 p-2">{item.name} {item.surname}</td>
@@ -70,7 +79,7 @@ function Payment({ data,dataGroup ,setLoading}) {
                                 <td className="border border-gray-300 p-2">O'qituvchi F.I.SH</td>
                                 <td className="border border-gray-300 p-2">{item.updatedAt}</td>
                             </tr>)
-                        }) : <h1>Ma'lumot yo'q.</h1>}
+                        }) : <h1 className='text-red-600 font-semibold p-2 text-center'>Ma'lumot yo'q.</h1>}
                         {/* More rows as needed */}
                     </tbody>
                 </table>
