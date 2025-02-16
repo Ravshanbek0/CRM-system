@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios'
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, useNavigate } from 'react-router-dom';
 import Home from './page/Home/Home';
 import Attendance from './components/Attendance/Attendance';
 import AttendenceGroup from './components/Attendance/AttendenceGroup';
@@ -22,6 +22,7 @@ function App() {
 
 
 
+
   const fetchData = async () => {
 
     if (token != null) {
@@ -39,6 +40,11 @@ function App() {
         setLoading(false); // Yuklashni to'xtatish
       } catch (err) {
         setError(err.message); // Xatoni saqlash
+        if (err.message) {
+          localStorage.clear()
+          window.location.reload()
+          navigate('/')
+        }
         setLoading(false); // Yuklashni to'xtatish
       }
     }
@@ -55,7 +61,7 @@ function App() {
       setDataGroup(response.data); // Javobni saqlash
       setLoading(false); // Yuklashni to'xtatish
       console.log(response.data);
-      
+
     } catch (err) {
       setError(err.message); // Xatoni saqlash
       setLoading(false); // Yuklashni to'xtatish
@@ -96,7 +102,6 @@ function App() {
 
   const refToken = async () => {
     const token2 = localStorage.getItem("token");
-    console.log("LocalStorage token:", token2);
 
     if (token2) {
       if (!token2) {
@@ -120,6 +125,8 @@ function App() {
         console.log("✅ Serverdan kelgan data:", response.data);
         if (response.data) {
           localStorage.setItem("token", response.data.access_token)
+          setToken(response.data.access_token)
+          // window.location.reload()
         }
       } catch (error) {
         console.error("❌ Xatolik:", error.response?.data || error.message);
@@ -136,7 +143,7 @@ function App() {
       fetchDataAppeals()
     }
     // refToken()
-    const interval = setInterval(refToken, 100000);
+    const interval = setInterval(refToken, 60000);
 
     return () => clearInterval(interval);
   }, [token])

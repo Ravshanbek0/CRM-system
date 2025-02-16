@@ -155,7 +155,7 @@ const Groups = ({ setLoading, dataGroup, access_token }) => {
                                 <h2 className="text-lg font-bold flex justify-center items-center bg-[#333333] p-2 text-white mb-2 text-center relative">{item.group_name}<span onClick={() => {
                                     deleteGroup(item._id)
                                 }} className='absolute right-1 text-[22px]'><MdDelete /></span></h2>
-                                <Link to={`/attendenceGroup/${item.admin_id}`}>
+                                <Link to={`/attendenceGroup/${item._id}`}>
                                     <div className='p-4'>
                                         <div className='flex items-center'>
                                             {/* <img src="./imgs/face.png" alt="" /> */}

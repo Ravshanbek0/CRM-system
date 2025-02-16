@@ -15,7 +15,7 @@ import { IoIosLogOut } from "react-icons/io";
 function Home({ data, dataGroup, dataTeacher, group_id, setGroup_id, setLoading, dataAppeals, token }) {
   const { pathname } = useLocation()
   const navigate = useNavigate()
-  const [access_token, setAccess_token] = useState(localStorage.getItem("token") ? localStorage.getItem("token") : false)
+  const [access_token, setAccess_token] = useState(token)
 
   const [isMenuCollapsed, setMenuCollapsed] = useState(false);
   const [activeMenu, setActiveMenu] = useState(`${pathname}`); // Bosilgan menyu elementi

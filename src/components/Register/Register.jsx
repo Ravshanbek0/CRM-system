@@ -10,7 +10,7 @@ function Register({ token, setToken }) {
         e.preventDefault();
         try {
             const formData = new FormData();
-            formData.append("user_name", username);
+            formData.append("email", username);
             formData.append("password", password);
 
             const response = await axios.post("https://crm-project.up.railway.app/api/v1/auth/login", formData, {
@@ -34,7 +34,7 @@ function Register({ token, setToken }) {
 
         try {
             const formData = new FormData();
-            formData.append("user_name", username);
+            formData.append("email", username);
             formData.append("full_name", fullName);
             formData.append("password", password);
 

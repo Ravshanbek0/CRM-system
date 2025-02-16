@@ -44,7 +44,7 @@ function Report({ data, dataGroup, dataTeacher,access_token }) {
 
 
   useEffect(() => {
-    getReport()
+    // getReport()
 
     if (data && dataGroup && dataTeacher) {
       console.log(data, dataGroup, dataTeacher);
