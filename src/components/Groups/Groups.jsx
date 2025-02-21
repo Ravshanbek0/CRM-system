@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import { MdDelete } from "react-icons/md";
 
-const Groups = ({ setLoading, dataGroup, access_token }) => {
+const Groups = ({ setLoading, dataGroup }) => {
     const [group_name, setGroup_name] = useState("")
     const [lesson_dates, setLesson_dates] = useState("Du-Chor-Juma")
     const [lesson_time, setLesson_time] = useState("14:00 - 16:00")
@@ -38,6 +38,7 @@ const Groups = ({ setLoading, dataGroup, access_token }) => {
 
     function addGroup(e) {
         e.preventDefault()
+        const access_token=localStorage.getItem("token")
         if (group_name != "") {
             const formData = new FormData();
             formData.append('group_name', `${group_name}`);
@@ -70,6 +71,8 @@ const Groups = ({ setLoading, dataGroup, access_token }) => {
         }
     }
     const deleteGroup = async (id) => {
+        const access_token=localStorage.getItem("token")
+
         try {
             const response = await axios.delete(`https://crm-project.up.railway.app/api/v1/group/${id}`, {
                 headers: {

@@ -19,12 +19,14 @@ function AttendenceGroup({ dataGroup, data, setLoading }) {
   const [apsentStudentId, setApsentStudentId] = useState([])
 
   const fetchDataGroup = async () => {
+    const access_token = localStorage.getItem('token')
+
     try {
       setLoading(true)
 
       const response = await axios.get(`https://crm-project.up.railway.app/api/v1/group/${id}/`, {
         headers: {
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N2E0ZGRlYzA4NWUxZWE0ODE5NTFjY2YiLCJ1c2VybmFtZSI6InVzZXJfbmFtZTIiLCJpYXQiOjE3Mzg5MjAxNDEsImV4cCI6MTczOTUyNDk0MX0.CrHCQ3c81tGPteUCznpxeUlPn6rmS3Dfq1Gevrqs9mU`
+          Authorization: `Bearer ${access_token}`
         }
       }); // API URL
       setAttendanceGroup(response.data); // Javobni saqlash
@@ -36,10 +38,12 @@ function AttendenceGroup({ dataGroup, data, setLoading }) {
     }
   };
   const fetchDataPupil = async () => {
+    const access_token = localStorage.getItem('token')
+
     try {
       const response = await axios.get('https://crm-project.up.railway.app/api/v1/pupil/', {
         headers: {
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N2E0ZGRlYzA4NWUxZWE0ODE5NTFjY2YiLCJ1c2VybmFtZSI6InVzZXJfbmFtZTIiLCJpYXQiOjE3Mzg5MjAxNDEsImV4cCI6MTczOTUyNDk0MX0.CrHCQ3c81tGPteUCznpxeUlPn6rmS3Dfq1Gevrqs9mU`
+          Authorization: `Bearer ${access_token}`
         }
       }); // API URL
 

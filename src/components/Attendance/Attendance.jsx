@@ -2,9 +2,10 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
-function Attendance({ setGroup_id, setLoading, dataGroup, access_token }) {
+function Attendance({ setGroup_id, setLoading, dataGroup }) {
     const [combinedData, setCombinedData] = useState([]);
     const fetchData = async () => {
+        const access_token = localStorage.getItem('token')
         try {
             // API so'rovlarini parallel bajarish
             const [teachersResponse, groupResponse] = await Promise.all([

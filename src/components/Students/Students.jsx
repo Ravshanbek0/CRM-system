@@ -4,7 +4,7 @@ import axios from 'axios';
 import { MdDelete, MdEdit } from "react-icons/md";
 
 
-const Students = ({ dataGroup, token, access_token }) => {
+const Students = ({ dataGroup}) => {
     const [studentData, setStudentData] = useState()
     const [studentData0, setStudentData0] = useState()
     const [name, setName] = useState("")
@@ -16,8 +16,15 @@ const Students = ({ dataGroup, token, access_token }) => {
     const [modal, setModal] = useState(false)
 
     function addPupil(e) {
+        const access_token=localStorage.getItem("token")
+
         e.preventDefault()
         if (name != "" && phone != "" && parents_name != "" && parents_phone != "") {
+            if (group === "") {
+                setGroup(dataGroup[0]._id)
+                console.log(group);
+                
+            }
             const formData = new FormData();
             formData.append('name', `${name}`);
             formData.append('phone', `${phone}`);
@@ -52,6 +59,8 @@ const Students = ({ dataGroup, token, access_token }) => {
         }
     }
     const deletePupil = async (id) => {
+        const access_token=localStorage.getItem("token")
+
         try {
             const response = await axios.delete(`https://crm-project.up.railway.app/api/v1/pupil/${id}`, {
                 headers: {
@@ -66,6 +75,8 @@ const Students = ({ dataGroup, token, access_token }) => {
     };
     const updatePupil = (e) => {
         e.preventDefault()
+        const access_token=localStorage.getItem("token")
+
         try {
             const formData = new FormData();
             formData.append("name", `${name}`);
@@ -97,6 +108,8 @@ const Students = ({ dataGroup, token, access_token }) => {
         }
     };
     const fetchData = async () => {
+        const access_token=localStorage.getItem("token")
+
         try {
             const response = await axios.get('https://crm-project.up.railway.app/api/v1/pupil/', {
                 headers: {
@@ -110,6 +123,8 @@ const Students = ({ dataGroup, token, access_token }) => {
         }
     };
     const getPupilById = async (id) => {
+        const access_token=localStorage.getItem("token")
+
         try {
             const response = await axios.get(`https://crm-project.up.railway.app/api/v1/pupil/${id}`, {
                 headers: {
@@ -259,6 +274,8 @@ const Students = ({ dataGroup, token, access_token }) => {
                         <label className="block font-medium">Yo'nalish</label>
                         <select onChange={((e) => {
                             setGroup(e.target.value);
+                            console.log(e.target.value);
+                            
 
                         })} className="w-full p-2 border rounded">
                             {dataGroup && dataGroup.map((item, index) => {

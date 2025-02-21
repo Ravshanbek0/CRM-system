@@ -103,35 +103,32 @@ function App() {
   const refToken = async () => {
     const token2 = localStorage.getItem("token");
 
-    if (token2) {
-      if (!token2) {
-        alert("Token mavjud emas!");
-        return;
-      }
+    if (!token2) {
+      return;
+    }
 
-      try {
-        const response = await axios.post(
-          "https://crm-project.up.railway.app/api/v1/auth/refresh-token/",
-          null, // Body yubormaslik uchun `null` ishlatamiz
-          {
-            headers: {
-              Authorization: `Bearer ${token2}`,
-              Accept: "application/json",
-            },
-          }
-        );
-
-        console.log("✅ Server javobi:", response);
-        console.log("✅ Serverdan kelgan data:", response.data);
-        if (response.data) {
-          localStorage.setItem("token", response.data.access_token)
-          setToken(response.data.access_token)
-          // window.location.reload()
+    try {
+      const response = await axios.post(
+        "https://crm-project.up.railway.app/api/v1/auth/refresh-token/",
+        null,
+        {
+          headers: {
+            Authorization: `Bearer ${token2}`,
+            Accept: "application/json",
+          },
         }
-      } catch (error) {
-        console.error("❌ Xatolik:", error.response?.data || error.message);
-        console.error("❌ Server xatosi:", error.response);
+      );
+
+      console.log("✅ Server javobi:", response);
+      console.log("✅ Serverdan kelgan data:", response.data);
+
+      if (response.data) {
+        localStorage.setItem("token", response.data.access_token);
+        
       }
+    } catch (error) {
+      console.error("❌ Xatolik:", error.response?.data || error.message);
+      console.error("❌ Server xatosi:", error.response);
     }
   };
 
@@ -143,7 +140,18 @@ function App() {
       fetchDataAppeals()
     }
     // refToken()
-    const interval = setInterval(refToken, 60000);
+    const checkAndRefreshToken = async () => {
+      const lastRefresh = localStorage.getItem("lastRefresh");
+      const now = Date.now();
+
+      if (!lastRefresh || now - Number(lastRefresh) >= 420000) {
+        await refToken();
+      }
+    };
+
+    checkAndRefreshToken(); // Dastlab yuklanganda tekshiramiz
+
+    const interval = setInterval(refToken, 420000); // 7 daqiqada bir ishga tushadi
 
     return () => clearInterval(interval);
   }, [token])

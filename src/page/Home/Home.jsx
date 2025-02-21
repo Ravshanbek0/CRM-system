@@ -37,21 +37,21 @@ function Home({ data, dataGroup, dataTeacher, group_id, setGroup_id, setLoading,
       >
         {/* Menu Button */}
         <div className='flex items-center pt-4'>
-          {isMenuCollapsed ? "" : <h1 className='text-3xl font-bold px-4'>Ta'lim.uz</h1>}
+          {isMenuCollapsed ? "" : <h1 className='text-2xl font-bold px-2'>Ta'lim.uz</h1>}
           {/* <img className='max-w-[150px] object-contain' src="./imgs/logo.png" alt="" /> */}
           <button
             onClick={toggleMenu}
             className="absolute top-4 right-4 text-white text-2xl focus:outline-none hover:bg-[#555555] p-2 rounded-full"
           >
-            {isMenuCollapsed ? <FaBars /> : <FaTimes />}
+            <FaBars />
           </button>
         </div>
 
-        <nav className={`mt-6 px-4 space-y-4 ${isMenuCollapsed ? "hidden" : "block"}`}>
+        <nav className={`mt-8 px-0 space-y-4 ${isMenuCollapsed ? "hidden" : "block"}`}>
           {/* Xisobot */}
           <Link
             to={"/"}
-            className={`flex items-center p-2 space-x-2 rounded ${activeMenu === "Xisobot" ? "bg-[#333333]" : "hover:bg-[#555555]"
+            className={`flex items-center p-2 space-x-2 rounded ${activeMenu === "Xisobot" ? "bg-[#33333333]" : "hover:bg-[#555555]"
               }`}
             onClick={() => handleMenuClick("Xisobot")}
           >
@@ -117,7 +117,7 @@ function Home({ data, dataGroup, dataTeacher, group_id, setGroup_id, setLoading,
             localStorage.clear()
             navigate("/")
             window.location.reload()
-          }} className='absolute bottom-4 mt-8 flex items-center gap-1 cursor-pointer'><IoIosLogOut className='text-4xl' />chiqish</span>
+          }} className='absolute bottom-4 mt-8 flex items-center gap-1 cursor-pointer'><IoIosLogOut className='text-3xl' />Chiqish</span>
         </nav>
       </aside>
 

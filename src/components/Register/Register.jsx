@@ -20,6 +20,7 @@ function Register({ token, setToken }) {
             });
             localStorage.setItem("token", response.data.access_token)
             localStorage.setItem("ref_token", response.data.refresh_token)
+            localStorage.setItem("lastRefresh", Date.now().toString()); // So‘nggi yangilash vaqtini saqlash
             setToken(response.data.access_token)
             setUsername("")
             setPassword("")
@@ -45,6 +46,7 @@ function Register({ token, setToken }) {
             });
             console.log("Signup Success:", response.data);
             localStorage.setItem("token", response.data.acc_token)
+            localStorage.setItem("lastRefresh", Date.now().toString()); // So‘nggi yangilash vaqtini saqlash
             setToken(response.data.acc_token)
         } catch (error) {
             console.error("Signup Failed:", error);
@@ -60,7 +62,7 @@ function Register({ token, setToken }) {
                     <form className="space-y-4" onSubmit={loginUser}>
                         <input
                             type="text"
-                            placeholder="Username"
+                            placeholder="Email"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
                             className="w-full p-3 bg-[#333333] text-white rounded-lg border border-[#555555] focus:outline-none focus:ring-2 focus:ring-gray-600"
@@ -91,7 +93,7 @@ function Register({ token, setToken }) {
                         />
                         <input
                             type="text"
-                            placeholder="Username"
+                            placeholder="Email"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
                             className="w-full p-3 bg-[#333333] text-white rounded-lg border border-[#555555] focus:outline-none focus:ring-2 focus:ring-gray-600"
