@@ -6,6 +6,7 @@ import Attendance from './components/Attendance/Attendance';
 import AttendenceGroup from './components/Attendance/AttendenceGroup';
 import Loader from './components/Loader/Loader';
 import Register from './components/Register/Register';
+import PasswordVerify from './components/PasswordVerify/PasswordVerify';
 
 
 function App() {
@@ -164,6 +165,8 @@ function App() {
       <BrowserRouter>
         {token == false ? <Routes>
           <Route path='/' element={<Register toke={token} setToken={setToken} />} />
+          <Route path='/password' element={<PasswordVerify />}/>
+
         </Routes> : <Routes>
 
           <Route path='/' element={<Home data={data} dataGroup={dataGroup} dataTeacher={dataTeacher} />} />

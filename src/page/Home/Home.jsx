@@ -46,7 +46,8 @@ function Home({ data, dataGroup, dataTeacher, group_id, setGroup_id, setLoading,
             <FaBars />
           </button>
         </div>
-
+        
+        {!isMenuCollapsed && <hr className='mt-4 text-[#fff]' />}
         <nav className={`mt-8 px-0 space-y-4 ${isMenuCollapsed ? "hidden" : "block"}`}>
           {/* Xisobot */}
           <Link
@@ -117,7 +118,7 @@ function Home({ data, dataGroup, dataTeacher, group_id, setGroup_id, setLoading,
             localStorage.clear()
             navigate("/")
             window.location.reload()
-          }} className='absolute bottom-4 mt-8 flex items-center gap-1 cursor-pointer'><IoIosLogOut className='text-3xl' />Chiqish</span>
+          }} className='absolute bottom-4 mt-8 flex items-center gap-1 px-2 cursor-pointer'><IoIosLogOut className='text-3xl' />Chiqish</span>
         </nav>
       </aside>
 
@@ -129,7 +130,6 @@ function Home({ data, dataGroup, dataTeacher, group_id, setGroup_id, setLoading,
         {pathname == "/attandance" && <Attendance access_token={access_token} setGroup_id={setGroup_id} setLoading={setLoading} dataGroup={dataGroup} />}
         {pathname == "/students" && <Students access_token={access_token} token={token} data={data} dataGroup={dataGroup} />}
         {pathname == "/groups" && <Groups access_token={access_token} dataGroup={dataGroup} setLoading={setLoading} />}
-        {/* {pathname == `/attendenceGroup/${group_id}` && <AttendenceGroup dataGroup={dataGroup} />} */}
       </main>
     </div>
   )
