@@ -165,7 +165,7 @@ function App() {
       <BrowserRouter>
         {token == false ? <Routes>
           <Route path='/' element={<Register toke={token} setToken={setToken} />} />
-          <Route path='/password' element={<PasswordVerify />}/>
+          <Route path='/password' element={<PasswordVerify setToken={setToken} />}/>
 
         </Routes> : <Routes>
 

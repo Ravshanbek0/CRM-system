@@ -137,7 +137,7 @@ function Register({ token, setToken }) {
                         {isLogin ? "Sign Up" : "Login"}
                     </button>
                 </p>
-                {/* {isLogin && <Link to={'/password'}><p className="text-left  text-blue-400 mt-1 cursor-pointer">Parolni unuttingizmi?</p></Link>} */}
+                {isLogin && <Link to={'/password'}><p className="text-left  text-blue-400 mt-1 cursor-pointer">Parolni unuttingizmi?</p></Link>}
 
             </div>
         </div>
