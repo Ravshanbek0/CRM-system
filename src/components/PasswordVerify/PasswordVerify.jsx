@@ -16,6 +16,7 @@ function PasswordVerify({ setToken }) {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [codeDone, setCodeDone] = useState(false);
+    const [error, setError] = useState("");
 
     useEffect(() => {
         let interval;
@@ -30,6 +31,10 @@ function PasswordVerify({ setToken }) {
     }, [showCodeInput, timer]);
 
     const validateEmail = (email) => /^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(email);
+    const validatePassword = (password) => {
+        const regex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
+        return regex.test(password);
+    };
     const validateCode = (code) => /^[0-9]{6}$/.test(code);
 
     const sendCode = async () => {
@@ -62,8 +67,12 @@ function PasswordVerify({ setToken }) {
 
     const resetPassword = async () => {
         setCodeDone(true)
-        if (newPassword !== confirmPassword) {
-            alert('Parollar bir-biriga mos kelmadi!');
+        setError("");
+
+        if (!validatePassword(newPassword)) {
+            setCodeDone(false)
+
+            setError("Parol kamida 6 ta belgidan iborat bo‘lishi, katta harf, raqam va maxsus belgini o‘z ichiga olishi kerak.");
             return;
         }
         try {
@@ -73,7 +82,7 @@ function PasswordVerify({ setToken }) {
             });
             loginUser();
         } catch (error) {
-            alert('Parolni tiklashda xatolik yuz berdi!');
+            setError('Parolni tiklashda xatolik yuz berdi!');
             setCodeDone(false)
 
         }
@@ -125,7 +134,7 @@ function PasswordVerify({ setToken }) {
                                     type="text"
                                     placeholder="Kodni kiriting"
                                     value={code}
-                                    onChange={(e) => setCode(e.target.value)}
+                                    onChange={(e) => setCode(e.target.value.trim())}
                                     className="w-full p-3 bg-[#333333] text-white rounded-lg border border-[#555555] focus:outline-none focus:ring-2 focus:ring-gray-600 mt-2"
                                 />
                                 <button
@@ -145,7 +154,7 @@ function PasswordVerify({ setToken }) {
                                 placeholder="Yangi parol"
                                 value={newPassword}
                                 onChange={(e) => setNewPassword(e.target.value)}
-                                className="w-full p-3 bg-[#333333] text-white rounded-lg border border-[#555555] focus:outline-none focus:ring-2 focus:ring-gray-600 mt-2"
+                                className={`w-full p-3 bg-[#333333] text-white rounded-lg border ${error ? "border-red-500" : "border-[#555555]"} focus:outline-none focus:ring-2 focus:ring-gray-600 mt-2`}
                             />
                             <span
                                 className="absolute right-3 top-5 text-white cursor-pointer"
@@ -154,13 +163,14 @@ function PasswordVerify({ setToken }) {
                                 {showPassword ? <FaEyeSlash /> : <FaEye />}
                             </span>
                         </div>
+
                         <div className="relative">
                             <input
                                 type={showConfirmPassword ? "text" : "password"}
                                 placeholder="Parolni tasdiqlash"
                                 value={confirmPassword}
                                 onChange={(e) => setConfirmPassword(e.target.value)}
-                                className="w-full p-3 bg-[#333333] text-white rounded-lg border border-[#555555] focus:outline-none focus:ring-2 focus:ring-gray-600 mt-2"
+                                className={`w-full p-3 bg-[#333333] text-white rounded-lg border ${error ? "border-red-500" : "border-[#555555]"} focus:outline-none focus:ring-2 focus:ring-gray-600 mt-2`}
                             />
                             <span
                                 className="absolute right-3 top-5 text-white cursor-pointer"
@@ -169,6 +179,9 @@ function PasswordVerify({ setToken }) {
                                 {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
                             </span>
                         </div>
+
+                        {error && <p className="text-red-500 mt-2">{error}</p>}
+
                         <button
                             onClick={resetPassword}
                             className="w-full bg-purple-500 text-white p-2 rounded-lg mt-3 hover:bg-purple-600"

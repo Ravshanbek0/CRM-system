@@ -17,6 +17,7 @@ function AttendenceGroup({ dataGroup, data, setLoading }) {
   const [attendenceGroup, setAttendanceGroup] = useState([])
   const [attendenceGroupPupil, setAttendanceGroupPupil] = useState([])
   const [apsentStudentId, setApsentStudentId] = useState([])
+  const [teacher, setTeacher] = useState([])
 
   const fetchDataGroup = async () => {
     const access_token = localStorage.getItem('token')
@@ -59,6 +60,62 @@ function AttendenceGroup({ dataGroup, data, setLoading }) {
       setLoading(false); // Yuklashni to'xtatish
     }
   };
+  const updateApsentCount = async () => {
+    const access_token = localStorage.getItem('token')
+
+    try {
+      const requests = apsentStudentId.map(async (id) => {
+        // 1️⃣ Avval eski ma’lumotlarni olish
+        const studentResponse = await axios.get(`https://crm-project.up.railway.app/api/v1/pupil/${id}`, {
+          headers: {
+            Authorization: `Bearer ${access_token}`
+          }
+        });
+        const currentApsent = studentResponse.data.apsent || 0; // Agar 'apsent' mavjud bo'lmasa, 0 bo‘lsin
+
+        // 2️⃣ PATCH orqali yangilash (apsent + 1)
+        await axios.patch(`https://crm-project.up.railway.app/api/v1/pupil/${id}`, {
+          apsent: currentApsent + 1, // Yangi qiymat
+        }, {
+          headers: {
+            Authorization: `Bearer ${access_token}`
+          }
+        }
+        );
+
+        console.log(`O‘quvchi ${id} yangilandi ✅`);
+      });
+
+      await Promise.all(requests); // Barcha so‘rovlarni parallel bajarish
+      console.log("Barcha o‘quvchilar apsent yangilandi ✅");
+    } catch (error) {
+      console.error("Xatolik yuz berdi ❌", error.response?.data || error.message);
+    }
+  };
+  const fetchDataTeacher = async () => {
+    const access_token = localStorage.getItem('token')
+
+    try {
+      setLoading(true)
+
+      const response = await axios.get('https://crm-project.up.railway.app/api/v1/teacher/', {
+        headers: {
+          Authorization: `Bearer ${access_token}` // Tokenni 'Authorization' headeriga qo‘shish
+        }
+      }); // API URL
+      console.log(response.data);
+      const teacherRes = response.data.filter((item) => {
+        return item.groups.includes(id)
+      })
+      setTeacher(teacherRes)
+      console.log(teacherRes);
+
+
+    } catch (err) {
+      console.log(err);
+
+    }
+  };
 
 
   const [attendance, setAttendance] = useState([]);
@@ -70,13 +127,7 @@ function AttendenceGroup({ dataGroup, data, setLoading }) {
   const handleMenuClick = (menu) => {
     setActiveMenu(menu); // Bosilgan menyu elementini belgilash
   };
-  const toggleAttendance = (id) => {
-    setAttendance((prev) =>
-      prev.map((student) =>
-        student.id === id ? { ...student, present: !student.present } : student
-      )
-    );
-  };
+
 
   const today = new Date();
   const formattedDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
@@ -84,6 +135,7 @@ function AttendenceGroup({ dataGroup, data, setLoading }) {
   useEffect(() => {
     fetchDataGroup()
     fetchDataPupil()
+    fetchDataTeacher()
   }, [])
   // const absentStudents = attendance.filter((student) => !student.present);
 
@@ -210,16 +262,16 @@ function AttendenceGroup({ dataGroup, data, setLoading }) {
                 <p className="text-gray-700">
                   <strong>To'lov qilganlar:</strong> {attendenceGroup.payment_done}ta
                 </p>
-                <div className="mt-6">
+                {/* <div className="mt-6">
                   <h4 className="font-semibold text-[#333333]">{formattedDate}</h4>
                   <p className="text-gray-700 font-semibold mt-2">Darsga kelmaganlar:</p>
-                  <p>{apsentStudentId.length ? apsentStudentId : apsentStudentId.map((item) => { item == null ? "" : item })}</p>
-                  {/* <ul className="list-decimal list-inside text-gray-700 mt-2">
+                  <p>{apsentStudentId.length ? apsentStudentId : apsentStudentId.map((item) => { item == null ? "" : item })},</p>
+                  <ul className="list-decimal list-inside text-gray-700 mt-2">
                                                 {absentStudents.map((student) => (
                                                     <li key={student.id}>{student.name}</li>
                                                 ))}
-                                            </ul> */}
-                </div>
+                                            </ul>
+                </div> */}
               </div>
             </div>
           </div>
@@ -264,7 +316,7 @@ function AttendenceGroup({ dataGroup, data, setLoading }) {
                 <h1 className="text-center">Guruhda o'quvchi mavjud emas.</h1>
               )}
             </table>
-            <button className="bg-[#333333] text-white px-4 py-2 rounded mt-4 hover:bg-[#555555]">
+            <button onClick={updateApsentCount} className="bg-[#333333] text-white px-4 py-2 rounded mt-4 hover:bg-[#555555]">
               Saqlash
             </button>
           </div>

@@ -4,7 +4,7 @@ import axios from 'axios';
 import { MdDelete, MdEdit } from "react-icons/md";
 
 
-const Students = ({ dataGroup}) => {
+const Students = ({ dataGroup }) => {
     const [studentData, setStudentData] = useState()
     const [studentData0, setStudentData0] = useState()
     const [name, setName] = useState("")
@@ -14,16 +14,17 @@ const Students = ({ dataGroup}) => {
     const [group, setGroup] = useState("")
     const [pupilId, setPupilId] = useState("")
     const [modal, setModal] = useState(false)
+    const [apsent, setApsent] = useState(false)
 
     function addPupil(e) {
-        const access_token=localStorage.getItem("token")
+        const access_token = localStorage.getItem("token")
 
         e.preventDefault()
         if (name != "" && phone != "" && parents_name != "" && parents_phone != "") {
             if (group === "") {
                 setGroup(dataGroup[0]._id)
                 console.log(group);
-                
+
             }
             const formData = new FormData();
             formData.append('name', `${name}`);
@@ -38,7 +39,7 @@ const Students = ({ dataGroup}) => {
             const formDataToJson = Object.fromEntries(formData.entries());
 
             // POST so'rovni yuborish
-            axios.post('https://crm-project.up.railway.app/api/v1/pupil',  formDataToJson, {
+            axios.post('https://crm-project.up.railway.app/api/v1/pupil', formDataToJson, {
                 headers: {
                     Authorization: `Bearer ${access_token}` // Tokenni 'Authorization' headeriga qo‘shish
                 }
@@ -59,7 +60,7 @@ const Students = ({ dataGroup}) => {
         }
     }
     const deletePupil = async (id) => {
-        const access_token=localStorage.getItem("token")
+        const access_token = localStorage.getItem("token")
 
         try {
             const response = await axios.delete(`https://crm-project.up.railway.app/api/v1/pupil/${id}`, {
@@ -75,7 +76,10 @@ const Students = ({ dataGroup}) => {
     };
     const updatePupil = (e) => {
         e.preventDefault()
-        const access_token=localStorage.getItem("token")
+        const access_token = localStorage.getItem("token")
+        console.log(access_token);
+        console.log(typeof (apsent))
+        var numberValue = Number(apsent);
 
         try {
             const formData = new FormData();
@@ -84,31 +88,37 @@ const Students = ({ dataGroup}) => {
             formData.append("phone", phone);
             formData.append("picture", "example.jpg"); // Rasm fayli
             formData.append("parents_phone", `${parents_phone}`);
-            formData.append("group", `${group}`);
-            formData.append("apsent", 0);
+            // formData.append("group", `${group}`);
+            // formData.append("apsent", numberValue);
 
             const response = axios.patch(
                 `https://crm-project.up.railway.app/api/v1/pupil/${pupilId}`,
                 formData,
                 {
-                    headers: { "Content-Type": "application/json" },
-                    Authorization: `Bearer ${access_token}` // Tokenni 'Authorization' headeriga qo‘shish
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${access_token}`
+
+                    }
+                    // Tokenni 'Authorization' headeriga qo‘shish
 
                 }
             );
 
             console.log("Yangilangan ma'lumot:", response.data);
-            alert("O'quvchi ma'lumotlari yangilandi!");
             setName("")
             setPhone("")
             setParents_name("")
             setParents_phone("")
+            setModal(false)
         } catch (error) {
+            setModal(false)
             console.error("Xatolik yuz berdi:", error);
         }
+
     };
     const fetchData = async () => {
-        const access_token=localStorage.getItem("token")
+        const access_token = localStorage.getItem("token")
 
         try {
             const response = await axios.get('https://crm-project.up.railway.app/api/v1/pupil/', {
@@ -123,7 +133,7 @@ const Students = ({ dataGroup}) => {
         }
     };
     const getPupilById = async (id) => {
-        const access_token=localStorage.getItem("token")
+        const access_token = localStorage.getItem("token")
 
         try {
             const response = await axios.get(`https://crm-project.up.railway.app/api/v1/pupil/${id}`, {
@@ -131,12 +141,13 @@ const Students = ({ dataGroup}) => {
                     Authorization: `Bearer ${access_token}` // Tokenni 'Authorization' headeriga qo‘shish
                 }
             }); // API URL
-
             setName(response.data.name)
             setPhone(response.data.phone)
             setParents_name(response.data.surname)
             setParents_phone(response.data.parents_phone)
             setGroup(response.data.group[0]?._id)
+            setApsent(response.data.apsent)
+
         } catch (err) {
             console.log(err.massage);
         }
@@ -155,7 +166,7 @@ const Students = ({ dataGroup}) => {
             {/* Modal */}
             {modal && <div className='fixed z-50 w-full h-screen top-0 left-0 bg-black flex bg-opacity-80 justify-center items-center'>
                 <p onClick={() => { setModal(!modal) }} className='text-white text-2xl absolute right-32 top-40 cursor-pointer'>x</p>
-                <form onSubmit={updatePupil} className="space-y-4 mt-4 bg-gray-50 p-4 rounded shadow">
+                <form onSubmit={updatePupil} className="space-y-3 mt-4 bg-gray-50 p-4 rounded shadow">
                     <div className="grid grid-cols-3 gap-4">
                         <div>
                             <label className="block font-medium">O'quvchi ismi</label>
@@ -183,17 +194,7 @@ const Students = ({ dataGroup}) => {
                                 className="w-full p-2 border rounded"
                             />
                         </div>
-                        <div>
-                            <label className="block font-medium">Yo'nalish</label>
-                            <select onChange={((e) => {
-                                setGroup(e.target.value);
 
-                            })} className="w-full p-2 border rounded">
-                                {dataGroup && dataGroup.map((item, index) => {
-                                    return (<option key={index} value={item._id}>{item.group_name}</option>)
-                                })}
-                            </select>
-                        </div>
 
                         <div>
                             <label className="block font-medium">Ota-onasining ismi</label>
@@ -221,14 +222,7 @@ const Students = ({ dataGroup}) => {
                                 className="w-full p-2 border rounded"
                             />
                         </div>
-                        <div>
-                            <label className="block font-medium">Rasm 3x4</label>
-                            <input
-                                type="file"
-                                placeholder="Yuklash"
-                                className="w-full p-2 border rounded"
-                            />
-                        </div>
+
 
 
                     </div>
@@ -275,7 +269,7 @@ const Students = ({ dataGroup}) => {
                         <select onChange={((e) => {
                             setGroup(e.target.value);
                             console.log(e.target.value);
-                            
+
 
                         })} className="w-full p-2 border rounded">
                             {dataGroup && dataGroup.map((item, index) => {
@@ -310,14 +304,7 @@ const Students = ({ dataGroup}) => {
                             className="w-full p-2 border rounded"
                         />
                     </div>
-                    <div>
-                        <label className="block font-medium">Rasm 3x4</label>
-                        <input
-                            type="file"
-                            placeholder="Yuklash"
-                            className="w-full p-2 border rounded"
-                        />
-                    </div>
+
 
 
                 </div>
@@ -356,6 +343,7 @@ const Students = ({ dataGroup}) => {
 
 
                         {studentData?.length > 0 ? studentData.map((item, index) => {
+
                             return (<tr key={index}>
                                 <td className="border border-gray-300 p-2">{index + 1}</td>
                                 <td className="border border-gray-300 p-2">{item.name} </td>
@@ -363,12 +351,14 @@ const Students = ({ dataGroup}) => {
                                 <td className="border border-gray-300 p-2">{item.group[0]?.group_name}</td>
                                 <td className="border border-gray-300 p-2">{item.surname}</td>
                                 <td className="border border-gray-300 p-2">{item.parents_phone}</td>
-                                <td className='p-2 flex justify-evenly items-center'><span onClick={() => { deletePupil(item._id) }} className='text-[25px] text-red-600 cursor-pointer'><MdDelete /></span></td>
-                                {/* <span onClick={() => {
-                                    setModal(true)
-                                    getPupilById(item._id)
-                                    setPupilId(item._id)
-                                }} className='text-[25px] text-blue-600 cursor-pointer'><MdEdit /></span> */}
+                                <td className='p-2 flex justify-evenly items-center border border-gray-300'>
+                                    <span onClick={() => { deletePupil(item._id) }} className='text-[25px] text-red-600 cursor-pointer'><MdDelete /></span>
+                                    <span onClick={() => {
+                                        setModal(true)
+                                        getPupilById(item._id)
+                                        setPupilId(item._id)
+                                    }} className='text-blue-600 text-[25px] cursor-pointer'><MdEdit /></span>
+                                </td>
                             </tr>)
                         }) : <h1 className='text-center text-red-600 p-2 font-semibold'>Ma'lumot yo'q.</h1>}
                     </tbody>

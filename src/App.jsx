@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios'
-import { BrowserRouter, Route, Routes, useNavigate } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, useNavigate, useParams } from 'react-router-dom';
 import Home from './page/Home/Home';
 import Attendance from './components/Attendance/Attendance';
 import AttendenceGroup from './components/Attendance/AttendenceGroup';
@@ -10,6 +10,7 @@ import PasswordVerify from './components/PasswordVerify/PasswordVerify';
 
 
 function App() {
+  const href = useParams()
   const [data, setData] = useState([]); // Ma'lumotni saqlash uchun holat
   const [dataGroup, setDataGroup] = useState([]); // Ma'lumotni saqlash uchun holat
   const [dataTeacher, setDataTeacher] = useState([]); // Ma'lumotni saqlash uchun holat
@@ -44,7 +45,6 @@ function App() {
         if (err.message) {
           localStorage.clear()
           window.location.reload()
-          navigate('/')
         }
         setLoading(false); // Yuklashni to'xtatish
       }
@@ -100,12 +100,12 @@ function App() {
       setLoading(false); // Yuklashni to'xtatish
     }
   };
-
   const refToken = async () => {
     const token2 = localStorage.getItem("token");
 
     if (!token2) {
       return;
+
     }
 
     try {
@@ -125,7 +125,7 @@ function App() {
 
       if (response.data) {
         localStorage.setItem("token", response.data.access_token);
-        
+
       }
     } catch (error) {
       console.error("❌ Xatolik:", error.response?.data || error.message);
@@ -165,7 +165,15 @@ function App() {
       <BrowserRouter>
         {token == false ? <Routes>
           <Route path='/' element={<Register toke={token} setToken={setToken} />} />
-          <Route path='/password' element={<PasswordVerify setToken={setToken} />}/>
+          <Route path='/password' element={<PasswordVerify setToken={setToken} />} />
+          <Route path='/report' element={<Register setToken={setToken} />} />
+          <Route path='/appeals' element={<Register setToken={setToken} />} />
+          <Route path='/payment' element={<Register setToken={setToken} />} />
+          <Route path='/attandance' element={<Register setToken={setToken} />} />
+          <Route path='/students' element={<Register setToken={setToken} />} />
+          <Route path='/groups' element={<Register setToken={setToken} />} />
+          <Route path='/attendenceGroup/:id' element={<Register setToken={setToken} />} />
+
 
         </Routes> : <Routes>
 

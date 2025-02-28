@@ -7,6 +7,13 @@ const Groups = ({ setLoading, dataGroup }) => {
     const [group_name, setGroup_name] = useState("")
     const [lesson_dates, setLesson_dates] = useState("Du-Chor-Juma")
     const [lesson_time, setLesson_time] = useState("14:00 - 16:00")
+    const [isOpen, setIsOpen] = useState(false);
+    const [name, setName] = useState("");
+    const [surname, setSurname] = useState("");
+    const [phone, setPhone] = useState("");
+    const [picture, setPicture] = useState(null);
+    const [salary, setSalary] = useState("");
+    const [groups, setGroups] = useState("");
 
 
     const [disable, setDisable] = useState(false)
@@ -38,7 +45,7 @@ const Groups = ({ setLoading, dataGroup }) => {
 
     function addGroup(e) {
         e.preventDefault()
-        const access_token=localStorage.getItem("token")
+        const access_token = localStorage.getItem("token")
         if (group_name != "") {
             const formData = new FormData();
             formData.append('group_name', `${group_name}`);
@@ -71,7 +78,7 @@ const Groups = ({ setLoading, dataGroup }) => {
         }
     }
     const deleteGroup = async (id) => {
-        const access_token=localStorage.getItem("token")
+        const access_token = localStorage.getItem("token")
 
         try {
             const response = await axios.delete(`https://crm-project.up.railway.app/api/v1/group/${id}`, {
@@ -81,6 +88,44 @@ const Groups = ({ setLoading, dataGroup }) => {
             });
             console.log("Element muvaffaqiyatli o‘chirildi:", response.data);
             window.location.reload();
+        } catch (error) {
+            console.error("Xatolik yuz berdi:", error);
+        }
+    };
+
+
+    const addTeacher = async (e) => {
+        const access_token = localStorage.getItem("token")
+        if (groups === "") {
+            setGroups(dataGroup[0]._id)
+
+        }
+        console.log(typeof (name),
+            surname,
+            phone,
+            salary);
+
+        e.preventDefault();
+        const formData = new FormData();
+        formData.append("name", `${name}`);
+        formData.append("surname", `${surname}`);
+        formData.append("phone", `+${phone}`);
+        formData.append("picture", "exaple.jpg");
+        formData.append("salary", `${salary}`);
+        formData.append("groups", "67b6ba717668fcfb774c3937");
+        const formDataToJson = Object.fromEntries(formData.entries());
+
+        console.log(formDataToJson);
+
+        try {
+            await axios.post("https://crm-project.up.railway.app/api/v1/teacher/", formDataToJson, {
+                headers: {
+                    Authorization: `Bearer ${access_token}`,
+                    "Content-Type": "application/json"
+                },
+            });
+            alert("O‘qituvchi muvaffaqiyatli qo‘shildi!");
+            setIsOpen(false);
         } catch (error) {
             console.error("Xatolik yuz berdi:", error);
         }
@@ -95,15 +140,6 @@ const Groups = ({ setLoading, dataGroup }) => {
                     <div className="grid grid-cols-3 gap-4">
                         <div>
                             <label className="block font-medium">Guruh yo’nalishi</label>
-                            {/* <select onChange={(e) => {
-                                setGroup_name(e.target.value)
-                            }} className="w-full p-2 border rounded">
-                                <option value={"Ona tili"}>Ona-tili</option>
-                                <option value={'Biologiya'}>Biologiya</option>
-                                <option value={'Fizika'}>Fizika</option>
-                                <option value={'Kimyo'}>Kimyo</option>
-                                <option value={'Tarix'}>Tarix</option>
-                            </select> */}
                             <input value={group_name} type="text" onChange={(e) => {
                                 setGroup_name(e.target.value)
                             }} className='w-full p-2 border rounded'
@@ -139,6 +175,105 @@ const Groups = ({ setLoading, dataGroup }) => {
                         </button>
                     </div>
                 </form>
+                <div className='w-full flex justify-end'>
+                    <button
+                        onClick={() => setIsOpen(true)}
+                        className="bg-blue-600 text-white px-4 py-2 mt-2 rounded"
+                    >
+                        O‘qituvchi qo‘shish
+                    </button>
+                </div>
+
+                {isOpen && (
+                    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80 z-[99999]">
+                        <div className="bg-white p-6 rounded shadow-lg w-1/2 relative">
+                            <h2 className="text-xl font-bold mb-4">Yangi o‘qituvchi qo‘shish</h2>
+                            <p onClick={() => { setIsOpen(false) }} className='absolute top-2 right-4 cursor-pointer'>x</p>
+                            <form onSubmit={addTeacher} className="space-y-4">
+                                <div className="grid grid-cols-3 gap-4">
+                                    <div>
+                                        <label className="block font-medium">Ism</label>
+                                        <input
+                                            type="text"
+                                            value={name}
+                                            onChange={(e) => setName(e.target.value)}
+                                            className="w-full p-2 border rounded"
+                                            placeholder="Ismni kiriting..."
+                                            required
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block font-medium">Familiya</label>
+                                        <input
+                                            type="text"
+                                            value={surname}
+                                            onChange={(e) => setSurname(e.target.value)}
+                                            className="w-full p-2 border rounded"
+                                            placeholder="Familiyani kiriting..."
+                                            required
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block font-medium">Telefon</label>
+                                        <input
+                                            type="number"
+                                            value={phone}
+                                            onChange={(e) => setPhone(e.target.value)}
+                                            className="w-full p-2 border rounded"
+                                            placeholder="+998901234567"
+                                            required
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="grid grid-cols-3 gap-4">
+
+                                    <div>
+                                        <label className="block font-medium">Maosh</label>
+                                        <input
+                                            type="number"
+                                            value={salary}
+                                            onChange={(e) => setSalary(e.target.value)}
+                                            className="w-full p-2 border rounded"
+                                            placeholder="$"
+                                            required
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block font-medium">Dars o'tadigan guruh</label>
+                                        <select onChange={((e) => {
+                                            setGroups(e.target.value);
+                                            console.log(e.target.value);
+
+
+                                        })} className="w-full p-2 border rounded">
+                                            {dataGroup && dataGroup.map((item, index) => {
+                                                return (<option key={index} value={item._id}>{item.group_name}</option>)
+                                            })}
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div className="flex justify-end space-x-2">
+                                    <button
+                                        type="button"
+                                        onClick={() => setIsOpen(false)}
+                                        className="bg-red-500 text-white px-4 py-2 rounded"
+                                    >
+                                        Bekor qilish
+                                    </button>
+                                    <button
+                                        type="submit"
+                                        className="bg-[#333333] text-white px-6 py-2 rounded"
+                                        onClick={addTeacher}
+                                    >
+                                        Qo‘shish
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                )}
 
 
                 <div className='flex justify-between items-center'>
