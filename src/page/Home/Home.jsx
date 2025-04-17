@@ -75,10 +75,10 @@ function Home({ data, dataGroup, dataTeacher, group_id, setGroup_id, setLoading,
             <FaUser className="text-xl" />
             <span className="font-medium">Davomat</span>
           </Link>
-          <Link to="/appeals" className={`flex items-center p-2 space-x-2 rounded ${activeMenu === "Murojatlar" ? "bg-[#333333]" : "hover:bg-[#555555]"}`} onClick={() => handleMenuClick("Murojatlar")}>
+          {/* <Link to="/appeals" className={`flex items-center p-2 space-x-2 rounded ${activeMenu === "Murojatlar" ? "bg-[#333333]" : "hover:bg-[#555555]"}`} onClick={() => handleMenuClick("Murojatlar")}>
             <FaComments className="text-xl" />
             <span className="font-medium">Murojatlar</span>
-          </Link>
+          </Link> */}
           <span onClick={() => {
             localStorage.clear()
             navigate("/")
@@ -89,6 +89,7 @@ function Home({ data, dataGroup, dataTeacher, group_id, setGroup_id, setLoading,
         </nav>
 
         {/* Mobil uchun pastki nav */}
+
         <div className="xl:hidden flex justify-around w-full h-full items-center">
           {[
             { to: "/", icon: <FaHome />, label: "Xisobot" },
@@ -96,7 +97,7 @@ function Home({ data, dataGroup, dataTeacher, group_id, setGroup_id, setLoading,
             { to: "/groups", icon: <FaUsers />, label: "Guruhlar" },
             { to: "/payment", icon: <FaCreditCard />, label: "To‘lovlar" },
             { to: "/attandance", icon: <FaUser />, label: "Davomat" },
-            { to: "/appeals", icon: <FaComments />, label: "Murojatlar" },
+
           ].map(({ to, icon, label }) => (
             <Link key={label} to={to} className="flex flex-col items-center text-xs hover:text-gray-300">
               <span className="text-lg">{icon}</span>
@@ -105,10 +106,16 @@ function Home({ data, dataGroup, dataTeacher, group_id, setGroup_id, setLoading,
           ))}
         </div>
       </aside>
-
+      <span onClick={() => {
+        localStorage.clear()
+        navigate("/")
+        window.location.reload()
+      }} className='fixed z-50 top-0 right-0 text-white p-1 rounded bg-[#333333] xl:hidden cursor-pointer'>
+        <IoIosLogOut className='text-3xl' />
+      </span>
 
       {/* Main Content */}
-      <main className="flex-1 p-6 ml-4">
+      <main className="flex-1 p-6 xl:ml-4 pb-20">
         {pathname == "/" && <Report access_token={access_token} data={data} dataGroup={dataGroup} dataTeacher={dataTeacher} />}
         {pathname == "/appeals" && <Appeals access_token={access_token} dataAppeals={dataAppeals} />}
         {pathname == "/payment" && <Payment access_token={access_token} data={data} setLoading={setLoading} />}

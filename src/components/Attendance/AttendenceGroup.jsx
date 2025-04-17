@@ -187,10 +187,10 @@ function AttendenceGroup({ dataGroup, data, setLoading }) {
             <FaUser className="text-xl" />
             <span className="font-medium">Davomat</span>
           </Link>
-          <Link to="/appeals" className={`flex items-center p-2 space-x-2 rounded ${activeMenu === "Murojatlar" ? "bg-[#333333]" : "hover:bg-[#555555]"}`} onClick={() => handleMenuClick("Murojatlar")}>
+          {/* <Link to="/appeals" className={`flex items-center p-2 space-x-2 rounded ${activeMenu === "Murojatlar" ? "bg-[#333333]" : "hover:bg-[#555555]"}`} onClick={() => handleMenuClick("Murojatlar")}>
             <FaComments className="text-xl" />
             <span className="font-medium">Murojatlar</span>
-          </Link>
+          </Link> */}
           <span onClick={() => {
             localStorage.clear()
             navigate("/")
@@ -208,7 +208,6 @@ function AttendenceGroup({ dataGroup, data, setLoading }) {
             { to: "/groups", icon: <FaUsers />, label: "Guruhlar" },
             { to: "/payment", icon: <FaCreditCard />, label: "To‘lovlar" },
             { to: "/attandance", icon: <FaUser />, label: "Davomat" },
-            { to: "/appeals", icon: <FaComments />, label: "Murojatlar" },
           ].map(({ to, icon, label }) => (
             <Link key={label} to={to} className="flex flex-col items-center text-xs hover:text-gray-300">
               <span className="text-lg">{icon}</span>
@@ -218,97 +217,78 @@ function AttendenceGroup({ dataGroup, data, setLoading }) {
         </div>
       </aside>
 
-      <div className=''>
-        <div className="p-6 bg-gray-100 min-h-screen flex gap-2 w-full">
+      <div className="p-4 md:p-6 bg-gray-100 min-h-screen flex flex-col lg:flex-row gap-4 w-full">
+  {/* Left Section - Group Info */}
+  <div className='w-full lg:min-w-[350px] xl:min-w-[450px]'>
+    <h2 className="text-xl md:text-2xl font-bold text-[#333333] mb-4">
+      {attendenceGroup.group_name} guruhi ro'yhati
+    </h2>
+    <div className="bg-white shadow-md rounded p-4 w-full mb-4">
+      <h3 className="text-lg md:text-xl font-semibold text-[#333333] mb-3">{attendenceGroup.group_name}</h3>
+      <p className="text-sm md:text-base text-gray-700">
+        <strong>O'qituvchi:</strong> {attendenceGroup.name}
+      </p>
+      <p className="text-sm md:text-base text-gray-700">
+        <strong>Tel raqam:</strong> {attendenceGroup.phone}
+      </p>
+      <p className="text-sm md:text-base text-gray-700">
+        <strong>Dars kunlari:</strong> {attendenceGroup.lesson_dates}
+      </p>
+      <p className="text-sm md:text-base text-gray-700">
+        <strong>Dars vaqti:</strong> 14:00-16:00
+      </p>
+      <p className="text-sm md:text-base text-gray-700">
+        <strong>O'quvchilar soni:</strong> {attendenceGroup.group_pupils?.length}ta
+      </p>
+      <p className="text-sm md:text-base text-gray-700">
+        <strong>To'lov qilganlar:</strong> {attendenceGroup.payment_done}ta
+      </p>
+    </div>
+  </div>
 
-          <div className='min-w-[450px]'>
-            <h2 className="text-2xl font-bold text-[#333333] mb-4">
-              {attendenceGroup.group_name} guruhi ro'yhati
-            </h2>
-            <div className="flex flex-col min-w-[45%]">
-              {/* Left Section */}
-              <div className="bg-white shadow-md rounded p-4 w-full  mb-6 lg:mb-0">
-                <h3 className="text-xl font-semibold text-[#333333] mb-4">{attendenceGroup.group_name}</h3>
-                <p className="text-gray-700">
-                  <strong>O'qituvchi:</strong> {attendenceGroup.name}
-                </p>
-                <p className="text-gray-700">
-                  <strong>Tel raqam:</strong> {attendenceGroup.phone}
-                </p>
-                <p className="text-gray-700">
-                  <strong>Dars kunlari:</strong> {attendenceGroup.lesson_dates}
-                </p>
-                <p className="text-gray-700">
-                  <strong>Dars vaqti:</strong> 14:00-16:00
-                </p>
-                <p className="text-gray-700">
-                  <strong>O'quvchilar soni:</strong> {attendenceGroup.group_pupils?.length}ta
-                </p>
-                <p className="text-gray-700">
-                  <strong>To'lov qilganlar:</strong> {attendenceGroup.payment_done}ta
-                </p>
-                {/* <div className="mt-6">
-                  <h4 className="font-semibold text-[#333333]">{formattedDate}</h4>
-                  <p className="text-gray-700 font-semibold mt-2">Darsga kelmaganlar:</p>
-                  <p>{apsentStudentId.length ? apsentStudentId : apsentStudentId.map((item) => { item == null ? "" : item })},</p>
-                  <ul className="list-decimal list-inside text-gray-700 mt-2">
-                                                {absentStudents.map((student) => (
-                                                    <li key={student.id}>{student.name}</li>
-                                                ))}
-                                            </ul>
-                </div> */}
-              </div>
-            </div>
-          </div>
-          {/* Right Section */}
-          <div className="bg-white shadow-md rounded p-4 w-full min-w-[650px] mt-12">
-            <table className="table-auto w-full border-collapse border border-gray-300">
-              <thead>
-                <tr className="bg-[#333333] text-white">
-                  <th className="border border-gray-300 p-2">№</th>
-                  <th className="border border-gray-300 p-2">O'quvchi ismi</th>
-                  <th className="border border-gray-300 p-2">Davomat</th>
-                </tr>
-              </thead>
-              {attendenceGroupPupil.length !== 0 ? (
-                <tbody className=''>
-                  {attendenceGroupPupil.map((student, index) => (
-                    <AttendanceStudent student={student} index={index} apsentStudentId={apsentStudentId} setApsentStudentId={setApsentStudentId} />
-                    // <tr
-                    //   key={index}
-                    //   className={index % 2 === 0 ? "bg-gray-100" : ""}
-                    // >
-                    //   <td className="border border-gray-300 p-2 text-center">
-                    //     {index + 1}
-                    //   </td>
-                    //   <td className="border border-gray-300 p-2">{student.name} {student.surname}</td>
-                    //   <td className="border border-gray-300 p-2 text-center">
-                    //     <button
-                    //       // onClick={() => toggleAttendance(student.id)}
-                    //       onClick={() => {
-                    //         absentStudents ? setAbsentStudents(false) : setAbsentStudents(true)
-                    //       }}
-                    //       className={`text-xl ${absentStudents ? "text-green-500" : "text-red-900"
-                    //         }`}
-                    //     >
-                    //       {absentStudents ? "✔" : "✖"}
-                    //     </button>
-                    //   </td>
-                    // </tr>
-                  ))}
-                </tbody>
-              ) : (
-                <h1 className="text-center">Guruhda o'quvchi mavjud emas.</h1>
-              )}
-            </table>
-            <button onClick={updateApsentCount} className="bg-[#333333] text-white px-4 py-2 rounded mt-4 hover:bg-[#555555]">
-              Saqlash
-            </button>
-          </div>
-        </div>
+  {/* Right Section - Attendance Table */}
+  <div className="bg-white shadow-md rounded p-3 md:p-4 w-full">
+    <div className="overflow-x-auto">
+      <table className="w-full border-collapse border border-gray-300">
+        <thead>
+          <tr className="bg-[#333333] text-white">
+            <th className="border border-gray-300 p-1 md:p-2 text-sm md:text-base">№</th>
+            <th className="border border-gray-300 p-1 md:p-2 text-sm md:text-base">O'quvchi ismi</th>
+            <th className="border border-gray-300 p-1 md:p-2 text-sm md:text-base">Davomat</th>
+          </tr>
+        </thead>
+        {attendenceGroupPupil.length !== 0 ? (
+          <tbody>
+            {attendenceGroupPupil.map((student, index) => (
+              <AttendanceStudent 
+                student={student} 
+                index={index} 
+                apsentStudentId={apsentStudentId} 
+                setApsentStudentId={setApsentStudentId} 
+              />
+            ))}
+          </tbody>
+        ) : (
+          <tbody>
+            <tr>
+              <td colSpan="3" className="text-center p-4 text-sm md:text-base">
+                Guruhda o'quvchi mavjud emas.
+              </td>
+            </tr>
+          </tbody>
+        )}
+      </table>
+    </div>
+    <button 
+      onClick={updateApsentCount} 
+      className="bg-[#333333] text-white px-3 py-1 md:px-4 md:py-2 rounded mt-3 md:mt-4 hover:bg-[#555555] text-sm md:text-base"
+    >
+      Saqlash
+    </button>
+  </div>
+</div>
 
 
-      </div>
 
     </div>
 

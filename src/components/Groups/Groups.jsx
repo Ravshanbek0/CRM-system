@@ -131,143 +131,159 @@ const Groups = ({ setLoading, dataGroup }) => {
         }
     };
     return (
-        <div>
+        <div className="p-4 md:p-6">
+            {/* Group Creation Section */}
+            <div className={disable === false ? 'block' : 'hidden'}>
+                {/* Group Creation Form */}
+                <h2 className='text-2xl md:text-3xl font-semibold text-[#333333]'>Yangi guruh qo'shish</h2>
 
-
-            <div className={disable == false ? 'block' : 'hidden'}>
-                <h2 className='text-2xl font-semibold text-[#333333]'>Yangi guruh qo’shish</h2>
                 <form className="space-y-4 mt-4 bg-gray-50 p-4 rounded shadow">
-                    <div className="grid grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         <div>
-                            <label className="block font-medium">Guruh yo’nalishi</label>
-                            <input value={group_name} type="text" onChange={(e) => {
-                                setGroup_name(e.target.value)
-                            }} className='w-full p-2 border rounded'
+                            <label className="block text-sm md:text-base font-medium">Guruh yo'nalishi</label>
+                            <input
+                                value={group_name}
+                                type="text"
+                                onChange={(e) => setGroup_name(e.target.value)}
+                                className='w-full p-2 text-sm md:text-base border rounded'
                                 placeholder='Guruh nomini kiriting...'
                             />
                         </div>
 
                         <div>
-                            <label className="block font-medium">Dars kunlari</label>
-                            <select onChange={(e) => {
-                                setLesson_dates(e.target.value)
-                            }} className="w-full p-2 border rounded">
-                                <option value={'Du-Chor-Juma'} >DU-CHOR-JUMA</option>
+                            <label className="block text-sm md:text-base font-medium">Dars kunlari</label>
+                            <select
+                                onChange={(e) => setLesson_dates(e.target.value)}
+                                className="w-full p-2 text-sm md:text-base border rounded"
+                            >
+                                <option value={'Du-Chor-Juma'}>DU-CHOR-JUMA</option>
                                 <option value={'Se-Pay-Shan'}>SE-PA-SHANBA</option>
                             </select>
-
                         </div>
+
                         <div>
-                            <label className="block font-medium">Dars vaqti</label>
-                            <select onChange={(e) => {
-                                setLesson_time(e.target.value)
-                            }} className="w-full p-2 border rounded">
+                            <label className="block text-sm md:text-base font-medium">Dars vaqti</label>
+                            <select
+                                onChange={(e) => setLesson_time(e.target.value)}
+                                className="w-full p-2 text-sm md:text-base border rounded"
+                            >
                                 <option value={'14:00 - 16:00'}>14:00-16:00</option>
                                 <option value={'16:00 - 18:00'}>16:00-18:00</option>
                             </select>
                         </div>
-
-
                     </div>
+
                     <div className='flex justify-end'>
-                        <button onClick={addGroup} className="bg-[#333333] text-white px-44 py-3 rounded-md mt-2  hover:bg-[#555555]">
-                            Qo’shish
+                        <button
+                            onClick={addGroup}
+                            className="bg-[#333333] text-white px-8 md:px-16 lg:px-44 py-2 md:py-3 text-sm md:text-base rounded-md mt-2 hover:bg-[#555555]"
+                        >
+                            Qo'shish
                         </button>
                     </div>
                 </form>
-                <div className='w-full flex justify-end'>
+
+                {/* Add Teacher Button */}
+                <div className='w-full flex justify-end mt-4'>
                     <button
                         onClick={() => setIsOpen(true)}
-                        className="bg-blue-600 text-white px-4 py-2 mt-2 rounded"
+                        className="bg-blue-600 text-white px-4 py-2 text-sm md:text-base rounded hover:bg-blue-700"
                     >
-                        O‘qituvchi qo‘shish
+                        O'qituvchi qo'shish
                     </button>
                 </div>
 
+                {/* Add Teacher Modal */}
                 {isOpen && (
-                    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80 z-[99999]">
-                        <div className="bg-white p-6 rounded shadow-lg w-1/2 relative">
-                            <h2 className="text-xl font-bold mb-4">Yangi o‘qituvchi qo‘shish</h2>
-                            <p onClick={() => { setIsOpen(false) }} className='absolute top-2 right-4 cursor-pointer'>x</p>
+                    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80 z-[99999] p-4">
+                        <div className="bg-white p-4 md:p-6 rounded shadow-lg w-full md:w-3/4 lg:w-1/2 relative max-h-[90vh] overflow-y-auto">
+                            <h2 className="text-xl md:text-2xl font-bold mb-4">Yangi o'qituvchi qo'shish</h2>
+                            <p
+                                onClick={() => setIsOpen(false)}
+                                className='absolute top-2 right-4 cursor-pointer text-xl'
+                            >
+                                ×
+                            </p>
+
                             <form onSubmit={addTeacher} className="space-y-4">
-                                <div className="grid grid-cols-3 gap-4">
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                                     <div>
-                                        <label className="block font-medium">Ism</label>
+                                        <label className="block text-sm md:text-base font-medium">Ism</label>
                                         <input
                                             type="text"
                                             value={name}
                                             onChange={(e) => setName(e.target.value)}
-                                            className="w-full p-2 border rounded"
+                                            className="w-full p-2 text-sm md:text-base border rounded"
                                             placeholder="Ismni kiriting..."
                                             required
                                         />
                                     </div>
+
                                     <div>
-                                        <label className="block font-medium">Familiya</label>
+                                        <label className="block text-sm md:text-base font-medium">Familiya</label>
                                         <input
                                             type="text"
                                             value={surname}
                                             onChange={(e) => setSurname(e.target.value)}
-                                            className="w-full p-2 border rounded"
+                                            className="w-full p-2 text-sm md:text-base border rounded"
                                             placeholder="Familiyani kiriting..."
                                             required
                                         />
                                     </div>
+
                                     <div>
-                                        <label className="block font-medium">Telefon</label>
+                                        <label className="block text-sm md:text-base font-medium">Telefon</label>
                                         <input
                                             type="number"
                                             value={phone}
                                             onChange={(e) => setPhone(e.target.value)}
-                                            className="w-full p-2 border rounded"
+                                            className="w-full p-2 text-sm md:text-base border rounded"
                                             placeholder="+998901234567"
                                             required
                                         />
                                     </div>
                                 </div>
 
-                                <div className="grid grid-cols-3 gap-4">
-
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
-                                        <label className="block font-medium">Maosh</label>
+                                        <label className="block text-sm md:text-base font-medium">Maosh</label>
                                         <input
                                             type="number"
                                             value={salary}
                                             onChange={(e) => setSalary(e.target.value)}
-                                            className="w-full p-2 border rounded"
+                                            className="w-full p-2 text-sm md:text-base border rounded"
                                             placeholder="$"
                                             required
                                         />
                                     </div>
+
                                     <div>
-                                        <label className="block font-medium">Dars o'tadigan guruh</label>
-                                        <select onChange={((e) => {
-                                            setGroups(e.target.value);
-                                            console.log(e.target.value);
-
-
-                                        })} className="w-full p-2 border rounded">
-                                            {dataGroup && dataGroup.map((item, index) => {
-                                                return (<option key={index} value={item._id}>{item.group_name}</option>)
-                                            })}
+                                        <label className="block text-sm md:text-base font-medium">Dars o'tadigan guruh</label>
+                                        <select
+                                            onChange={(e) => setGroups(e.target.value)}
+                                            className="w-full p-2 text-sm md:text-base border rounded"
+                                        >
+                                            {dataGroup && dataGroup.map((item, index) => (
+                                                <option key={index} value={item._id}>{item.group_name}</option>
+                                            ))}
                                         </select>
                                     </div>
                                 </div>
 
-                                <div className="flex justify-end space-x-2">
+                                <div className="flex justify-end space-x-2 pt-4">
                                     <button
                                         type="button"
                                         onClick={() => setIsOpen(false)}
-                                        className="bg-red-500 text-white px-4 py-2 rounded"
+                                        className="bg-red-500 text-white px-4 py-2 text-sm md:text-base rounded hover:bg-red-600"
                                     >
                                         Bekor qilish
                                     </button>
                                     <button
                                         type="submit"
-                                        className="bg-[#333333] text-white px-6 py-2 rounded"
+                                        className="bg-[#333333] text-white px-4 py-2 text-sm md:text-base rounded hover:bg-[#555555]"
                                         onClick={addTeacher}
                                     >
-                                        Qo‘shish
+                                        Qo'shish
                                     </button>
                                 </div>
                             </form>
@@ -275,138 +291,59 @@ const Groups = ({ setLoading, dataGroup }) => {
                     </div>
                 )}
 
-
-                <div className='flex justify-between items-center'>
-                    <h2 className="text-2xl font-semibold text-[#333333] mt-8">
+                {/* Existing Groups Section */}
+                <div className='flex flex-col md:flex-row justify-between items-center mt-8 gap-4'>
+                    <h2 className="text-2xl md:text-3xl font-semibold text-[#333333]">
                         Mavjud guruhlar
                     </h2>
-                    <input placeholder='Guruh nomini kiriting...' style={{ boxShadow: "0 4px 12px 0px rgba(#00000033)" }} className="px-4 min-w-80 py-3 rounded-2xl mt-8 outline-none placeholder:ml-[-170px] " type="text" />
-
-
-
+                    <input
+                        placeholder='Guruh nomini kiriting...'
+                        className="px-4 py-2 md:py-3 w-full md:w-64 rounded-2xl outline-none shadow-md text-sm md:text-base"
+                        type="text"
+                    />
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-                    {/* Card 1 */}
-                    {dataGroup?.length > 0 ? dataGroup.map((item, index) => {
-                        return (<div key={index} to={`/attendenceGroup/${item._id}`}>
-                            <div className="bg-white cursor-pointer shadow rounded-lg  overflow-hidden border border-gray-200">
-                                <h2 className="text-lg font-bold flex justify-center items-center bg-[#333333] p-2 text-white mb-2 text-center relative">{item.group_name}<span onClick={() => {
-                                    deleteGroup(item._id)
-                                }} className='absolute right-1 text-[22px]'><MdDelete /></span></h2>
-                                <Link to={`/attendenceGroup/${item._id}`}>
-                                    <div className='p-4'>
-                                        <div className='flex items-center'>
-                                            {/* <img src="./imgs/face.png" alt="" /> */}
-                                            <div>
-                                                {/* <p className="text-sm  text-[#333333] font-semibold mb-2">
-                                            O'qituvchi: <span className="text-gray-800">Muxamadaliyev Ibroxim</span>
-                                        </p>
-                                        <p className="text-sm font-semibold text-[#333333] mb-2">
-                                            Tel raqam: <a href="tel:+998900113861" className="text-blue-500 "><span className="text-gray-800"> +998900113861</span></a>
-                                        </p> */}
-                                            </div>
-                                        </div>
-                                        <p className="text-sm text-[#333333] font-semibold  mb-2">Dars kunlari: <span className="text-gray-500">{item.lesson_dates}</span></p>
-                                        <p className="text-sm text-[#333333] font-semibold  mb-2">Dars vaqti: <span className="text-gray-500">{item.lesson_time}</span></p>
-                                        <p className="text-sm text-[#333333] font-semibold  mb-2">O'quvchilar soni:  <span className="text-gray-500">{item.group_pupils.length}</span></p>
-                                        <p className="text-sm text-[#333333] font-semibold ">To'lov qilganlar: <span className="text-gray-500">{item.payment_done}ta</span></p>
-                                    </div>
-                                </Link>
-                            </div>
-                        </div>)
-                    }) : <h1 className='text-center text-red-600 p-2 font-semibold'>Ma'lumot yo'q!</h1>}
 
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mt-6">
+                    {dataGroup?.length > 0 ? dataGroup.map((item, index) => (
+                        <div key={index} className="bg-white cursor-pointer shadow rounded-lg overflow-hidden border border-gray-200 hover:shadow-md transition-shadow">
+                            <div className="flex justify-center items-center bg-[#333333] p-2 text-white relative">
+                                <h2 className="text-lg md:text-xl font-bold text-center">
+                                    <Link to={`/attendenceGroup/${item._id}`} className="block w-full">
+                                        {item.group_name}
+                                    </Link>
+                                </h2>
+                                <span
+                                    onClick={() => deleteGroup(item._id)}
+                                    className='absolute right-2 text-xl md:text-2xl hover:text-red-400 transition-colors'
+                                >
+                                    <MdDelete />
+                                </span>
+                            </div>
+
+                            <Link to={`/attendenceGroup/${item._id}`}>
+                                <div className='p-4'>
+                                    <p className="text-sm md:text-base text-[#333333] font-semibold mb-2">
+                                        Dars kunlari: <span className="text-gray-500">{item.lesson_dates}</span>
+                                    </p>
+                                    <p className="text-sm md:text-base text-[#333333] font-semibold mb-2">
+                                        Dars vaqti: <span className="text-gray-500">{item.lesson_time}</span>
+                                    </p>
+                                    <p className="text-sm md:text-base text-[#333333] font-semibold mb-2">
+                                        O'quvchilar soni: <span className="text-gray-500">{item.group_pupils.length}</span>
+                                    </p>
+                                    <p className="text-sm md:text-base text-[#333333] font-semibold">
+                                        To'lov qilganlar: <span className="text-gray-500">{item.payment_done}ta</span>
+                                    </p>
+                                </div>
+                            </Link>
+                        </div>
+                    )) : (
+                        <div className="col-span-full text-center py-8">
+                            <h1 className='text-red-600 font-semibold text-lg md:text-xl'>Ma'lumot yo'q!</h1>
+                        </div>
+                    )}
                 </div>
             </div>
-
-
-            {/* <div className={disable == false ? 'hidden' : 'block'}>
-                <h2 className='text-2xl font-semibold text-[#333333]'>Informatika guruhi ro’yhati</h2>
-                <br />
-                <div className='flex gap-8'>
-                    <div>
-                        <div className="bg-white shadow w-fit rounded-lg  border border-gray-200">
-                            <h2 className="text-lg font-bold bg-[#333333] p-2 text-white mb-2 text-center">Matematika</h2>
-                            <div className='p-4'>
-                                <div className='flex items-center'>
-                                    <img src="./imgs/face.png" alt="" />
-                                    <div>
-                                        <p className="text-sm  text-[#333333] font-semibold mb-2">
-                                            O'qituvchi: <span className="text-gray-800">Muxamadaliyev Ibroxim</span>
-                                        </p>
-                                        <p className="text-sm font-semibold text-[#333333] mb-2">
-                                            Tel raqam: <a href="tel:+998900113861" className="text-blue-500 "><span className="text-gray-800"> +998900113861</span></a>
-                                        </p>
-                                    </div>
-                                </div>
-                                <p className="text-sm text-[#333333] font-semibold  mb-2">Dars kunlari: <span className="text-gray-800">DU-CHOR-JUMA</span></p>
-                                <p className="text-sm text-[#333333] font-semibold  mb-2">Dars vaqti: <span className="text-gray-800">14:00-16:00</span></p>
-                                <p className="text-sm text-[#333333] font-semibold  mb-2">O'quvchilar soni:  <span className="text-gray-800">5ta</span></p>
-                                <p className="text-sm text-[#333333] font-semibold ">To'lov qilganlar: <span className="text-gray-800">10ta</span></p>
-                            </div>
-
-                        </div>
-
-
-                        <br />
-                        <div>
-                            <h2 className='font-bold text-2xl text-black'>Shu oy bo’yicha to'lov qilmaganlar </h2>
-                            <br />
-                            <p className='font-medium'>1.Muxamadaliyev Ibroxim</p>
-                            <p className='font-medium'>2.Muxamadaliyev Ibroxim</p>
-                            <p className='font-medium'>3.Muxamadaliyev Ibroxim</p>
-                            <p className='font-medium'>4.Muxamadaliyev Ibroxim</p>
-
-
-
-                        </div>
-                    </div>
-
-
-
-
-
-
-
-
-                    <table className="table-auto w-full border-collapse border border-gray-300">
-                        <thead>
-                            <tr className="bg-[#333333] text-white">
-                                <th className="border border-gray-300 p-2">№</th>
-                                <th className="border border-gray-300 p-2">O'quvchi ismi</th>
-                                <th className="border border-gray-300 p-2">Davomat</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {attendance.map((student) => (
-                                <tr
-                                    key={student.id}
-                                    className={student.id % 2 === 0 ? "bg-gray-100" : ""}
-                                >
-                                    <td className="border border-gray-300 p-2 text-center">
-                                        {student.id}
-                                    </td>
-                                    <td className="border border-gray-300 p-2">{student.name}</td>
-                                    <td className="border border-gray-300 p-2 text-center">
-                                        <button
-                                            onClick={() => toggleAttendance(student.id)}
-                                            className={`text-xl ${student.present ? "text-green-500" : "text-red-500"
-                                                }`}
-                                        >
-                                            {student.present ? "✔" : "✖"}
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-
-                </div>
-            </div> */}
-
-
-
-
         </div>
     )
 }

@@ -162,212 +162,217 @@ const Students = ({ dataGroup }) => {
         fetchData()
     }, [])
     return (
-        <div>
-            {/* Modal */}
-            {modal && <div className='fixed z-50 w-full h-screen top-0 left-0 bg-black flex bg-opacity-80 justify-center items-center'>
-                <p onClick={() => { setModal(!modal) }} className='text-white text-2xl absolute right-32 top-40 cursor-pointer'>x</p>
-                <form onSubmit={updatePupil} className="space-y-3 mt-4 bg-gray-50 p-4 rounded shadow">
-                    <div className="grid grid-cols-3 gap-4">
-                        <div>
-                            <label className="block font-medium">O'quvchi ismi</label>
-                            <input
-                                value={name}
+        <div className="p-4 md:p-6">
+  {/* Modal */}
+  {modal && (
+    <div className='fixed z-50 w-full h-screen top-0 left-0 bg-black flex bg-opacity-80 justify-center items-center'>
+      <p 
+        onClick={() => { setModal(!modal) }} 
+        className='text-white text-xl md:text-2xl absolute right-4 md:right-32 top-10 md:top-40 cursor-pointer'
+      >
+        ×
+      </p>
+      <form onSubmit={updatePupil} className="w-full mx-4 md:w-3/4 lg:w-2/3 bg-gray-50 p-4 md:p-6 rounded shadow">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div>
+            <label className="block text-sm md:text-base font-medium">O'quvchi ismi</label>
+            <input
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              type="text"
+              placeholder="Ismni kiriting"
+              className="w-full p-2 text-sm md:text-base border rounded"
+            />
+          </div>
 
-                                onChange={((e) => {
-                                    setName(e.target.value)
-                                })}
-                                type="text"
-                                placeholder="Ismni kiriting"
-                                className="w-full p-2 border rounded"
-                            />
-                        </div>
+          <div>
+            <label className="block text-sm md:text-base font-medium">Telefon raqam</label>
+            <input
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              type="text"
+              placeholder="+998 xx xxx xx xx"
+              className="w-full p-2 text-sm md:text-base border rounded"
+            />
+          </div>
 
-                        <div>
-                            <label className="block font-medium">Telefon raqam</label>
-                            <input
-                                value={phone}
-                                onChange={((e) => {
-                                    setPhone(e.target.value)
-                                })}
-                                type="text"
-                                placeholder="+998 xx xxx xx xx"
-                                className="w-full p-2 border rounded"
-                            />
-                        </div>
+          <div>
+            <label className="block text-sm md:text-base font-medium">Ota-onasining ismi</label>
+            <input
+              value={parents_name}
+              onChange={(e) => setParents_name(e.target.value)}
+              type="text"
+              placeholder='Ota-onasining ismi'
+              className="w-full p-2 text-sm md:text-base border rounded"
+            />
+          </div>
 
-
-                        <div>
-                            <label className="block font-medium">Ota-onasining ismi</label>
-                            <input
-                                value={parents_name}
-                                onChange={((e) => {
-                                    setParents_name(e.target.value)
-                                })}
-                                type="text"
-                                placeholder='Ota-onasining ismi'
-                                className="w-full p-2 border rounded"
-                            />
-                        </div>
-
-
-                        <div>
-                            <label className="block font-medium">Ota-onasining nomeri</label>
-                            <input
-                                value={parents_phone}
-                                onChange={((e) => {
-                                    setParents_phone(e.target.value)
-                                })}
-                                type="text"
-                                placeholder="+998 xx xxx xx xx"
-                                className="w-full p-2 border rounded"
-                            />
-                        </div>
-
-
-
-                    </div>
-                    <div className='flex justify-end'>
-                        <button onClick={updatePupil} className="bg-[#333333] text-white px-44 py-3 rounded-md mt-2  hover:bg-[#555555]">
-                            O'zgartirish
-                        </button>
-                    </div>
-                </form>
-            </div>}
-            {/* Modal */}
-
-            <h2 className='text-2xl font-semibold text-[#333333]'>Yangi o’quvchi qo’shish</h2>
-            <form onSubmit={addPupil} className="space-y-4 mt-4 bg-gray-50 p-4 rounded shadow">
-                <div className="grid grid-cols-3 gap-4">
-                    <div>
-                        <label className="block font-medium">O'quvchi ismi</label>
-                        <input
-                            value={name}
-
-                            onChange={((e) => {
-                                setName(e.target.value)
-                            })}
-                            type="text"
-                            placeholder="Ismni kiriting"
-                            className="w-full p-2 border rounded"
-                        />
-                    </div>
-
-                    <div>
-                        <label className="block font-medium">Telefon raqam</label>
-                        <input
-                            value={phone}
-                            onChange={((e) => {
-                                setPhone(e.target.value)
-                            })}
-                            type="text"
-                            placeholder="+998 xx xxx xx xx"
-                            className="w-full p-2 border rounded"
-                        />
-                    </div>
-                    <div>
-                        <label className="block font-medium">Yo'nalish</label>
-                        <select onChange={((e) => {
-                            setGroup(e.target.value);
-                            console.log(e.target.value);
-
-
-                        })} className="w-full p-2 border rounded">
-                            {dataGroup && dataGroup.map((item, index) => {
-                                return (<option key={index} value={item._id}>{item.group_name}</option>)
-                            })}
-                        </select>
-                    </div>
-
-                    <div>
-                        <label className="block font-medium">Ota-onasining ismi</label>
-                        <input
-                            value={parents_name}
-                            onChange={((e) => {
-                                setParents_name(e.target.value)
-                            })}
-                            type="text"
-                            placeholder='Ota-onasining ismi'
-                            className="w-full p-2 border rounded"
-                        />
-                    </div>
-
-
-                    <div>
-                        <label className="block font-medium">Ota-onasining nomeri</label>
-                        <input
-                            value={parents_phone}
-                            onChange={((e) => {
-                                setParents_phone(e.target.value)
-                            })}
-                            type="text"
-                            placeholder="+998 xx xxx xx xx"
-                            className="w-full p-2 border rounded"
-                        />
-                    </div>
-
-
-
-                </div>
-                <div className='flex justify-end'>
-                    <button onClick={addPupil} className="bg-[#333333] text-white px-44 py-3 rounded-md mt-2  hover:bg-[#555555]">
-                        Qo’shish
-                    </button>
-                </div>
-            </form>
-
-            <div className='flex justify-between items-center'>
-                <h2 className="text-2xl font-semibold text-[#333333] mt-8">
-                    Bizning o’quvchilar
-                </h2>
-                <input placeholder='Ismni kiriting...' onChange={((e) => {
-                    searchPupil(e.target.value)
-                })} style={{ boxShadow: "0 4px 12px 0px rgba(#00000033)" }} className="px-4 py-3 rounded-2xl mt-8 outline-none min-w-80 " type="text" />
-
-
-
-            </div>
-            <div className="mt-4 bg-gray-50 p-4 rounded shadow">
-                <table className="table-auto w-full border-collapse border border-gray-300">
-                    <thead>
-                        <tr className="bg-[#333333] text-white">
-                            <th className="border border-gray-300 p-2">№</th>
-                            <th className="border border-gray-300 p-2">O'quvchi ismi</th>
-                            <th className="border border-gray-300 p-2">Telefon nomer</th>
-                            <th className="border border-gray-300 p-2">Yo'nalish</th>
-                            <th className="border border-gray-300 p-2">Ota-ona(F.I.SH)</th>
-                            <th className="border border-gray-300 p-2">Ota-ona (Tel)</th>
-                            <th className="border border-gray-300 p-2">/</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-
-                        {studentData?.length > 0 ? studentData.map((item, index) => {
-
-                            return (<tr key={index}>
-                                <td className="border border-gray-300 p-2">{index + 1}</td>
-                                <td className="border border-gray-300 p-2">{item.name} </td>
-                                <td className="border border-gray-300 p-2">{item.phone}</td>
-                                <td className="border border-gray-300 p-2">{item.group[0]?.group_name}</td>
-                                <td className="border border-gray-300 p-2">{item.surname}</td>
-                                <td className="border border-gray-300 p-2">{item.parents_phone}</td>
-                                <td className='p-2 flex justify-evenly items-center border border-gray-300'>
-                                    <span onClick={() => { deletePupil(item._id) }} className='text-[25px] text-red-600 cursor-pointer'><MdDelete /></span>
-                                    <span onClick={() => {
-                                        setModal(true)
-                                        getPupilById(item._id)
-                                        setPupilId(item._id)
-                                    }} className='text-blue-600 text-[25px] cursor-pointer'><MdEdit /></span>
-                                </td>
-                            </tr>)
-                        }) : <h1 className='text-center text-red-600 p-2 font-semibold'>Ma'lumot yo'q.</h1>}
-                    </tbody>
-                </table>
-            </div>
-
-
-
+          <div>
+            <label className="block text-sm md:text-base font-medium">Ota-onasining nomeri</label>
+            <input
+              value={parents_phone}
+              onChange={(e) => setParents_phone(e.target.value)}
+              type="text"
+              placeholder="+998 xx xxx xx xx"
+              className="w-full p-2 text-sm md:text-base border rounded"
+            />
+          </div>
         </div>
+        <div className='flex justify-end mt-4'>
+          <button 
+            onClick={updatePupil} 
+            className="bg-[#333333] text-white px-8 md:px-44 py-2 md:py-3 text-sm md:text-base rounded-md hover:bg-[#555555]"
+          >
+            O'zgartirish
+          </button>
+        </div>
+      </form>
+    </div>
+  )}
+
+  {/* Main Form */}
+  <h2 className='text-xl md:text-2xl font-semibold text-[#333333]'>Yangi o'quvchi qo'shish</h2>
+  <form onSubmit={addPupil} className="space-y-4 mt-4 bg-gray-50 p-4 rounded shadow">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div>
+        <label className="block text-sm md:text-base font-medium">O'quvchi ismi</label>
+        <input
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          type="text"
+          placeholder="Ismni kiriting"
+          className="w-full p-2 text-sm md:text-base border rounded"
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm md:text-base font-medium">Telefon raqam</label>
+        <input
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+          type="text"
+          placeholder="+998 xx xxx xx xx"
+          className="w-full p-2 text-sm md:text-base border rounded"
+        />
+      </div>
+      
+      <div>
+        <label className="block text-sm md:text-base font-medium">Yo'nalish</label>
+        <select 
+          onChange={(e) => setGroup(e.target.value)}
+          className="w-full p-2 text-sm md:text-base border rounded"
+        >
+          {dataGroup && dataGroup.map((item, index) => (
+            <option key={index} value={item._id}>{item.group_name}</option>
+          ))}
+        </select>
+      </div>
+
+      <div>
+        <label className="block text-sm md:text-base font-medium">Ota-onasining ismi</label>
+        <input
+          value={parents_name}
+          onChange={(e) => setParents_name(e.target.value)}
+          type="text"
+          placeholder='Ota-onasining ismi'
+          className="w-full p-2 text-sm md:text-base border rounded"
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm md:text-base font-medium">Ota-onasining nomeri</label>
+        <input
+          value={parents_phone}
+          onChange={(e) => setParents_phone(e.target.value)}
+          type="text"
+          placeholder="+998 xx xxx xx xx"
+          className="w-full p-2 text-sm md:text-base border rounded"
+        />
+      </div>
+    </div>
+    <div className='flex justify-end'>
+      <button 
+        onClick={addPupil} 
+        className="bg-[#333333] text-white px-8 md:px-44 py-2 md:py-3 text-sm md:text-base rounded-md hover:bg-[#555555]"
+      >
+        Qo'shish
+      </button>
+    </div>
+  </form>
+
+  {/* Student List */}
+  <div className='flex flex-col md:flex-row justify-between items-center mt-6 md:mt-8 gap-4'>
+    <h2 className="text-xl md:text-2xl font-semibold text-[#333333]">
+      Bizning o'quvchilar
+    </h2>
+    <input 
+      placeholder='Ismni kiriting...' 
+      onChange={(e) => searchPupil(e.target.value)}
+      className="px-4 py-2 md:py-3 w-full md:w-auto rounded-2xl outline-none shadow-md text-sm md:text-base"
+      type="text" 
+    />
+  </div>
+  
+  <div className="mt-4 overflow-x-auto">
+    <div className="bg-gray-50 p-4 rounded shadow min-w-full">
+      <table className="w-full border-collapse">
+        <thead>
+          <tr className="bg-[#333333] text-white">
+            <th className="border border-gray-300 p-2 text-xs md:text-sm">№</th>
+            <th className="border border-gray-300 p-2 text-xs md:text-sm">O'quvchi ismi</th>
+            <th className="border border-gray-300 p-2 text-xs md:text-sm">Telefon nomer</th>
+            <th className="border border-gray-300 p-2 text-xs md:text-sm hidden md:table-cell">Yo'nalish</th>
+            <th className="border border-gray-300 p-2 text-xs md:text-sm hidden lg:table-cell">Ota-ona(F.I.SH)</th>
+            <th className="border border-gray-300 p-2 text-xs md:text-sm hidden lg:table-cell">Ota-ona (Tel)</th>
+            <th className="border border-gray-300 p-2 text-xs md:text-sm">/</th>
+          </tr>
+        </thead>
+        <tbody>
+          {studentData?.length > 0 ? studentData.map((item, index) => (
+            <tr key={index} className="hover:bg-gray-100">
+              <td className="border border-gray-300 p-2 text-xs md:text-sm text-center">{index + 1}</td>
+              <td className="border border-gray-300 p-2 text-xs md:text-sm">{item.name}</td>
+              <td className="border border-gray-300 p-2 text-xs md:text-sm">{item.phone}</td>
+              <td className="border border-gray-300 p-2 text-xs md:text-sm hidden md:table-cell">
+                {item.group[0]?.group_name}
+              </td>
+              <td className="border border-gray-300 p-2 text-xs md:text-sm hidden lg:table-cell">
+                {item.surname}
+              </td>
+              <td className="border border-gray-300 p-2 text-xs md:text-sm hidden lg:table-cell">
+                {item.parents_phone}
+              </td>
+              <td className='p-2 flex justify-evenly items-center border border-gray-300'>
+                <span 
+                  onClick={() => deletePupil(item._id)} 
+                  className='text-lg md:text-xl text-red-600 cursor-pointer'
+                >
+                  <MdDelete />
+                </span>
+                <span 
+                  onClick={() => {
+                    setModal(true)
+                    getPupilById(item._id)
+                    setPupilId(item._id)
+                  }} 
+                  className='text-blue-600 text-lg md:text-xl cursor-pointer'
+                >
+                  <MdEdit />
+                </span>
+              </td>
+            </tr>
+          )) : (
+            <tr>
+              <td colSpan="7" className="text-center text-red-600 p-2 font-semibold text-sm md:text-base">
+                Ma'lumot yo'q.
+              </td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
     )
 }
 
