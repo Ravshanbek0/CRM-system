@@ -43,7 +43,7 @@ function PasswordVerify({ setToken }) {
             return;
         }
         try {
-            await axios.post('https://crm-project.up.railway.app/api/v1/email', { email });
+            await axios.post('https://crm-system-beta.vercel.app/api/v1/email', { email });
             setShowCodeInput(true);
             setTimer(60);
         } catch (error) {
@@ -57,7 +57,7 @@ function PasswordVerify({ setToken }) {
             return;
         }
         try {
-            await axios.post('https://crm-project.up.railway.app/api/v1/email/verify', { email, code });
+            await axios.post('https://crm-system-beta.vercel.app/api/v1/email/verify', { email, code });
             setShowResetForm(true);
             setShowCodeInput(false);
         } catch (error) {
@@ -76,7 +76,7 @@ function PasswordVerify({ setToken }) {
             return;
         }
         try {
-            await axios.post(`https://crm-project.up.railway.app/api/v1/admin/reset-pass/${email}`, {
+            await axios.post(`https://crm-system-beta.vercel.app/api/v1/admin/reset-pass/${email}`, {
                 new_password: newPassword,
                 confirm_password: confirmPassword
             });
@@ -95,7 +95,7 @@ function PasswordVerify({ setToken }) {
             formData.append("email", email);
             formData.append("password", newPassword);
 
-            const response = await axios.post("https://crm-project.up.railway.app/api/v1/auth/login", formData, {
+            const response = await axios.post("https://crm-system-beta.vercel.app/api/v1/auth/login", formData, {
                 headers: { "Content-Type": "application/json" },
             });
             localStorage.setItem("token", response.data.access_token);

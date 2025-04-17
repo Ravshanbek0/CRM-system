@@ -27,7 +27,7 @@ function Report({ data, dataGroup, dataTeacher,access_token }) {
     try {
       // setLoading(true)
 
-      const response = await axios.get('https://crm-project.up.railway.app/api/v1/report', {
+      const response = await axios.get('https://crm-system-beta.vercel.app/api/v1/report', {
         headers: {
           Authorization: `Bearer ${access_token}`
         }

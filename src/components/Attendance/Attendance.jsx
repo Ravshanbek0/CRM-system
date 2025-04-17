@@ -9,12 +9,12 @@ function Attendance({ setGroup_id, setLoading, dataGroup }) {
         try {
             // API so'rovlarini parallel bajarish
             const [teachersResponse, groupResponse] = await Promise.all([
-                axios.get('https://crm-project.up.railway.app/api/v1/teacher/', {
+                axios.get('https://crm-system-beta.vercel.app/api/v1/teacher/', {
                     headers: {
                         Authorization: `Bearer ${access_token}`
                     }
                 }), // Teachers API URL
-                axios.get('https://crm-project.up.railway.app/api/v1/group/', {
+                axios.get('https://crm-system-beta.vercel.app/api/v1/group/', {
                     headers: {
                         Authorization: `Bearer ${access_token}`
                     }

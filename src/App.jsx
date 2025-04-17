@@ -31,7 +31,7 @@ function App() {
       try {
 
         setLoading(true)
-        const response = await axios.get('https://crm-project.up.railway.app/api/v1/pupil', {
+        const response = await axios.get('https://crm-system-beta.vercel.app/api/v1/pupil', {
           headers: {
             Authorization: `Bearer ${token}` // Tokenni 'Authorization' headeriga qo‘shish
           }
@@ -54,7 +54,7 @@ function App() {
     try {
       setLoading(true)
 
-      const response = await axios.get('https://crm-project.up.railway.app/api/v1/group/', {
+      const response = await axios.get('https://crm-system-beta.vercel.app/api/v1/group/', {
         headers: {
           Authorization: `Bearer ${token}` // Tokenni 'Authorization' headeriga qo‘shish
         }
@@ -72,7 +72,7 @@ function App() {
     try {
       setLoading(true)
 
-      const response = await axios.get('https://crm-project.up.railway.app/api/v1/teacher/', {
+      const response = await axios.get('https://crm-system-beta.vercel.app/api/v1/teacher/', {
         headers: {
           Authorization: `Bearer ${token}` // Tokenni 'Authorization' headeriga qo‘shish
         }
@@ -88,7 +88,7 @@ function App() {
     try {
       setLoading(true)
 
-      const response = await axios.get('https://crm-project.up.railway.app/api/v1/appeal', {
+      const response = await axios.get('https://crm-system-beta.vercel.app/api/v1/appeal', {
         headers: {
           Authorization: `Bearer ${token}` // Tokenni 'Authorization' headeriga qo‘shish
         }
@@ -110,7 +110,7 @@ function App() {
 
     try {
       const response = await axios.post(
-        "https://crm-project.up.railway.app/api/v1/auth/refresh-token/",
+        "https://crm-system-beta.vercel.app/api/v1/auth/refresh-token/",
         null,
         {
           headers: {

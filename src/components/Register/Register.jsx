@@ -44,7 +44,7 @@ function Register({ token, setToken }) {
             formData.append("email", username);
             formData.append("password", password);
 
-            const response = await axios.post("https://crm-project.up.railway.app/api/v1/auth/login", formData, {
+            const response = await axios.post("https://crm-system-beta.vercel.app/api/v1/auth/login", formData, {
                 headers: { "Content-Type": "application/json" },
             });
             localStorage.setItem("token", response.data.access_token);
@@ -70,7 +70,7 @@ function Register({ token, setToken }) {
             formData.append("full_name", fullName);
             formData.append("password", password);
 
-            const response = await axios.post("https://crm-project.up.railway.app/api/v1/admin", formData, {
+            const response = await axios.post("https://crm-system-beta.vercel.app/api/v1/admin", formData, {
                 headers: { "Content-Type": "application/json" },
             });
             localStorage.setItem("token", response.data.acc_token);

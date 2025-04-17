@@ -57,7 +57,7 @@ const Groups = ({ setLoading, dataGroup }) => {
             const formDataToJson = Object.fromEntries(formData.entries());
 
             // POST so'rovni yuborish
-            axios.post('https://crm-project.up.railway.app/api/v1/group', formDataToJson, {
+            axios.post('https://crm-system-beta.vercel.app/api/v1/group', formDataToJson, {
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${access_token}`
@@ -81,7 +81,7 @@ const Groups = ({ setLoading, dataGroup }) => {
         const access_token = localStorage.getItem("token")
 
         try {
-            const response = await axios.delete(`https://crm-project.up.railway.app/api/v1/group/${id}`, {
+            const response = await axios.delete(`https://crm-system-beta.vercel.app/api/v1/group/${id}`, {
                 headers: {
                     Authorization: `Bearer ${access_token}`
                 }
@@ -118,7 +118,7 @@ const Groups = ({ setLoading, dataGroup }) => {
         console.log(formDataToJson);
 
         try {
-            await axios.post("https://crm-project.up.railway.app/api/v1/teacher/", formDataToJson, {
+            await axios.post("https://crm-system-beta.vercel.app/api/v1/teacher/", formDataToJson, {
                 headers: {
                     Authorization: `Bearer ${access_token}`,
                     "Content-Type": "application/json"

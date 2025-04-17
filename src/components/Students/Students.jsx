@@ -39,7 +39,7 @@ const Students = ({ dataGroup }) => {
             const formDataToJson = Object.fromEntries(formData.entries());
 
             // POST so'rovni yuborish
-            axios.post('https://crm-project.up.railway.app/api/v1/pupil', formDataToJson, {
+            axios.post('https://crm-system-beta.vercel.app/api/v1/pupil', formDataToJson, {
                 headers: {
                     Authorization: `Bearer ${access_token}` // Tokenni 'Authorization' headeriga qo‘shish
                 }
@@ -63,7 +63,7 @@ const Students = ({ dataGroup }) => {
         const access_token = localStorage.getItem("token")
 
         try {
-            const response = await axios.delete(`https://crm-project.up.railway.app/api/v1/pupil/${id}`, {
+            const response = await axios.delete(`https://crm-system-beta.vercel.app/api/v1/pupil/${id}`, {
                 headers: {
                     Authorization: `Bearer ${access_token}` // Tokenni 'Authorization' headeriga qo‘shish
                 }
@@ -92,7 +92,7 @@ const Students = ({ dataGroup }) => {
             // formData.append("apsent", numberValue);
 
             const response = axios.patch(
-                `https://crm-project.up.railway.app/api/v1/pupil/${pupilId}`,
+                `https://crm-system-beta.vercel.app/api/v1/pupil/${pupilId}`,
                 formData,
                 {
                     headers: {
@@ -121,7 +121,7 @@ const Students = ({ dataGroup }) => {
         const access_token = localStorage.getItem("token")
 
         try {
-            const response = await axios.get('https://crm-project.up.railway.app/api/v1/pupil/', {
+            const response = await axios.get('https://crm-system-beta.vercel.app/api/v1/pupil/', {
                 headers: {
                     Authorization: `Bearer ${access_token}` // Tokenni 'Authorization' headeriga qo‘shish
                 }
@@ -136,7 +136,7 @@ const Students = ({ dataGroup }) => {
         const access_token = localStorage.getItem("token")
 
         try {
-            const response = await axios.get(`https://crm-project.up.railway.app/api/v1/pupil/${id}`, {
+            const response = await axios.get(`https://crm-system-beta.vercel.app/api/v1/pupil/${id}`, {
                 headers: {
                     Authorization: `Bearer ${access_token}` // Tokenni 'Authorization' headeriga qo‘shish
                 }
