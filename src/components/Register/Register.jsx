@@ -11,6 +11,7 @@ function Register({ token, setToken }) {
     const [eye, setEye] = useState(false);
     const [errors, setErrors] = useState({});
     const [error, setError] = useState();
+    const [loader, setLoader] = useState(false)
 
     const validateInputs = () => {
         let newErrors = {};
@@ -37,6 +38,7 @@ function Register({ token, setToken }) {
 
     const loginUser = async (e) => {
         e.preventDefault();
+        setLoader(true)
         if (!validateInputs()) return;
 
         try {
@@ -53,10 +55,11 @@ function Register({ token, setToken }) {
             setToken(response.data.access_token);
             setUsername("");
             setPassword("");
+            setLoader(false)
         } catch (error) {
             console.error("Login Failed:", error);
             setError(error.response.data.message)
-
+            setLoader(false)
         }
     };
 
@@ -85,7 +88,7 @@ function Register({ token, setToken }) {
         <div className="flex items-center justify-center min-h-screen bg-gray-900 p-4">
 
             <div className="w-full max-w-md bg-gray-800 p-6 rounded-xl shadow-lg">
-                <h2 className="text-white text-center text-2xl mb-2">{isLogin ? "Login" : "Sign Up"}</h2>
+                <h2 className="text-white text-center text-2xl mb-2">{isLogin ? "Kirish" : "Ro'yxatdan o'tish"}</h2>
                 {isLogin && <h3 className="text-red-500 text-center text-lg mb-6">{error}</h3>}
                 <form className="space-y-4" onSubmit={isLogin ? loginUser : handleSignup}>
                     {!isLogin && (
@@ -128,11 +131,11 @@ function Register({ token, setToken }) {
                         type="submit"
                         className="w-full p-3 bg-[#555555] text-white rounded-lg hover:bg-gray-700 transition"
                     >
-                        {isLogin ? "Login" : "Sign Up"}
+                        {loader ? "Wait..." : isLogin ? "Login" : "Sign Up"}
                     </button>
                 </form>
                 <p className="text-left text-gray-400 mt-4">
-                    {isLogin ? "Don't have an account?" : "Already have an account?"} {" "}
+                    {isLogin ? "Akkauntingiz yo'qmi?" : "Allaqachon ro'yxatdan o'tganmisiz?"} {" "}
                     <button className="text-blue-400 hover:underline" onClick={() => setIsLogin(!isLogin)}>
                         {isLogin ? "Sign Up" : "Login"}
                     </button>

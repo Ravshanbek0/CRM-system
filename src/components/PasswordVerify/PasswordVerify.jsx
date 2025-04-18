@@ -16,6 +16,7 @@ function PasswordVerify({ setToken }) {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [codeDone, setCodeDone] = useState(false);
+    const [loader, setLoader] = useState(false);
     const [error, setError] = useState("");
 
     useEffect(() => {
@@ -43,11 +44,14 @@ function PasswordVerify({ setToken }) {
             return;
         }
         try {
+            setLoader(true);
             await axios.post('https://crm-system-beta.vercel.app/api/v1/email', { email });
             setShowCodeInput(true);
             setTimer(60);
         } catch (error) {
             alert('Kod yuborishda xatolik yuz berdi!');
+        } finally {
+            setLoader(false);
         }
     };
 
@@ -57,21 +61,25 @@ function PasswordVerify({ setToken }) {
             return;
         }
         try {
+            setLoader(true);
             await axios.post('https://crm-system-beta.vercel.app/api/v1/email/verify', { email, code });
             setShowResetForm(true);
             setShowCodeInput(false);
         } catch (error) {
             alert('Kod noto‘g‘ri yoki muddati o‘tib ketgan!');
+        } finally {
+            setLoader(false);
         }
     };
 
     const resetPassword = async () => {
-        setCodeDone(true)
+        setCodeDone(true);
+        setLoader(true);
         setError("");
 
         if (!validatePassword(newPassword)) {
-            setCodeDone(false)
-
+            setCodeDone(false);
+            setLoader(false);
             setError("Parol kamida 6 ta belgidan iborat bo‘lishi, katta harf, raqam va maxsus belgini o‘z ichiga olishi kerak.");
             return;
         }
@@ -80,13 +88,12 @@ function PasswordVerify({ setToken }) {
                 new_password: newPassword,
                 confirm_password: confirmPassword
             });
-            loginUser();
+            await loginUser();
         } catch (error) {
             setError('Parolni tiklashda xatolik yuz berdi!');
-            setCodeDone(false)
-
+            setCodeDone(false);
+            setLoader(false);
         }
-        setCodeDone(false)
     };
 
     const loginUser = async () => {
@@ -104,6 +111,9 @@ function PasswordVerify({ setToken }) {
             navigate('/')
         } catch (error) {
             alert("Login Failed: " + error.response.data.message);
+        } finally {
+            setLoader(false);
+            setCodeDone(false);
         }
     };
 
@@ -122,10 +132,10 @@ function PasswordVerify({ setToken }) {
                         />
                         <button
                             onClick={sendCode}
-                            className="w-full bg-blue-500 text-white p-2 rounded-lg mt-3 hover:bg-blue-600"
-                            disabled={showCodeInput && timer > 0}
+                            className="w-full bg-blue-500 text-white p-2 rounded-lg mt-3 hover:bg-blue-600 flex items-center justify-center"
+                            disabled={showCodeInput && timer > 0 || loader}
                         >
-                            {showCodeInput && timer > 0 ? `Qayta yuborish (${timer}s)` : "Jo'natish"}
+                            {loader ? "Wait..." : (showCodeInput && timer > 0 ? `Qayta yuborish (${timer}s)` : "Jo'natish")}
                         </button>
                         {showCodeInput && (
                             <div className="mt-4">
@@ -139,9 +149,10 @@ function PasswordVerify({ setToken }) {
                                 />
                                 <button
                                     onClick={verifyCode}
-                                    className="w-full bg-green-500 text-white p-2 rounded-lg mt-3 hover:bg-green-600"
+                                    className="w-full bg-green-500 text-white p-2 rounded-lg mt-3 hover:bg-green-600 flex items-center justify-center"
+                                    disabled={loader}
                                 >
-                                    Tasdiqlash
+                                    {loader ? "Wait..." : "Tasdiqlash"}
                                 </button>
                             </div>
                         )}
@@ -184,9 +195,10 @@ function PasswordVerify({ setToken }) {
 
                         <button
                             onClick={resetPassword}
-                            className="w-full bg-purple-500 text-white p-2 rounded-lg mt-3 hover:bg-purple-600"
+                            className="w-full bg-purple-500 text-white p-2 rounded-lg mt-3 hover:bg-purple-600 flex items-center justify-center"
+                            disabled={loader}
                         >
-                            {codeDone ? "Jo'natilmoqda..." : "Parolni tiklash"}
+                            {loader ? "Wait..." : "Parolni tiklash"}
                         </button>
                     </>
                 )}

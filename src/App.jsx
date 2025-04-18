@@ -161,7 +161,7 @@ function App() {
 
   return (
     <>
-      {loading && <Loader />}
+      {/* {loading && <Loader />} */}
       <BrowserRouter>
         {token == false ? <Routes>
           <Route path='/' element={<Register toke={token} setToken={setToken} />} />

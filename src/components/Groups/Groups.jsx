@@ -14,71 +14,77 @@ const Groups = ({ setLoading, dataGroup }) => {
     const [picture, setPicture] = useState(null);
     const [salary, setSalary] = useState("");
     const [groups, setGroups] = useState("");
-
-
     const [disable, setDisable] = useState(false)
-    const [attendance, setAttendance] = useState([
-        { id: 1, name: "Muxamadaliyev Ibroxim", present: true },
-        { id: 2, name: "Muxamadaliyev Ibroxim", present: true },
-        { id: 3, name: "Muxamadaliyev Ibroxim", present: true },
-        { id: 4, name: "Muxamadaliyev Ibroxim", present: false },
-        { id: 5, name: "Muxamadaliyev Ibroxim", present: true },
-        { id: 6, name: "Muxamadaliyev Ibroxim", present: true },
-        { id: 7, name: "Muxamadaliyev Ibroxim", present: true },
-        { id: 8, name: "Muxamadaliyev Ibroxim", present: true },
-        { id: 9, name: "Muxamadaliyev Ibroxim", present: true },
-        { id: 10, name: "Muxamadaliyev Ibroxim", present: false },
-    ]);
+    const [searchTerm, setSearchTerm] = useState(""); // Search uchun state
+    const [filteredGroups, setFilteredGroups] = useState([]); // Filtrlangan guruhlar
+    
+    // Loader states
+    const [addGroupLoader, setAddGroupLoader] = useState(false);
+    const [deleteGroupLoader, setDeleteGroupLoader] = useState(false);
+    const [addTeacherLoader, setAddTeacherLoader] = useState(false);
+    const [deleteLoaderId, setDeleteLoaderId] = useState(null);
+
+    // Search funksiyasi
+    const handleSearch = (e) => {
+        const term = e.target.value.toLowerCase();
+        setSearchTerm(term);
+        
+        if (term === "") {
+            setFilteredGroups(dataGroup);
+        } else {
+            const filtered = dataGroup.filter(group => 
+                group.group_name.toLowerCase().includes(term)
+            );
+            setFilteredGroups(filtered);
+        }
+    };
+
+    // DataGroup o'zgarganida filteredGroups ni yangilash
+    useEffect(() => {
+        setFilteredGroups(dataGroup);
+    }, [dataGroup]);
+
     const DisableFunc = () => {
         setDisable(!disable)
     }
-
-
-
-    const toggleAttendance = (id) => {
-        setAttendance((prev) =>
-            prev.map((student) =>
-                student.id === id ? { ...student, present: !student.present } : student
-            )
-        );
-    };
 
     function addGroup(e) {
         e.preventDefault()
         const access_token = localStorage.getItem("token")
         if (group_name != "") {
+            setAddGroupLoader(true);
             const formData = new FormData();
             formData.append('group_name', `${group_name}`);
             formData.append('lesson_dates', `${lesson_dates}`);
             formData.append('lesson_time', `${lesson_time}`);
-            // formData.append("payment_done", false);
 
-            // FormData obyektini JSON ga aylantirish
             const formDataToJson = Object.fromEntries(formData.entries());
 
-            // POST so'rovni yuborish
             axios.post('https://crm-system-beta.vercel.app/api/v1/group', formDataToJson, {
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${access_token}`
-
                 },
             })
                 .then((response) => {
                     console.log('Maʼlumot yuborildi:', response.data);
                     window.location.reload();
-
                 })
                 .catch((error) => {
                     console.error('Xato yuz berdi:', error);
+                })
+                .finally(() => {
+                    setAddGroupLoader(false);
                 });
             setGroup_name("")
         } else {
             alert("Ma'lumot to'liq kiritilmagan")
         }
     }
+
     const deleteGroup = async (id) => {
         const access_token = localStorage.getItem("token")
+        setDeleteLoaderId(id);
 
         try {
             const response = await axios.delete(`https://crm-system-beta.vercel.app/api/v1/group/${id}`, {
@@ -86,26 +92,24 @@ const Groups = ({ setLoading, dataGroup }) => {
                     Authorization: `Bearer ${access_token}`
                 }
             });
-            console.log("Element muvaffaqiyatli o‘chirildi:", response.data);
+            console.log("Element muvaffaqiyatli o'chirildi:", response.data);
             window.location.reload();
         } catch (error) {
             console.error("Xatolik yuz berdi:", error);
+        } finally {
+            setDeleteLoaderId(null);
         }
     };
 
-
     const addTeacher = async (e) => {
+        e.preventDefault();
         const access_token = localStorage.getItem("token")
+        setAddTeacherLoader(true);
+        
         if (groups === "") {
             setGroups(dataGroup[0]._id)
-
         }
-        console.log(typeof (name),
-            surname,
-            phone,
-            salary);
 
-        e.preventDefault();
         const formData = new FormData();
         formData.append("name", `${name}`);
         formData.append("surname", `${surname}`);
@@ -115,8 +119,6 @@ const Groups = ({ setLoading, dataGroup }) => {
         formData.append("groups", "67b6ba717668fcfb774c3937");
         const formDataToJson = Object.fromEntries(formData.entries());
 
-        console.log(formDataToJson);
-
         try {
             await axios.post("https://crm-system-beta.vercel.app/api/v1/teacher/", formDataToJson, {
                 headers: {
@@ -124,12 +126,19 @@ const Groups = ({ setLoading, dataGroup }) => {
                     "Content-Type": "application/json"
                 },
             });
-            alert("O‘qituvchi muvaffaqiyatli qo‘shildi!");
+            alert("O'qituvchi muvaffaqiyatli qo'shildi!");
             setIsOpen(false);
+            setName("");
+            setSurname("");
+            setPhone("");
+            setSalary("");
         } catch (error) {
             console.error("Xatolik yuz berdi:", error);
+        } finally {
+            setAddTeacherLoader(false);
         }
     };
+
     return (
         <div className="p-4 md:p-6">
             {/* Group Creation Section */}
@@ -176,9 +185,15 @@ const Groups = ({ setLoading, dataGroup }) => {
                     <div className='flex justify-end'>
                         <button
                             onClick={addGroup}
-                            className="bg-[#333333] text-white px-8 md:px-16 lg:px-44 py-2 md:py-3 text-sm md:text-base rounded-md mt-2 hover:bg-[#555555]"
+                            disabled={addGroupLoader}
+                            className="bg-[#333333] text-white px-8 md:px-16 lg:px-44 py-2 md:py-3 text-sm md:text-base rounded-md mt-2 hover:bg-[#555555] flex items-center justify-center gap-2"
                         >
-                            Qo'shish
+                            {addGroupLoader ? (
+                                <>
+                                    <span className="inline-block h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                                    Wait...
+                                </>
+                            ) : "Qo'shish"}
                         </button>
                     </div>
                 </form>
@@ -280,10 +295,15 @@ const Groups = ({ setLoading, dataGroup }) => {
                                     </button>
                                     <button
                                         type="submit"
-                                        className="bg-[#333333] text-white px-4 py-2 text-sm md:text-base rounded hover:bg-[#555555]"
-                                        onClick={addTeacher}
+                                        disabled={addTeacherLoader}
+                                        className="bg-[#333333] text-white px-4 py-2 text-sm md:text-base rounded hover:bg-[#555555] flex items-center justify-center gap-2"
                                     >
-                                        Qo'shish
+                                        {addTeacherLoader ? (
+                                            <>
+                                                <span className="inline-block h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                                                Wait...
+                                            </>
+                                        ) : "Qo'shish"}
                                     </button>
                                 </div>
                             </form>
@@ -298,13 +318,15 @@ const Groups = ({ setLoading, dataGroup }) => {
                     </h2>
                     <input
                         placeholder='Guruh nomini kiriting...'
+                        value={searchTerm}
+                        onChange={handleSearch}
                         className="px-4 py-2 md:py-3 w-full md:w-64 rounded-2xl outline-none shadow-md text-sm md:text-base"
                         type="text"
                     />
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mt-6">
-                    {dataGroup?.length > 0 ? dataGroup.map((item, index) => (
+                    {filteredGroups?.length > 0 ? filteredGroups.map((item, index) => (
                         <div key={index} className="bg-white cursor-pointer shadow rounded-lg overflow-hidden border border-gray-200 hover:shadow-md transition-shadow">
                             <div className="flex justify-center items-center bg-[#333333] p-2 text-white relative">
                                 <h2 className="text-lg md:text-xl font-bold text-center">
@@ -316,7 +338,9 @@ const Groups = ({ setLoading, dataGroup }) => {
                                     onClick={() => deleteGroup(item._id)}
                                     className='absolute right-2 text-xl md:text-2xl hover:text-red-400 transition-colors'
                                 >
-                                    <MdDelete />
+                                    {deleteLoaderId === item._id ? (
+                                        <span className="inline-block h-4 w-4 border-2 border-red-400 border-t-transparent rounded-full animate-spin"></span>
+                                    ) : <MdDelete />}
                                 </span>
                             </div>
 
@@ -339,7 +363,9 @@ const Groups = ({ setLoading, dataGroup }) => {
                         </div>
                     )) : (
                         <div className="col-span-full text-center py-8">
-                            <h1 className='text-red-600 font-semibold text-lg md:text-xl'>Ma'lumot yo'q!</h1>
+                            <h1 className='text-red-600 font-semibold text-lg md:text-xl'>
+                                {searchTerm ? "Qidiruv bo'yicha hech narsa topilmadi" : "Ma'lumot yo'q!"}
+                            </h1>
                         </div>
                     )}
                 </div>

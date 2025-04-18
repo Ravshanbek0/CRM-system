@@ -162,8 +162,8 @@ function Report({ data, dataGroup, dataTeacher, access_token }) {
         {data1.map((item, index) => (
           <div key={index} className="bg-white p-4 rounded-2xl shadow-md flex justify-between items-center">
             <div>
-              <div className="text-gray-500">{ismobile ? item.minTitle : item.title}</div>
-              <div className="text-2xl font-bold">
+              <div className="text-gray-500 text-sm xl:text-xl lg:text-lg">{ismobile ? item.minTitle : item.title}</div>
+              <div className="text-xl  xl:text-2xl lg:text-lg font-bold">
                 {item.title === "Jami o'quvchilar soni" ? data.length :
                   item.title === "O'qituvchilar soni" ? dataTeacher.length :
                     item.title === "Jami guruhlar soni" ? dataGroup.length :
@@ -184,39 +184,86 @@ function Report({ data, dataGroup, dataTeacher, access_token }) {
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-lg font-semibold">2025-YIL Fevral oyi statistikasi</h2>
           </div>
-          <div className="h-80">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={[
-                    { name: "O'quvchilar", value: data.length, color: "#4f46e5" },
-                    { name: "O'qituvchilar", value: dataTeacher.length, color: "#10b981" },
-                    { name: "Guruhlar", value: dataGroup.length, color: "#f59e0b" },
-                    { name: "Tark etganlar", value: leftStudents, color: "#ef4444" }
-                  ]}
-                  cx="50%"
-                  cy="50%"
-                  labelLine={false}
-                  outerRadius={80}
-                  fill="#8884d8"
-                  dataKey="value"
-                  label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
-                >
-                  {[
-                    { name: "O'quvchilar", value: data.length, color: "#4f46e5" },
-                    { name: "O'qituvchilar", value: dataTeacher.length, color: "#10b981" },
-                    { name: "Guruhlar", value: dataGroup.length, color: "#f59e0b" },
-                    { name: "Tark etganlar", value: leftStudents, color: "#ef4444" }
-                  ].map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Pie>
-                <Tooltip
-                  formatter={(value, name) => [`${value} ta`, name]}
-                />
-                <Legend />
-              </PieChart>
-            </ResponsiveContainer>
+          <div className="h-80 flex flex-col">
+            {/* Chart Container */}
+            <div className="flex-1 min-h-0 relative">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={[
+                      { name: "O'quvchilar", value: data.length, color: "#4f46e5" },
+                      { name: "O'qituvchilar", value: dataTeacher.length, color: "#10b981" },
+                      { name: "Guruhlar", value: dataGroup.length, color: "#f59e0b" },
+                      { name: "Tark etganlar", value: leftStudents, color: "#ef4444" }
+                    ]}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={20}
+                    outerRadius={110}
+                    paddingAngle={1}
+                    dataKey="value"
+                    label={({
+                      cx,
+                      cy,
+                      midAngle,
+                      innerRadius,
+                      outerRadius,
+                      percent,
+                      index
+                    }) => {
+                      const RADIAN = Math.PI / 180;
+                      const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+                      const x = cx + radius * Math.cos(-midAngle * RADIAN);
+                      const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+                      return (
+                        <text
+                          x={x}
+                          y={y}
+                          fill="white"
+                          textAnchor="middle"
+                          dominantBaseline="central"
+                          className="text-xs font-bold"
+                        >
+                          {`${(percent * 100).toFixed(0)}%`}
+                        </text>
+                      );
+                    }}
+                    labelLine={false}
+                  >
+                    {[
+                      { name: "O'quvchilar", value: data.length, color: "#4f46e5" },
+                      { name: "O'qituvchilar", value: dataTeacher.length, color: "#10b981" },
+                      { name: "Guruhlar", value: dataGroup.length, color: "#f59e0b" },
+                      { name: "Tark etganlar", value: leftStudents, color: "#ef4444" }
+                    ].map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </Pie>
+                  <Tooltip
+                    formatter={(value, name) => [`${value} ta`, name]}
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+
+            {/* Custom Legend */}
+            <div className="flex flex-wrap justify-center gap-3 mt-4 px-2">
+              {[
+                { name: "O'quvchilar", value: data.length, color: "#4f46e5" },
+                { name: "O'qituvchilar", value: dataTeacher.length, color: "#10b981" },
+                { name: "Guruhlar", value: dataGroup.length, color: "#f59e0b" },
+                { name: "Tark etganlar", value: leftStudents, color: "#ef4444" }
+              ].map((item, index) => (
+                <div key={index} className="flex items-center text-xs sm:text-sm">
+                  <div
+                    className="w-3 h-3 rounded-full mr-2 flex-shrink-0"
+                    style={{ backgroundColor: item.color }}
+                  />
+                  <span>{item.name}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -255,7 +302,7 @@ function Report({ data, dataGroup, dataTeacher, access_token }) {
             "Ajoyib natija! O'quvchilarni saqlab qolish darajasi yuqori." :
             "O'quvchilarni saqlab qolish darajasini oshirish uchun choralar ko'rilishi kerak."}
         </div>
-        
+
         <div className="grid grid-cols-3 text-center text-sm mt-4">
           <div>
             <div className="text-gray-500">O'quvchilar</div>
@@ -269,10 +316,10 @@ function Report({ data, dataGroup, dataTeacher, access_token }) {
             <div className="text-gray-500">Guruhlar</div>
             <div className="font-bold text-purple-500">{dataGroup.length} ta</div>
           </div>
-          
+
         </div>
       </div>
-    </div>
+    </div >
 
   )
 }
