@@ -38,7 +38,7 @@ function Home({ data, dataGroup, dataTeacher, group_id, setGroup_id, setLoading,
     transition-all duration-300
     xl:sticky xl:top-0 xl:h-screen xl:flex xl:flex-col
     fixed bottom-0 left-0 w-full h-16 
-    z-50 xl:py-2
+    z-50 xl:py-2 px-0
   `}
       >
         {/* Menu Button (faqat katta ekranlarda) */}
@@ -115,7 +115,7 @@ function Home({ data, dataGroup, dataTeacher, group_id, setGroup_id, setLoading,
       </span>
 
       {/* Main Content */}
-      <main className="flex-1 p-6 xl:ml-4 pb-20">
+      <main className="flex-1 px-1 xl:p-6 xl:ml-4 pb-20">
         {pathname == "/" && <Report access_token={access_token} data={data} dataGroup={dataGroup} dataTeacher={dataTeacher} />}
         {pathname == "/appeals" && <Appeals access_token={access_token} dataAppeals={dataAppeals} />}
         {pathname == "/payment" && <Payment access_token={access_token} data={data} setLoading={setLoading} />}
