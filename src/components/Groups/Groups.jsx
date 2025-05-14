@@ -5,7 +5,7 @@ import { MdDelete } from "react-icons/md";
 
 const Groups = ({ setLoading, dataGroup }) => {
     const [group_name, setGroup_name] = useState("")
-    const [lesson_dates, setLesson_dates] = useState("Du-Chor-Juma")
+    const [lesson_dates, setLesson_dates] = useState("Mon-Wed-Fri")
     const [lesson_time, setLesson_time] = useState("14:00 - 16:00")
     const [isOpen, setIsOpen] = useState(false);
     const [name, setName] = useState("");
@@ -15,8 +15,8 @@ const Groups = ({ setLoading, dataGroup }) => {
     const [salary, setSalary] = useState("");
     const [groups, setGroups] = useState("");
     const [disable, setDisable] = useState(false)
-    const [searchTerm, setSearchTerm] = useState(""); // Search uchun state
-    const [filteredGroups, setFilteredGroups] = useState([]); // Filtrlangan guruhlar
+    const [searchTerm, setSearchTerm] = useState("");
+    const [filteredGroups, setFilteredGroups] = useState([]);
     
     // Loader states
     const [addGroupLoader, setAddGroupLoader] = useState(false);
@@ -24,7 +24,7 @@ const Groups = ({ setLoading, dataGroup }) => {
     const [addTeacherLoader, setAddTeacherLoader] = useState(false);
     const [deleteLoaderId, setDeleteLoaderId] = useState(null);
 
-    // Search funksiyasi
+    // Search function
     const handleSearch = (e) => {
         const term = e.target.value.toLowerCase();
         setSearchTerm(term);
@@ -39,7 +39,7 @@ const Groups = ({ setLoading, dataGroup }) => {
         }
     };
 
-    // DataGroup o'zgarganida filteredGroups ni yangilash
+    // Update filteredGroups when dataGroup changes
     useEffect(() => {
         setFilteredGroups(dataGroup);
     }, [dataGroup]);
@@ -67,18 +67,18 @@ const Groups = ({ setLoading, dataGroup }) => {
                 },
             })
                 .then((response) => {
-                    console.log('Maʼlumot yuborildi:', response.data);
+                    console.log('Data sent successfully:', response.data);
                     window.location.reload();
                 })
                 .catch((error) => {
-                    console.error('Xato yuz berdi:', error);
+                    console.error('Error occurred:', error);
                 })
                 .finally(() => {
                     setAddGroupLoader(false);
                 });
             setGroup_name("")
         } else {
-            alert("Ma'lumot to'liq kiritilmagan")
+            alert("Please fill in all fields")
         }
     }
 
@@ -92,10 +92,10 @@ const Groups = ({ setLoading, dataGroup }) => {
                     Authorization: `Bearer ${access_token}`
                 }
             });
-            console.log("Element muvaffaqiyatli o'chirildi:", response.data);
+            console.log("Group deleted successfully:", response.data);
             window.location.reload();
         } catch (error) {
-            console.error("Xatolik yuz berdi:", error);
+            console.error("Error occurred:", error);
         } finally {
             setDeleteLoaderId(null);
         }
@@ -126,14 +126,14 @@ const Groups = ({ setLoading, dataGroup }) => {
                     "Content-Type": "application/json"
                 },
             });
-            alert("O'qituvchi muvaffaqiyatli qo'shildi!");
+            alert("Teacher added successfully!");
             setIsOpen(false);
             setName("");
             setSurname("");
             setPhone("");
             setSalary("");
         } catch (error) {
-            console.error("Xatolik yuz berdi:", error);
+            console.error("Error occurred:", error);
         } finally {
             setAddTeacherLoader(false);
         }
@@ -144,34 +144,34 @@ const Groups = ({ setLoading, dataGroup }) => {
             {/* Group Creation Section */}
             <div className={disable === false ? 'block' : 'hidden'}>
                 {/* Group Creation Form */}
-                <h2 className='text-2xl md:text-3xl font-semibold text-[#333333]'>Yangi guruh qo'shish</h2>
+                <h2 className='text-2xl md:text-3xl font-semibold text-[#333333]'>Add New Group</h2>
 
                 <form className="space-y-4 mt-4 bg-gray-50 p-4 rounded shadow">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         <div>
-                            <label className="block text-sm md:text-base font-medium">Guruh yo'nalishi</label>
+                            <label className="block text-sm md:text-base font-medium">Group Direction</label>
                             <input
                                 value={group_name}
                                 type="text"
                                 onChange={(e) => setGroup_name(e.target.value)}
                                 className='w-full p-2 text-sm md:text-base border rounded'
-                                placeholder='Guruh nomini kiriting...'
+                                placeholder='Enter group name...'
                             />
                         </div>
 
                         <div>
-                            <label className="block text-sm md:text-base font-medium">Dars kunlari</label>
+                            <label className="block text-sm md:text-base font-medium">Lesson Days</label>
                             <select
                                 onChange={(e) => setLesson_dates(e.target.value)}
                                 className="w-full p-2 text-sm md:text-base border rounded"
                             >
-                                <option value={'Du-Chor-Juma'}>DU-CHOR-JUMA</option>
-                                <option value={'Se-Pay-Shan'}>SE-PA-SHANBA</option>
+                                <option value={'Du-Chor-Juma'}>MON-WED-FRI</option>
+                                <option value={'Se-Pay-Shan'}>TUE-THU-SAT</option>
                             </select>
                         </div>
 
                         <div>
-                            <label className="block text-sm md:text-base font-medium">Dars vaqti</label>
+                            <label className="block text-sm md:text-base font-medium">Lesson Time</label>
                             <select
                                 onChange={(e) => setLesson_time(e.target.value)}
                                 className="w-full p-2 text-sm md:text-base border rounded"
@@ -193,7 +193,7 @@ const Groups = ({ setLoading, dataGroup }) => {
                                     <span className="inline-block h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
                                     Wait...
                                 </>
-                            ) : "Qo'shish"}
+                            ) : "Add"}
                         </button>
                     </div>
                 </form>
@@ -204,7 +204,7 @@ const Groups = ({ setLoading, dataGroup }) => {
                         onClick={() => setIsOpen(true)}
                         className="bg-blue-600 text-white px-4 py-2 text-sm md:text-base rounded hover:bg-blue-700"
                     >
-                        O'qituvchi qo'shish
+                        Add Teacher
                     </button>
                 </div>
 
@@ -212,7 +212,7 @@ const Groups = ({ setLoading, dataGroup }) => {
                 {isOpen && (
                     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80 z-[99999] p-4">
                         <div className="bg-white p-4 md:p-6 rounded shadow-lg w-full md:w-3/4 lg:w-1/2 relative max-h-[90vh] overflow-y-auto">
-                            <h2 className="text-xl md:text-2xl font-bold mb-4">Yangi o'qituvchi qo'shish</h2>
+                            <h2 className="text-xl md:text-2xl font-bold mb-4">Add New Teacher</h2>
                             <p
                                 onClick={() => setIsOpen(false)}
                                 className='absolute top-2 right-4 cursor-pointer text-xl'
@@ -223,31 +223,31 @@ const Groups = ({ setLoading, dataGroup }) => {
                             <form onSubmit={addTeacher} className="space-y-4">
                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                                     <div>
-                                        <label className="block text-sm md:text-base font-medium">Ism</label>
+                                        <label className="block text-sm md:text-base font-medium">First Name</label>
                                         <input
                                             type="text"
                                             value={name}
                                             onChange={(e) => setName(e.target.value)}
                                             className="w-full p-2 text-sm md:text-base border rounded"
-                                            placeholder="Ismni kiriting..."
+                                            placeholder="Enter first name..."
                                             required
                                         />
                                     </div>
 
                                     <div>
-                                        <label className="block text-sm md:text-base font-medium">Familiya</label>
+                                        <label className="block text-sm md:text-base font-medium">Last Name</label>
                                         <input
                                             type="text"
                                             value={surname}
                                             onChange={(e) => setSurname(e.target.value)}
                                             className="w-full p-2 text-sm md:text-base border rounded"
-                                            placeholder="Familiyani kiriting..."
+                                            placeholder="Enter last name..."
                                             required
                                         />
                                     </div>
 
                                     <div>
-                                        <label className="block text-sm md:text-base font-medium">Telefon</label>
+                                        <label className="block text-sm md:text-base font-medium">Phone</label>
                                         <input
                                             type="number"
                                             value={phone}
@@ -261,7 +261,7 @@ const Groups = ({ setLoading, dataGroup }) => {
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
-                                        <label className="block text-sm md:text-base font-medium">Maosh</label>
+                                        <label className="block text-sm md:text-base font-medium">Salary</label>
                                         <input
                                             type="number"
                                             value={salary}
@@ -273,7 +273,7 @@ const Groups = ({ setLoading, dataGroup }) => {
                                     </div>
 
                                     <div>
-                                        <label className="block text-sm md:text-base font-medium">Dars o'tadigan guruh</label>
+                                        <label className="block text-sm md:text-base font-medium">Teaching Group</label>
                                         <select
                                             onChange={(e) => setGroups(e.target.value)}
                                             className="w-full p-2 text-sm md:text-base border rounded"
@@ -291,7 +291,7 @@ const Groups = ({ setLoading, dataGroup }) => {
                                         onClick={() => setIsOpen(false)}
                                         className="bg-red-500 text-white px-4 py-2 text-sm md:text-base rounded hover:bg-red-600"
                                     >
-                                        Bekor qilish
+                                        Cancel
                                     </button>
                                     <button
                                         type="submit"
@@ -303,7 +303,7 @@ const Groups = ({ setLoading, dataGroup }) => {
                                                 <span className="inline-block h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
                                                 Wait...
                                             </>
-                                        ) : "Qo'shish"}
+                                        ) : "Add"}
                                     </button>
                                 </div>
                             </form>
@@ -314,10 +314,10 @@ const Groups = ({ setLoading, dataGroup }) => {
                 {/* Existing Groups Section */}
                 <div className='flex flex-col md:flex-row justify-between items-center mt-8 gap-4'>
                     <h2 className="text-2xl md:text-3xl font-semibold text-[#333333]">
-                        Mavjud guruhlar
+                        Existing Groups
                     </h2>
                     <input
-                        placeholder='Guruh nomini kiriting...'
+                        placeholder='Search group...'
                         value={searchTerm}
                         onChange={handleSearch}
                         className="px-4 py-2 md:py-3 w-full md:w-64 rounded-2xl outline-none shadow-md text-sm md:text-base"
@@ -347,16 +347,16 @@ const Groups = ({ setLoading, dataGroup }) => {
                             <Link to={`/attendenceGroup/${item._id}`}>
                                 <div className='p-4'>
                                     <p className="text-sm md:text-base text-[#333333] font-semibold mb-2">
-                                        Dars kunlari: <span className="text-gray-500">{item.lesson_dates}</span>
+                                        Lesson Days: <span className="text-gray-500">{item.lesson_dates}</span>
                                     </p>
                                     <p className="text-sm md:text-base text-[#333333] font-semibold mb-2">
-                                        Dars vaqti: <span className="text-gray-500">{item.lesson_time}</span>
+                                        Lesson Time: <span className="text-gray-500">{item.lesson_time}</span>
                                     </p>
                                     <p className="text-sm md:text-base text-[#333333] font-semibold mb-2">
-                                        O'quvchilar soni: <span className="text-gray-500">{item.group_pupils.length}</span>
+                                        Number of Students: <span className="text-gray-500">{item.group_pupils.length}</span>
                                     </p>
                                     <p className="text-sm md:text-base text-[#333333] font-semibold">
-                                        To'lov qilganlar: <span className="text-gray-500">{item.payment_done}ta</span>
+                                        Paid Students: <span className="text-gray-500">{item.payment_done}</span>
                                     </p>
                                 </div>
                             </Link>
@@ -364,7 +364,7 @@ const Groups = ({ setLoading, dataGroup }) => {
                     )) : (
                         <div className="col-span-full text-center py-8">
                             <h1 className='text-red-600 font-semibold text-lg md:text-xl'>
-                                {searchTerm ? "Qidiruv bo'yicha hech narsa topilmadi" : "Ma'lumot yo'q!"}
+                                {searchTerm ? "No results found" : "No data available!"}
                             </h1>
                         </div>
                     )}

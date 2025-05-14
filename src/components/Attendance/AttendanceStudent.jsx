@@ -1,8 +1,8 @@
 import React from 'react'
 import axios from "axios";
 
-function AttendanceStudent({ index, student, apsentStudentId, setApsentStudentId }) {
-    
+function AttendanceStudent({ index, student, absentStudentId, setAbsentStudentId }) {
+
 
     return (
         <tr key={index} className={"bg-gray-100 w-full"}>
@@ -13,12 +13,12 @@ function AttendanceStudent({ index, student, apsentStudentId, setApsentStudentId
             <td className="border border-gray-300 p-2 text-center">
                 <input
                     onChange={(e) => {
-                        if (e.target.value === "+" && !apsentStudentId.includes(student._id)) {
-                            setApsentStudentId([...apsentStudentId, student._id])
-                        } else if (e.target.value === "-" && apsentStudentId.includes(student._id)) {
-                            setApsentStudentId(apsentStudentId.filter(id => id !== student._id));
+                        if (e.target.value === "+" && !absentStudentId.includes(student._id)) {
+                            setAbsentStudentId([...absentStudentId, student._id])
+                        } else if (e.target.value === "-" && absentStudentId.includes(student._id)) {
+                            setAbsentStudentId(absentStudentId.filter(id => id !== student._id));
                         }
-                        console.log(apsentStudentId);
+                        console.log(absentStudentId);
 
                     }}
                     type='text'

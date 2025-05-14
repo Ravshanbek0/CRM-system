@@ -13,7 +13,7 @@ const Students = ({ dataGroup }) => {
   const [group, setGroup] = useState("")
   const [pupilId, setPupilId] = useState("")
   const [modal, setModal] = useState(false)
-  const [apsent, setApsent] = useState(false)
+  const [absent, setAbsent] = useState(false)
   const [loader, setLoader] = useState(false)
   const [deleteLoader, setDeleteLoader] = useState(false)
   const [addLoader, setAddLoader] = useState(false)
@@ -45,7 +45,7 @@ const Students = ({ dataGroup }) => {
         }
       })
         .then((response) => {
-          console.log('Maʼlumot yuborildi:', response.data);
+          console.log('Data sent successfully:', response.data);
           setName("")
           setPhone("")
           setParents_name("")
@@ -53,13 +53,13 @@ const Students = ({ dataGroup }) => {
           window.location.reload();
         })
         .catch((error) => {
-          console.error('Xato yuz berdi:', error);
+          console.error('An error occurred:', error);
         })
         .finally(() => {
           setAddLoader(false)
         });
     } else {
-      alert("Ma'lumotlar to'liq kiritilmagan!")
+      alert("Please fill in all fields!")
     }
   }
 
@@ -73,10 +73,10 @@ const Students = ({ dataGroup }) => {
           Authorization: `Bearer ${access_token}`
         }
       });
-      console.log("Element muvaffaqiyatli o'chirildi:", response.data);
+      console.log("Item deleted successfully:", response.data);
       window.location.reload();
     } catch (error) {
-      console.error("Xatolik yuz berdi:", error);
+      console.error("An error occurred:", error);
     } finally {
       setDeleteLoader(false)
     }
@@ -86,7 +86,7 @@ const Students = ({ dataGroup }) => {
     e.preventDefault()
     const access_token = localStorage.getItem("token")
     setUpdateLoader(true)
-    var numberValue = Number(apsent);
+    var numberValue = Number(absent);
 
     try {
       const formData = new FormData();
@@ -107,7 +107,7 @@ const Students = ({ dataGroup }) => {
         }
       )
         .then((response) => {
-          console.log("Yangilangan ma'lumot:", response.data);
+          console.log("Updated data:", response.data);
           setName("")
           setPhone("")
           setParents_name("")
@@ -115,7 +115,7 @@ const Students = ({ dataGroup }) => {
           setModal(false)
         })
         .catch((error) => {
-          console.error("Xatolik yuz berdi:", error);
+          console.error("An error occurred:", error);
           setModal(false)
         })
         .finally(() => {
@@ -124,7 +124,7 @@ const Students = ({ dataGroup }) => {
 
     } catch (error) {
       setModal(false)
-      console.error("Xatolik yuz berdi:", error);
+      console.error("An error occurred:", error);
       setUpdateLoader(false)
     }
   };
@@ -163,9 +163,9 @@ const Students = ({ dataGroup }) => {
       setParents_name(response.data.surname)
       setParents_phone(response.data.parents_phone)
       setGroup(response.data.group[0]?._id)
-      setApsent(response.data.apsent)
+      setAbsent(response.data.absent)
     } catch (err) {
-      console.log(err.massage);
+      console.log(err.message);
     } finally {
       setLoader(false)
     }
@@ -196,18 +196,18 @@ const Students = ({ dataGroup }) => {
           <form onSubmit={updatePupil} className="w-full mx-4 md:w-3/4 lg:w-2/3 bg-gray-50 p-4 md:p-6 rounded shadow">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               <div>
-                <label className="block text-sm md:text-base font-medium">O'quvchi ismi</label>
+                <label className="block text-sm md:text-base font-medium">Student name</label>
                 <input
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   type="text"
-                  placeholder="Ismni kiriting"
+                  placeholder="Enter name"
                   className="w-full p-2 text-sm md:text-base border rounded"
                 />
               </div>
 
               <div>
-                <label className="block text-sm md:text-base font-medium">Telefon raqam</label>
+                <label className="block text-sm md:text-base font-medium">Phone number</label>
                 <input
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
@@ -218,18 +218,18 @@ const Students = ({ dataGroup }) => {
               </div>
 
               <div>
-                <label className="block text-sm md:text-base font-medium">Ota-onasining ismi</label>
+                <label className="block text-sm md:text-base font-medium">Parent's name</label>
                 <input
                   value={parents_name}
                   onChange={(e) => setParents_name(e.target.value)}
                   type="text"
-                  placeholder='Ota-onasining ismi'
+                  placeholder="Parent's name"
                   className="w-full p-2 text-sm md:text-base border rounded"
                 />
               </div>
 
               <div>
-                <label className="block text-sm md:text-base font-medium">Ota-onasining nomeri</label>
+                <label className="block text-sm md:text-base font-medium">Parent's phone</label>
                 <input
                   value={parents_phone}
                   onChange={(e) => setParents_phone(e.target.value)}
@@ -250,7 +250,7 @@ const Students = ({ dataGroup }) => {
                     <span className="inline-block h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
                     Wait...
                   </>
-                ) : "O'zgartirish"}
+                ) : "Update"}
               </button>
             </div>
           </form>
@@ -258,22 +258,22 @@ const Students = ({ dataGroup }) => {
       )}
 
       {/* Main Form */}
-      <h2 className='text-xl md:text-2xl font-semibold text-[#333333]'>Yangi o'quvchi qo'shish</h2>
+      <h2 className='text-xl md:text-2xl font-semibold text-[#333333]'>Add new student</h2>
       <form onSubmit={addPupil} className="space-y-4 mt-4 bg-gray-50 p-4 rounded shadow">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <div>
-            <label className="block text-sm md:text-base font-medium">O'quvchi ismi</label>
+            <label className="block text-sm md:text-base font-medium">Student name</label>
             <input
               value={name}
               onChange={(e) => setName(e.target.value)}
               type="text"
-              placeholder="Ismni kiriting"
+              placeholder="Enter name"
               className="w-full p-2 text-sm md:text-base border rounded"
             />
           </div>
 
           <div>
-            <label className="block text-sm md:text-base font-medium">Telefon raqam</label>
+            <label className="block text-sm md:text-base font-medium">Phone number</label>
             <input
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
@@ -284,7 +284,7 @@ const Students = ({ dataGroup }) => {
           </div>
 
           <div>
-            <label className="block text-sm md:text-base font-medium">Yo'nalish</label>
+            <label className="block text-sm md:text-base font-medium">Direction</label>
             <select
               onChange={(e) => setGroup(e.target.value)}
               className="w-full p-2 text-sm md:text-base border rounded"
@@ -296,18 +296,18 @@ const Students = ({ dataGroup }) => {
           </div>
 
           <div>
-            <label className="block text-sm md:text-base font-medium">Ota-onasining ismi</label>
+            <label className="block text-sm md:text-base font-medium">Parent's name</label>
             <input
               value={parents_name}
               onChange={(e) => setParents_name(e.target.value)}
               type="text"
-              placeholder='Ota-onasining ismi'
+              placeholder="Parent's name"
               className="w-full p-2 text-sm md:text-base border rounded"
             />
           </div>
 
           <div>
-            <label className="block text-sm md:text-base font-medium">Ota-onasining nomeri</label>
+            <label className="block text-sm md:text-base font-medium">Parent's phone</label>
             <input
               value={parents_phone}
               onChange={(e) => setParents_phone(e.target.value)}
@@ -328,7 +328,7 @@ const Students = ({ dataGroup }) => {
                 <span className="inline-block h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
                 Wait...
               </>
-            ) : "Qo'shish"}
+            ) : "Add"}
           </button>
         </div>
       </form>
@@ -336,10 +336,10 @@ const Students = ({ dataGroup }) => {
       {/* Student List */}
       <div className='flex flex-col md:flex-row justify-between items-center mt-6 md:mt-8 gap-4'>
         <h2 className="text-xl md:text-2xl font-semibold text-[#333333]">
-          Bizning o'quvchilar
+          Our students
         </h2>
         <input
-          placeholder='Ismni kiriting...'
+          placeholder='Enter name...'
           onChange={(e) => searchPupil(e.target.value)}
           className="px-4 py-2 md:py-3 w-full md:w-auto rounded-2xl outline-none shadow-md text-sm md:text-base"
           type="text"
@@ -356,12 +356,12 @@ const Students = ({ dataGroup }) => {
             <table className="w-full border-collapse">
               <thead>
                 <tr className="bg-[#333333] text-white">
-                  <th className="border border-gray-300 p-2 text-xs md:text-sm">№</th>
-                  <th className="border border-gray-300 p-2 text-xs md:text-sm">O'quvchi ismi</th>
-                  <th className="border border-gray-300 p-2 text-xs md:text-sm">Telefon nomer</th>
-                  <th className="border border-gray-300 p-2 text-xs md:text-sm hidden md:table-cell">Yo'nalish</th>
-                  <th className="border border-gray-300 p-2 text-xs md:text-sm hidden lg:table-cell">Ota-ona(F.I.SH)</th>
-                  <th className="border border-gray-300 p-2 text-xs md:text-sm hidden lg:table-cell">Ota-ona (Tel)</th>
+                  <th className="border border-gray-300 p-2 text-xs md:text-sm">#</th>
+                  <th className="border border-gray-300 p-2 text-xs md:text-sm">Student name</th>
+                  <th className="border border-gray-300 p-2 text-xs md:text-sm">Phone number</th>
+                  <th className="border border-gray-300 p-2 text-xs md:text-sm hidden md:table-cell">Direction</th>
+                  <th className="border border-gray-300 p-2 text-xs md:text-sm hidden lg:table-cell">Parent (Full name)</th>
+                  <th className="border border-gray-300 p-2 text-xs md:text-sm hidden lg:table-cell">Parent (Phone)</th>
                   <th className="border border-gray-300 p-2 text-xs md:text-sm">/</th>
                 </tr>
               </thead>
@@ -404,7 +404,7 @@ const Students = ({ dataGroup }) => {
                 )) : (
                   <tr>
                     <td colSpan="7" className="text-center text-red-600 p-2 font-semibold text-sm md:text-base">
-                      Ma'lumot yo'q.
+                      No data available.
                     </td>
                   </tr>
                 )}

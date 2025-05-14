@@ -30,24 +30,24 @@ function Attendance({ setGroup_id, setLoading, dataGroup }) {
     const fetchData = async () => {
         const access_token = localStorage.getItem('token')
         try {
-            // API so'rovlarini parallel bajarish
+            // Parallel API requests
             const [teachersResponse, groupResponse] = await Promise.all([
                 axios.get('https://crm-system-beta.vercel.app/api/v1/teacher/', {
                     headers: {
                         Authorization: `Bearer ${access_token}`
                     }
-                }), // Teachers API URL
+                }),
                 axios.get('https://crm-system-beta.vercel.app/api/v1/group/', {
                     headers: {
                         Authorization: `Bearer ${access_token}`
                     }
-                }),   // group API URL
+                }),
             ]);
 
-            // Ma'lumotlarni massivlar bo'yicha birlashtirish
+            // Combine data by arrays
             const combinedData = teachersResponse.data.map((teacher, index) => ({
                 teacher,
-                group: groupResponse.data[index] || null, // Guruh mavjud bo'lmasa null qo'shish
+                group: groupResponse.data[index] || null,
             }));
 
             setCombinedData(combinedData);
@@ -55,7 +55,7 @@ function Attendance({ setGroup_id, setLoading, dataGroup }) {
 
         } catch (err) {
             console.error(err);
-            setError('Ma\'lumotlarni olishda xatolik yuz berdi.');
+            setError('Error occurred while fetching data.');
         } finally {
             setLoading(false);
         }
@@ -69,11 +69,11 @@ function Attendance({ setGroup_id, setLoading, dataGroup }) {
         <div>
             <main className="flex-1 p-6 bg-gray-50">
                 <div className='flex justify-between items-center xl:flex-row flex-col pb-8'>
-                    <h1 className="text-2xl font-semibold text-[#333333] mb-6">Davomat oladigan guruhni tanlang</h1>
+                    <h1 className="text-2xl font-semibold text-[#333333] mb-6">Select group for attendance</h1>
                     <input
                         className='py-2 px-4 w-full shadow rounded-lg outline-none border-none xl:w-1/4'
                         type="text"
-                        placeholder='Guruh nomini kiriting'
+                        placeholder='Search group...'
                         value={searchTerm}
                         onChange={handleSearch}
                     />
@@ -92,16 +92,16 @@ function Attendance({ setGroup_id, setLoading, dataGroup }) {
                                 <h2 className="text-lg font-bold bg-[#333333] p-2 text-white mb-2 text-center">{item.group_name}</h2>
                                 <div className='p-4'>
                                     <p className="text-sm text-[#333333] font-semibold mb-2">
-                                        Dars kunlari: <span className="text-gray-500">{item.lesson_dates}</span>
+                                        Lesson Days: <span className="text-gray-500">{item.lesson_dates}</span>
                                     </p>
                                     <p className="text-sm text-[#333333] font-semibold mb-2">
-                                        Dars vaqti: <span className="text-gray-500">{item.lesson_time}</span>
+                                        Lesson Time: <span className="text-gray-500">{item.lesson_time}</span>
                                     </p>
                                     <p className="text-sm text-[#333333] font-semibold mb-2">
-                                        O'quvchilar soni: <span className="text-gray-500">{item.group_pupils.length}ta</span>
+                                        Number of Students: <span className="text-gray-500">{item.group_pupils.length}</span>
                                     </p>
                                     <p className="text-sm text-[#333333] font-semibold">
-                                        To'lov qilganlar: <span className="text-gray-500">{item.payment_done}ta</span>
+                                        Paid Students: <span className="text-gray-500">{item.payment_done}</span>
                                     </p>
                                 </div>
                             </div>
@@ -109,7 +109,7 @@ function Attendance({ setGroup_id, setLoading, dataGroup }) {
                     )) : (
                         <div className="col-span-full text-center py-8">
                             <h1 className='text-red-600 font-semibold text-lg'>
-                                {searchTerm ? "Qidiruv bo'yicha hech narsa topilmadi" : "Ma'lumot yo'q!"}
+                                {searchTerm ? "No results found" : "No data available!"}
                             </h1>
                         </div>
                     )}

@@ -22,27 +22,21 @@ ChartJS.register(
 import { RadialBarChart, RadialBar, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 
 function Report({ data, dataGroup, dataTeacher, access_token }) {
-  const [tarkPupil, setTarkPupil] = useState([])
+  const [leftStudents, setLeftStudents] = useState([])
   const getReport = async () => {
     var access_token = localStorage.getItem("token")
     try {
-      // setLoading(true)
-
       const response = await axios.get('https://crm-system-beta.vercel.app/api/v1/report', {
         headers: {
           Authorization: `Bearer ${access_token}`
         }
-      }); // API URL
-      // setDataGroup(response.data); // Javobni saqlash
+      });
+      setLeftStudents(response.data);
       console.log(response.data);
-      setTarkPupil(response.data)
-      // setLoading(false); // Yuklashni to'xtatish
     } catch (err) {
-      console.error(err.message); // Xatoni saqlash
-      // setLoading(false); // Yuklashni to'xtatish
+      console.error(err.message);
     }
   };
-
 
   useEffect(() => {
     getReport()
@@ -51,68 +45,69 @@ function Report({ data, dataGroup, dataTeacher, access_token }) {
     if (data && dataGroup && dataTeacher) {
       console.log(data, dataGroup, dataTeacher);
     } else {
-      console.log("Ma'lumotlar hali yuklanmagan");
+      console.log("Data not loaded yet");
     }
   }, [data, dataGroup, dataTeacher]);
 
-
-  const [ismobile, setIsMobile] = useState(window.innerWidth < 1024)
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 1024)
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 1024);
     window.addEventListener("resize", handleResize)
     return () => window.removeEventListener("resize", handleResize)
   }, [])
+
   // Calculate the percentage
   const totalStudents = data.length;
-  const leftStudents = tarkPupil[1]?.romovedPupilsCount || 0;
+  const leftStudentsCount = leftStudents[1]?.romovedPupilsCount || 0;
   const retentionRate = totalStudents > 0
-    ? Math.round(((totalStudents - leftStudents) / totalStudents) * 100 * 100) / 100
+    ? Math.round(((totalStudents - leftStudentsCount) / totalStudents) * 100 * 100) / 100
     : 0;
-  const percentageChange = 10; // You can calculate this based on previous data if available
+  const percentageChange = 10;
 
-  const dataFoiz = [
+  const retentionData = [
     {
       name: "Progress",
       value: retentionRate,
-      fill: "#6366f1" // Purple color
+      fill: "#6366f1"
     }
   ];
-  const data1 = [
+
+  const statsData = [
     {
-      title: "Jami o'quvchilar soni",
-      minTitle: "Jami o'quvchilar",
+      title: "Total number of students",
+      minTitle: "Students",
       num: 255,
     },
     {
-      title: "O'qituvchilar soni",
-      minTitle: "O'qituvchilar",
+      title: "Number of teachers",
+      minTitle: "Teachers",
       num: 10,
     },
     {
-      title: "Shu oy tark etganlar",
-      minTitle: "Ketganlar",
+      title: "Left this month",
+      minTitle: "Left",
       num: 60,
     },
     {
-      title: "Jami guruhlar soni",
-      minTitle: "Guruhlar",
+      title: "Total number of groups",
+      minTitle: "Groups",
       num: 26,
     }
   ]
 
-  const mainData = {
-    labels: ["Fevral"],
+  const chartData = {
+    labels: ["February"],
     datasets: [
       {
-        label: "Jami o'quvchilar",
-        data: [data.length], // Jami o'quvchilar ma'lumotlari
-        backgroundColor: "#2F49D1", // Moviy rang
+        label: "Total students",
+        data: [data.length],
+        backgroundColor: "#2F49D1",
       },
       {
-        label: "Tark etganlar",
-        data: [tarkPupil[1]?.romovedPupilsCount], // Tark etganlar ma'lumotlari
-        backgroundColor: "#E84393", // Qizil rang
+        label: "Left students",
+        data: [leftStudentsCount],
+        backgroundColor: "#E84393",
       }
     ],
   };
@@ -128,26 +123,26 @@ function Report({ data, dataGroup, dataTeacher, access_token }) {
     scales: {
       x: {
         grid: {
-          display: false, // X o'qidagi kataklarni o'chirish
+          display: false,
         },
         ticks: {
-          color: "#333333", // Oylik nomlar rangini o'zgartirish
+          color: "#333333",
           font: {
-            size: ismobile ? 16 : 20,
+            size: isMobile ? 16 : 20,
             weight: "bold",
           },
         },
       },
       y: {
         beginAtZero: true,
-        max: 100, // Y o'qining maksimum qiymati
+        max: 100,
         grid: {
-          display: false, // Y o'qidagi kataklarni o'chirish
+          display: false,
         },
         ticks: {
           color: "#333333",
           font: {
-            size: ismobile ? 16 : 20,
+            size: isMobile ? 16 : 20,
           },
           padding: 15
         },
@@ -159,15 +154,15 @@ function Report({ data, dataGroup, dataTeacher, access_token }) {
     <div className="p-4 grid grid-cols-1 lg:grid-cols-3 gap-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:col-span-2 gap-4">
         {/* Stats Cards */}
-        {data1.map((item, index) => (
+        {statsData.map((item, index) => (
           <div key={index} className="bg-white p-4 rounded-2xl shadow-md flex justify-between items-center">
             <div>
-              <div className="text-gray-500 text-sm xl:text-xl lg:text-lg">{ismobile ? item.minTitle : item.title}</div>
-              <div className="text-xl  xl:text-2xl lg:text-lg font-bold">
-                {item.title === "Jami o'quvchilar soni" ? data.length :
-                  item.title === "O'qituvchilar soni" ? dataTeacher.length :
-                    item.title === "Jami guruhlar soni" ? dataGroup.length :
-                      item.title === "Shu oy tark etganlar" ? leftStudents : ""} ta
+              <div className="text-gray-500 text-sm xl:text-xl lg:text-lg">{isMobile ? item.minTitle : item.title}</div>
+              <div className="text-xl xl:text-2xl lg:text-lg font-bold">
+                {item.title === "Total number of students" ? data.length :
+                  item.title === "Number of teachers" ? dataTeacher.length :
+                    item.title === "Total number of groups" ? dataGroup.length :
+                      item.title === "Left this month" ? leftStudentsCount : ""}
               </div>
             </div>
             <div
@@ -182,19 +177,18 @@ function Report({ data, dataGroup, dataTeacher, access_token }) {
         {/* Pie Chart for February Statistics */}
         <div className="bg-white p-4 rounded-2xl shadow-md col-span-2">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-lg font-semibold">2025-YIL Fevral oyi statistikasi</h2>
+            <h2 className="text-lg font-semibold">February 2025 Statistics</h2>
           </div>
           <div className="h-80 flex flex-col">
-            {/* Chart Container */}
             <div className="flex-1 min-h-0 relative">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
                     data={[
-                      { name: "O'quvchilar", value: data.length, color: "#4f46e5" },
-                      { name: "O'qituvchilar", value: dataTeacher.length, color: "#10b981" },
-                      { name: "Guruhlar", value: dataGroup.length, color: "#f59e0b" },
-                      { name: "Tark etganlar", value: leftStudents, color: "#ef4444" }
+                      { name: "Students", value: data.length, color: "#4f46e5" },
+                      { name: "Teachers", value: dataTeacher.length, color: "#10b981" },
+                      { name: "Groups", value: dataGroup.length, color: "#f59e0b" },
+                      { name: "Left", value: leftStudentsCount, color: "#ef4444" }
                     ]}
                     cx="50%"
                     cy="50%"
@@ -232,28 +226,27 @@ function Report({ data, dataGroup, dataTeacher, access_token }) {
                     labelLine={false}
                   >
                     {[
-                      { name: "O'quvchilar", value: data.length, color: "#4f46e5" },
-                      { name: "O'qituvchilar", value: dataTeacher.length, color: "#10b981" },
-                      { name: "Guruhlar", value: dataGroup.length, color: "#f59e0b" },
-                      { name: "Tark etganlar", value: leftStudents, color: "#ef4444" }
+                      { name: "Students", value: data.length, color: "#4f46e5" },
+                      { name: "Teachers", value: dataTeacher.length, color: "#10b981" },
+                      { name: "Groups", value: dataGroup.length, color: "#f59e0b" },
+                      { name: "Left", value: leftStudentsCount, color: "#ef4444" }
                     ].map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={entry.color} />
                     ))}
                   </Pie>
                   <Tooltip
-                    formatter={(value, name) => [`${value} ta`, name]}
+                    formatter={(value, name) => [`${value}`, name]}
                   />
                 </PieChart>
               </ResponsiveContainer>
             </div>
 
-            {/* Custom Legend */}
             <div className="flex flex-wrap justify-center gap-3 mt-4 px-2">
               {[
-                { name: "O'quvchilar", value: data.length, color: "#4f46e5" },
-                { name: "O'qituvchilar", value: dataTeacher.length, color: "#10b981" },
-                { name: "Guruhlar", value: dataGroup.length, color: "#f59e0b" },
-                { name: "Tark etganlar", value: leftStudents, color: "#ef4444" }
+                { name: "Students", value: data.length, color: "#4f46e5" },
+                { name: "Teachers", value: dataTeacher.length, color: "#10b981" },
+                { name: "Groups", value: dataGroup.length, color: "#f59e0b" },
+                { name: "Left", value: leftStudentsCount, color: "#ef4444" }
               ].map((item, index) => (
                 <div key={index} className="flex items-center text-xs sm:text-sm">
                   <div
@@ -270,8 +263,8 @@ function Report({ data, dataGroup, dataTeacher, access_token }) {
 
       {/* Retention Rate Panel */}
       <div className="flex-1 bg-white p-4 rounded-2xl shadow-md">
-        <h2 className="text-center text-lg font-semibold mb-2">O'quvchilarni Saqlash Darajasi</h2>
-        <p className="text-center text-sm text-gray-500 mb-4">Tark etgan va qolgan o'quvchilar nisbati</p>
+        <h2 className="text-center text-lg font-semibold mb-2">Student Retention Rate</h2>
+        <p className="text-center text-sm text-gray-500 mb-4">Ratio of students who stayed vs left</p>
         <ResponsiveContainer width="100%" height={180}>
           <RadialBarChart
             cx="50%"
@@ -281,7 +274,7 @@ function Report({ data, dataGroup, dataTeacher, access_token }) {
             barSize={10}
             startAngle={180}
             endAngle={0}
-            data={dataFoiz}
+            data={retentionData}
           >
             <RadialBar
               clockWise
@@ -299,31 +292,27 @@ function Report({ data, dataGroup, dataTeacher, access_token }) {
         </div>
         <div className="text-center mt-4 text-sm text-gray-600">
           {retentionRate >= 80 ?
-            "Ajoyib natija! O'quvchilarni saqlab qolish darajasi yuqori." :
-            "O'quvchilarni saqlab qolish darajasini oshirish uchun choralar ko'rilishi kerak."}
+            "Excellent result! High student retention rate." :
+            "Measures should be taken to improve student retention."}
         </div>
 
         <div className="grid grid-cols-3 text-center text-sm mt-4">
           <div>
-            <div className="text-gray-500">O'quvchilar</div>
-            <div className="font-bold text-blue-500">{data.length} ta</div>
+            <div className="text-gray-500">Students</div>
+            <div className="font-bold text-blue-500">{data.length}</div>
           </div>
           <div>
-            <div className="text-gray-500">O'qituvchilar</div>
-            <div className="font-bold text-green-500">{dataTeacher.length} ta</div>
+            <div className="text-gray-500">Teachers</div>
+            <div className="font-bold text-green-500">{dataTeacher.length}</div>
           </div>
           <div>
-            <div className="text-gray-500">Guruhlar</div>
-            <div className="font-bold text-purple-500">{dataGroup.length} ta</div>
+            <div className="text-gray-500">Groups</div>
+            <div className="font-bold text-purple-500">{dataGroup.length}</div>
           </div>
-
         </div>
       </div>
-    </div >
-
+    </div>
   )
 }
 
 export default Report;
-
-
