@@ -1,34 +1,36 @@
 import React, { useEffect, useState } from 'react';
-import deleted from "./delete.svg";
 import axios from 'axios';
 import { MdDelete, MdEdit } from "react-icons/md";
 
 const Students = ({ dataGroup }) => {
-  const [studentData, setStudentData] = useState()
-  const [studentData0, setStudentData0] = useState()
-  const [name, setName] = useState("")
-  const [phone, setPhone] = useState("")
-  const [parents_name, setParents_name] = useState("")
-  const [parents_phone, setParents_phone] = useState("")
-  const [group, setGroup] = useState("")
-  const [pupilId, setPupilId] = useState("")
-  const [modal, setModal] = useState(false)
-  const [absent, setAbsent] = useState(false)
-  const [loader, setLoader] = useState(false)
-  const [deleteLoader, setDeleteLoader] = useState(false)
-  const [addLoader, setAddLoader] = useState(false)
-  const [updateLoader, setUpdateLoader] = useState(false)
+  const [studentData, setStudentData] = useState();
+  const [studentData0, setStudentData0] = useState();
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [parents_name, setParents_name] = useState("");
+  const [parents_phone, setParents_phone] = useState("");
+  const [group, setGroup] = useState("");
+  const [pupilId, setPupilId] = useState("");
+  const [modal, setModal] = useState(false);
+  const [absent, setAbsent] = useState(false);
+  const [loader, setLoader] = useState(false);
+  const [deleteLoader, setDeleteLoader] = useState(false);
+  const [addLoader, setAddLoader] = useState(false);
+  const [updateLoader, setUpdateLoader] = useState(false);
+  //Err messages
+  const [errMassageAdd, setErrMassageAdd] = useState(null);
+  const [errMassageUp, setErrMassageUp] = useState(null);
 
   function addPupil(e) {
-    const access_token = localStorage.getItem("token")
-    e.preventDefault()
+    const access_token = localStorage.getItem("token");
+    e.preventDefault();
 
     if (name != "" && phone != "" && parents_name != "" && parents_phone != "") {
       if (group === "") {
-        setGroup(dataGroup[0]._id)
+        setGroup(dataGroup[0]._id);
       }
 
-      setAddLoader(true)
+      setAddLoader(true);
       const formData = new FormData();
       formData.append('name', `${name}`);
       formData.append('phone', `${phone}`);
@@ -46,26 +48,27 @@ const Students = ({ dataGroup }) => {
       })
         .then((response) => {
           console.log('Data sent successfully:', response.data);
-          setName("")
-          setPhone("")
-          setParents_name("")
-          setParents_phone("")
+          setName("");
+          setPhone("");
+          setParents_name("");
+          setParents_phone("");
           window.location.reload();
         })
         .catch((error) => {
+          setErrMassageAdd(error.response?.data?.message?.[0]?.constraints?.matches ? error.response?.data?.message?.[0]?.constraints?.matches : "Failed");
           console.error('An error occurred:', error);
         })
         .finally(() => {
-          setAddLoader(false)
+          setAddLoader(false);
         });
     } else {
-      alert("Please fill in all fields!")
+      alert("Please fill in all fields!");
     }
   }
 
   const deletePupil = async (id) => {
-    const access_token = localStorage.getItem("token")
-    setDeleteLoader(true)
+    const access_token = localStorage.getItem("token");
+    setDeleteLoader(true);
 
     try {
       const response = await axios.delete(`https://crm-system-beta.vercel.app/api/v1/pupil/${id}`, {
@@ -78,14 +81,14 @@ const Students = ({ dataGroup }) => {
     } catch (error) {
       console.error("An error occurred:", error);
     } finally {
-      setDeleteLoader(false)
+      setDeleteLoader(false);
     }
   };
 
   const updatePupil = (e) => {
-    e.preventDefault()
-    const access_token = localStorage.getItem("token")
-    setUpdateLoader(true)
+    e.preventDefault();
+    const access_token = localStorage.getItem("token");
+    setUpdateLoader(true);
     var numberValue = Number(absent);
 
     try {
@@ -108,31 +111,30 @@ const Students = ({ dataGroup }) => {
       )
         .then((response) => {
           console.log("Updated data:", response.data);
-          setName("")
-          setPhone("")
-          setParents_name("")
-          setParents_phone("")
-          setModal(false)
+          setName("");
+          setPhone("");
+          setParents_name("");
+          setParents_phone("");
+          setModal(false);
         })
         .catch((error) => {
           console.error("An error occurred:", error);
-          setModal(false)
+          setErrMassageUp(error.response?.data?.message?.[0]?.constraints?.matches ? error.response?.data?.message?.[0]?.constraints?.matches : "Failed");
         })
         .finally(() => {
-          setUpdateLoader(false)
+          setUpdateLoader(false);
         });
 
     } catch (error) {
-      setModal(false)
+      setModal(false);
       console.error("An error occurred:", error);
-      setUpdateLoader(false)
+      setUpdateLoader(false);
     }
   };
 
   const fetchData = async () => {
-    const access_token = localStorage.getItem("token")
-    setLoader(true)
-
+    const access_token = localStorage.getItem("token");
+    setLoader(true);
     try {
       const response = await axios.get('https://crm-system-beta.vercel.app/api/v1/pupil/', {
         headers: {
@@ -144,13 +146,13 @@ const Students = ({ dataGroup }) => {
     } catch (err) {
       console.log(err);
     } finally {
-      setLoader(false)
+      setLoader(false);
     }
   };
 
   const getPupilById = async (id) => {
-    const access_token = localStorage.getItem("token")
-    setLoader(true)
+    const access_token = localStorage.getItem("token");
+    setLoader(true);
 
     try {
       const response = await axios.get(`https://crm-system-beta.vercel.app/api/v1/pupil/${id}`, {
@@ -158,29 +160,29 @@ const Students = ({ dataGroup }) => {
           Authorization: `Bearer ${access_token}`
         }
       });
-      setName(response.data.name)
-      setPhone(response.data.phone)
-      setParents_name(response.data.surname)
-      setParents_phone(response.data.parents_phone)
-      setGroup(response.data.group[0]?._id)
-      setAbsent(response.data.absent)
+      setName(response.data.name);
+      setPhone(response.data.phone);
+      setParents_name(response.data.surname);
+      setParents_phone(response.data.parents_phone);
+      setGroup(response.data.group[0]?._id);
+      setAbsent(response.data.absent);
     } catch (err) {
       console.log(err.message);
     } finally {
-      setLoader(false)
+      setLoader(false);
     }
   };
 
   function searchPupil(name) {
     const obj = studentData0.filter((item) => {
-      return item.name.includes(name)
-    })
-    setStudentData(obj)
+      return item.name.includes(name);
+    });
+    setStudentData(obj);
   }
 
   useEffect(() => {
-    fetchData()
-  }, [])
+    fetchData();
+  }, []);
 
   return (
     <div className="xl:p-4 p-1 md:p-6">
@@ -188,12 +190,21 @@ const Students = ({ dataGroup }) => {
       {modal && (
         <div className='fixed z-50 w-full h-screen top-0 left-0 bg-black flex bg-opacity-80 justify-center items-center'>
           <p
-            onClick={() => { setModal(!modal) }}
+            onClick={() => { setModal(!modal); }}
             className='text-white text-xl md:text-2xl absolute right-4 md:right-32 top-10 md:top-40 cursor-pointer'
           >
             ×
           </p>
+          {/* update pupil */}
           <form onSubmit={updatePupil} className="w-full mx-4 md:w-3/4 lg:w-2/3 bg-gray-50 p-4 md:p-6 rounded shadow">
+            {errMassageUp && (
+              <div className="flex items-center gap-2 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-md shadow-md transition-all duration-300 mb-4">
+                <svg onClick={() => { setErrMassageUp(null); }} className="w-5 h-5 text-red-600 cursor-pointer" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M18.364 5.636L5.636 18.364M5.636 5.636l12.728 12.728" />
+                </svg>
+                <span className="text-sm font-medium">{errMassageUp}</span>
+              </div>
+            )}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               <div>
                 <label className="block text-sm md:text-base font-medium">Student name</label>
@@ -259,6 +270,14 @@ const Students = ({ dataGroup }) => {
 
       {/* Main Form */}
       <h2 className='text-xl md:text-2xl font-semibold text-[#333333]'>Add new student</h2>
+      {errMassageAdd && (
+        <div className="flex items-center gap-2 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-md shadow-md transition-all duration-300 mb-4">
+          <svg onClick={() => { setErrMassageAdd(null); }} className="w-5 h-5 text-red-600 cursor-pointer" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M18.364 5.636L5.636 18.364M5.636 5.636l12.728 12.728" />
+          </svg>
+          <span className="text-sm font-medium">{errMassageAdd}</span>
+        </div>
+      )}
       <form onSubmit={addPupil} className="space-y-4 mt-4 bg-gray-50 p-4 rounded shadow">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <div>
@@ -362,7 +381,8 @@ const Students = ({ dataGroup }) => {
                   <th className="border border-gray-300 p-2 text-xs md:text-sm hidden md:table-cell">Direction</th>
                   <th className="border border-gray-300 p-2 text-xs md:text-sm hidden lg:table-cell">Parent (Full name)</th>
                   <th className="border border-gray-300 p-2 text-xs md:text-sm hidden lg:table-cell">Parent (Phone)</th>
-                  <th className="border border-gray-300 p-2 text-xs md:text-sm">/</th>
+                  <th className="border border-gray-300 p-2 text-xs md:text-sm">Payment Status</th>
+                  <th className="border border-gray-300 p-2 text-xs md:text-sm">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -380,6 +400,15 @@ const Students = ({ dataGroup }) => {
                     <td className="border border-gray-300 p-2 text-xs md:text-sm hidden lg:table-cell">
                       {item.parents_phone}
                     </td>
+                    <td className="border border-gray-300 p-2 text-xs md:text-sm text-center">
+                      <span className={`px-2 py-1 rounded-full text-xs ${
+                        item.payment_status === 'paid' 
+                          ? 'bg-green-100 text-green-800' 
+                          : 'bg-red-100 text-red-800'
+                      }`}>
+                        {item.payment_status === 'paid' ? 'Paid' : 'Unpaid'}
+                      </span>
+                    </td>
                     <td className='p-2 flex justify-evenly items-center border border-gray-300'>
                       <span
                         onClick={() => !deleteLoader && deletePupil(item._id)}
@@ -391,9 +420,9 @@ const Students = ({ dataGroup }) => {
                       </span>
                       <span
                         onClick={() => {
-                          setModal(true)
-                          getPupilById(item._id)
-                          setPupilId(item._id)
+                          setModal(true);
+                          getPupilById(item._id);
+                          setPupilId(item._id);
                         }}
                         className='text-blue-600 text-lg md:text-xl cursor-pointer'
                       >
@@ -403,7 +432,7 @@ const Students = ({ dataGroup }) => {
                   </tr>
                 )) : (
                   <tr>
-                    <td colSpan="7" className="text-center text-red-600 p-2 font-semibold text-sm md:text-base">
+                    <td colSpan="8" className="text-center text-red-600 p-2 font-semibold text-sm md:text-base">
                       No data available.
                     </td>
                   </tr>
@@ -414,7 +443,7 @@ const Students = ({ dataGroup }) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Students
+export default Students;

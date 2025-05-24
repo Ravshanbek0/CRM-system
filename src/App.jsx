@@ -7,6 +7,7 @@ import AttendenceGroup from './components/Attendance/AttendenceGroup';
 import Loader from './components/Loader/Loader';
 import Register from './components/Register/Register';
 import PasswordVerify from './components/PasswordVerify/PasswordVerify';
+import AbsenceTracker from './components/Students/AbsentDates';
 
 
 function App() {
@@ -185,6 +186,7 @@ function App() {
           <Route path='/students' element={<Home token={token} data={data} setLoading={setLoading} dataGroup={dataGroup} />} />
           <Route path='/groups' element={<Home dataGroup={dataGroup} setLoading={setLoading} />} />
           <Route path='/attendenceGroup/:id' element={<AttendenceGroup setLoading={setLoading} dataGroup={dataGroup} group_id={group_id} data={data} />} />
+          <Route path='/absentDates/:id' element={<AbsenceTracker />} />
         </Routes>}
 
 

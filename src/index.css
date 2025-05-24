@@ -1,23 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Tektur:wght@400..900&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-*{
+
+* {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
   list-style: none;
   text-decoration: none;
+  font-family: 'Nunito', sans-serif;
+
 }
-body{
+
+body {
   overflow-x: hidden;
 }
-.bg-main{
+
+.bg-main {
   background-color: rgba(240, 242, 250, 1);
 }
-.bg-main-lg{
+
+.bg-main-lg {
   background-color: rgba(234, 237, 250, 1);
 
 }
-.loader-modal-all{
+
+.loader-modal-all {
   background-color: rgba(253, 253, 253, 0.573)
 }

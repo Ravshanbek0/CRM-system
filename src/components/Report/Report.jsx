@@ -234,9 +234,7 @@ function Report({ data, dataGroup, dataTeacher, access_token }) {
                       <Cell key={`cell-${index}`} fill={entry.color} />
                     ))}
                   </Pie>
-                  <Tooltip
-                    formatter={(value, name) => [`${value}`, name]}
-                  />
+                  
                 </PieChart>
               </ResponsiveContainer>
             </div>

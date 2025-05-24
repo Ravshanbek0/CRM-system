@@ -38,10 +38,11 @@ function Register({ token, setToken }) {
 
     const loginUser = async (e) => {
         e.preventDefault();
-        setLoader(true);
         if (!validateInputs()) return;
 
         try {
+            setLoader(true);
+
             const formData = new FormData();
             formData.append("email", username);
             formData.append("password", password);
@@ -65,10 +66,11 @@ function Register({ token, setToken }) {
 
     const handleSignup = async (e) => {
         e.preventDefault();
-        setLoader(true);
         if (!validateInputs()) return;
 
         try {
+            setLoader(true);
+
             const formData = new FormData();
             formData.append("email", username);
             formData.append("full_name", fullName);
@@ -92,7 +94,7 @@ function Register({ token, setToken }) {
         <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
             <div className="w-full max-w-6xl flex flex-col md:flex-row bg-white rounded-xl shadow-lg overflow-hidden">
                 {/* Information Section */}
-                <div className="w-full md:w-1/2 bg-gradient-to-br from-blue-600 to-blue-800 p-8 text-white flex flex-col justify-center">
+                <div className="w-full md:w-1/2 bg-gradient-to-br from-[#333333] to-[#555555] p-8 text-white flex flex-col justify-center">
                     <div className="max-w-md mx-auto">
                         <h1 className="text-4xl font-bold mb-4">EduTrack Pro</h1>
                         <h2 className="text-2xl font-semibold mb-6">Your Complete Learning Center Management Solution</h2>
@@ -118,11 +120,11 @@ function Register({ token, setToken }) {
                             </li>
                         </ul>
 
-                        <div className="bg-blue-700/30 p-4 rounded-lg border border-blue-600/50">
+                        <div className="bg-[#333] p-4 rounded-lg border border-gray-300">
                             <p className="font-medium">Ready to transform your learning center?</p>
                             <button
                                 onClick={() => setIsLogin(false)}
-                                className="mt-3 w-full bg-white text-blue-700 hover:bg-gray-100 font-medium py-2 px-4 rounded-lg transition"
+                                className="mt-3 w-full bg-white text-gray-700 hover:bg-gray-100 font-medium py-2 px-4 rounded-lg transition"
                             >
                                 Sign Up Now
                             </button>
@@ -155,7 +157,7 @@ function Register({ token, setToken }) {
                                         placeholder="John Doe"
                                         value={fullName}
                                         onChange={handleChange(setFullName, "fullName")}
-                                        className={`w-full px-4 py-3 rounded-lg border ${errors.fullName ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
+                                        className={`w-full px-4 py-3 rounded-lg border ${errors.fullName ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-[#333] focus:border-[#555]`}
                                     />
                                     {errors.fullName && <p className="text-red-500 text-sm mt-1">{errors.fullName}</p>}
                                 </div>
@@ -168,7 +170,7 @@ function Register({ token, setToken }) {
                                     placeholder="yourname@gmail.com"
                                     value={username}
                                     onChange={handleChange(setUsername, "username")}
-                                    className={`w-full px-4 py-3 rounded-lg border ${errors.username ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
+                                    className={`w-full px-4 py-3 rounded-lg border ${errors.username ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-[#333] focus:border-[#555]`}
                                 />
                                 {errors.username && <p className="text-red-500 text-sm mt-1">{errors.username}</p>}
                             </div>
@@ -181,7 +183,7 @@ function Register({ token, setToken }) {
                                         placeholder="••••••••"
                                         value={password}
                                         onChange={handleChange(setPassword, "password")}
-                                        className={`w-full px-4 py-3 rounded-lg border ${errors.password ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pr-12`}
+                                        className={`w-full px-4 py-3 rounded-lg border ${errors.password ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-[#333] focus:border-[#555] pr-12`}
                                     />
                                     <button
                                         type="button"
@@ -216,7 +218,7 @@ function Register({ token, setToken }) {
                             <button
                                 type="submit"
                                 disabled={loader}
-                                className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${loader ? 'opacity-70' : ''}`}
+                                className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-[#333] hover:bg-[#555] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${loader ? 'opacity-70' : ''}`}
                             >
                                 {loader ? (
                                     <>
@@ -247,7 +249,7 @@ function Register({ token, setToken }) {
                                     setIsLogin(!isLogin);
                                     setError(null);
                                 }}
-                                className="mt-6 w-full flex justify-center py-2 px-4 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                                className="mt-6 w-full flex justify-center py-2 px-4 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#555]"
                             >
                                 {isLogin ? "Create new account" : "Sign in to existing account"}
                             </button>

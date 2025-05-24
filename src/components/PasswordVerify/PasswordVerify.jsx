@@ -146,13 +146,13 @@ function PasswordVerify({ setToken }) {
                                         setEmail(e.target.value);
                                         setError("");
                                     }}
-                                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#333] focus:border-[#555]"
                                 />
                             </div>
 
                             <button
                                 onClick={sendCode}
-                                className={`w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition flex items-center justify-center ${(showCodeInput && timer > 0) || loader ? 'opacity-80' : ''}`}
+                                className={`w-full py-3 px-4 bg-[#333] hover:bg-[#555] text-white font-medium rounded-lg transition flex items-center justify-center ${(showCodeInput && timer > 0) || loader ? 'opacity-80' : ''}`}
                                 disabled={(showCodeInput && timer > 0) || loader}
                             >
                                 {loader ? (
@@ -180,7 +180,7 @@ function PasswordVerify({ setToken }) {
                                             setCode(e.target.value.trim());
                                             setError("");
                                         }}
-                                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#555] focus:border-[#333]"
                                     />
                                 </div>
 

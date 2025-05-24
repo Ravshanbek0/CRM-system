@@ -3,15 +3,15 @@ import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { FaBars, FaTimes, FaHome, FaGraduationCap, FaUsers, FaCreditCard, FaUser, FaComments } from "react-icons/fa";
 import axios from 'axios';
 import AttendanceStudent from './AttendanceStudent';
-import { IoIosLogOut } from "react-icons/io";
+import { IoArrowBackSharp } from "react-icons/io5";
+import { FaMoneyBillWave } from "react-icons/fa";
+import { FaCalendarTimes, FaCalendarAlt } from "react-icons/fa";
 
 function AttendenceGroup({ dataGroup, data, setLoading }) {
   const navigate = useNavigate()
   const { id } = useParams()
-  const { pathname } = useLocation()
   const [error, setError] = useState()
   const [isMenuCollapsed, setMenuCollapsed] = useState(false);
-  const [activeMenu, setActiveMenu] = useState(`${pathname}`);
   const [attendenceGroup, setAttendanceGroup] = useState([])
   const [attendenceGroupPupil, setAttendanceGroupPupil] = useState([])
   const [apsentStudentId, setApsentStudentId] = useState([])
@@ -19,10 +19,8 @@ function AttendenceGroup({ dataGroup, data, setLoading }) {
 
   const fetchDataGroup = async () => {
     const access_token = localStorage.getItem('token')
-
     try {
       setLoading(true)
-
       const response = await axios.get(`https://crm-system-beta.vercel.app/api/v1/group/${id}/`, {
         headers: {
           Authorization: `Bearer ${access_token}`
@@ -30,7 +28,6 @@ function AttendenceGroup({ dataGroup, data, setLoading }) {
       });
       setAttendanceGroup(response.data);
       setLoading(false);
-
     } catch (err) {
       setError(err.message);
       setLoading(false);
@@ -39,21 +36,20 @@ function AttendenceGroup({ dataGroup, data, setLoading }) {
 
   const fetchDataPupil = async () => {
     const access_token = localStorage.getItem('token')
-
     try {
       const response = await axios.get('https://crm-system-beta.vercel.app/api/v1/pupil/', {
         headers: {
           Authorization: `Bearer ${access_token}`
         }
       });
-      console.log(response.data);
-
       const obj = response.data.filter((item) => {
-        console.log(item);
         return id == item.group[0]._id
       })
+      console.log(obj);
 
       setAttendanceGroupPupil(obj);
+      console.log(attendenceGroup);
+
       setAttendance(obj)
       setLoading(false);
     } catch (err) {
@@ -64,7 +60,6 @@ function AttendenceGroup({ dataGroup, data, setLoading }) {
 
   const updateApsentCount = async () => {
     const access_token = localStorage.getItem('token')
-
     try {
       const requests = apsentStudentId.map(async (id) => {
         const studentResponse = await axios.get(`https://crm-system-beta.vercel.app/api/v1/pupil/${id}`, {
@@ -73,7 +68,6 @@ function AttendenceGroup({ dataGroup, data, setLoading }) {
           }
         });
         const currentApsent = studentResponse.data.apsent || 0;
-
         await axios.patch(`https://crm-system-beta.vercel.app/api/v1/pupil/${id}`, {
           apsent: currentApsent + 1,
         }, {
@@ -81,10 +75,8 @@ function AttendenceGroup({ dataGroup, data, setLoading }) {
             Authorization: `Bearer ${access_token}`
           }
         });
-
         console.log(`Student ${id} updated ✅`);
       });
-
       await Promise.all(requests);
       console.log("All student absences updated ✅");
     } catch (error) {
@@ -94,22 +86,17 @@ function AttendenceGroup({ dataGroup, data, setLoading }) {
 
   const fetchDataTeacher = async () => {
     const access_token = localStorage.getItem('token')
-
     try {
       setLoading(true)
-
       const response = await axios.get('https://crm-system-beta.vercel.app/api/v1/teacher/', {
         headers: {
           Authorization: `Bearer ${access_token}`
         }
       });
-      console.log(response.data);
       const teacherRes = response.data.filter((item) => {
         return item.groups.includes(id)
       })
       setTeacher(teacherRes)
-      console.log(teacherRes);
-
     } catch (err) {
       console.log(err);
     }
@@ -136,98 +123,29 @@ function AttendenceGroup({ dataGroup, data, setLoading }) {
 
   return (
     <div className="bg-gray-100 h-auto flex">
-      {/* Sidebar */}
-      <aside
-        className={`
-          ${isMenuCollapsed ? "xl:w-16" : "xl:w-64"}
-          bg-[#333333] text-white
-          transition-all duration-300
-          xl:sticky xl:top-0 xl:h-screen xl:flex xl:flex-col
-          fixed bottom-0 left-0 w-full h-16 
-          z-50
-        `}
-      >
-        {/* Menu Button (visible only on large screens) */}
-        <div className='hidden xl:flex items-center pt-4 relative'>
-          {!isMenuCollapsed && <h1 className='text-2xl font-bold px-2'>Education.uz</h1>}
-          <button
-            onClick={toggleMenu}
-            className="absolute right-2 text-white text-2xl hover:bg-[#555555] p-2 rounded-full"
-          >
-            <FaBars />
-          </button>
-        </div>
-        {!isMenuCollapsed && <hr className='mt-4 text-[#fff] xl:block hidden' />}
+      <div className="p-4 md:p-6 min-h-screen flex flex-col lg:flex-row gap-4 w-full">
 
-        {/* Menu for large screens */}
-        <nav className={`mt-8 px-0 space-y-4 ${isMenuCollapsed ? "hidden" : "hidden xl:block"}`}>
-          <Link to="/" className={`flex items-center p-2 space-x-2 rounded ${activeMenu === "Report" ? "bg-[#33333333]" : "hover:bg-[#555555]"}`} onClick={() => handleMenuClick("Report")}>
-            <FaHome className="text-xl" />
-            <span className="font-medium">Report</span>
-          </Link>
-          <Link to="/students" className={`flex items-center p-2 space-x-2 rounded ${activeMenu === "Students" ? "bg-[#333333]" : "hover:bg-[#555555]"}`} onClick={() => handleMenuClick("Students")}>
-            <FaGraduationCap className="text-xl" />
-            <span className="font-medium">Students</span>
-          </Link>
-          <Link to="/groups" className={`flex items-center p-2 space-x-2 rounded ${activeMenu === "Groups" ? "bg-[#333333]" : "hover:bg-[#555555]"}`} onClick={() => handleMenuClick("Groups")}>
-            <FaUsers className="text-xl" />
-            <span className="font-medium">Groups</span>
-          </Link>
-          <Link to="/payment" className={`flex items-center p-2 space-x-2 rounded ${activeMenu === "Payments" ? "bg-[#333333]" : "hover:bg-[#555555]"}`} onClick={() => handleMenuClick("Payments")}>
-            <FaCreditCard className="text-xl" />
-            <span className="font-medium">Payments</span>
-          </Link>
-          <Link to="/attandance" className={`flex items-center p-2 space-x-2 rounded ${activeMenu === "Attendance" ? "bg-[#333333]" : "hover:bg-[#555555]"}`} onClick={() => handleMenuClick("Attendance")}>
-            <FaUser className="text-xl" />
-            <span className="font-medium">Attendance</span>
-          </Link>
-          <span onClick={() => {
-            localStorage.clear()
-            navigate("/")
-            window.location.reload()
-          }} className='absolute bottom-4 mt-8 flex items-center gap-1 px-2 cursor-pointer'>
-            <IoIosLogOut className='text-3xl' />Logout
-          </span>
-        </nav>
 
-        {/* Mobile bottom navigation */}
-        <div className="xl:hidden flex justify-around w-full h-full items-center">
-          {[
-            { to: "/", icon: <FaHome />, label: "Report" },
-            { to: "/students", icon: <FaGraduationCap />, label: "Students" },
-            { to: "/groups", icon: <FaUsers />, label: "Groups" },
-            { to: "/payment", icon: <FaCreditCard />, label: "Payments" },
-            { to: "/attandance", icon: <FaUser />, label: "Attendance" },
-          ].map(({ to, icon, label }) => (
-            <Link key={label} to={to} className="flex flex-col items-center text-xs hover:text-gray-300">
-              <span className="text-lg">{icon}</span>
-              <span>{label}</span>
-            </Link>
-          ))}
-        </div>
-      </aside>
-
-      <div className="p-4 md:p-6 bg-gray-100 min-h-screen flex flex-col lg:flex-row gap-4 w-full">
         {/* Left Section - Group Info */}
-        <div className='w-full lg:min-w-[350px] xl:min-w-[450px]'>
+        <div className='xl:w-1/3 lg:min-w-[350px] xl:min-w-[450px]'>
           <h2 className="text-xl md:text-2xl font-bold text-[#333333] mb-4">
             {attendenceGroup.group_name} group roster
           </h2>
-          <div className="bg-white shadow-md rounded p-4 w-full mb-4">
+          <div className="bg-white shadow-md rounded-lg p-4 w-full mb-4">
             <h3 className="text-lg md:text-xl font-semibold text-[#333333] mb-3">{attendenceGroup.group_name}</h3>
-            <p className="text-sm md:text-base text-gray-700">
+            <p className="text-sm md:text-base text-gray-700 mb-2">
               <strong>Teacher:</strong> {attendenceGroup.name}
             </p>
-            <p className="text-sm md:text-base text-gray-700">
+            <p className="text-sm md:text-base text-gray-700 mb-2">
               <strong>Phone:</strong> {attendenceGroup.phone}
             </p>
-            <p className="text-sm md:text-base text-gray-700">
+            <p className="text-sm md:text-base text-gray-700 mb-2">
               <strong>Lesson Days:</strong> {attendenceGroup.lesson_dates}
             </p>
-            <p className="text-sm md:text-base text-gray-700">
+            <p className="text-sm md:text-base text-gray-700 mb-2">
               <strong>Lesson Time:</strong> 14:00-16:00
             </p>
-            <p className="text-sm md:text-base text-gray-700">
+            <p className="text-sm md:text-base text-gray-700 mb-2">
               <strong>Number of Students:</strong> {attendenceGroup.group_pupils?.length}
             </p>
             <p className="text-sm md:text-base text-gray-700">
@@ -237,31 +155,81 @@ function AttendenceGroup({ dataGroup, data, setLoading }) {
         </div>
 
         {/* Right Section - Attendance Table */}
-        <div className="bg-white shadow-md rounded p-3 md:p-4 w-full">
+        <div className="bg-white shadow-md rounded-lg p-3 md:p-4 xl:w-2/3">
           <div className="overflow-x-auto">
-            <table className="w-full border-collapse border border-gray-300">
+            <table className="w-full border-collapse">
               <thead>
                 <tr className="bg-[#333333] text-white">
-                  <th className="border border-gray-300 p-1 md:p-2 text-sm md:text-base">#</th>
-                  <th className="border border-gray-300 p-1 md:p-2 text-sm md:text-base">Student Name</th>
-                  <th className="border border-gray-300 p-1 md:p-2 text-sm md:text-base">Attendance</th>
+                  <th className="border border-gray-300 p-2 text-sm md:text-base">#</th>
+                  <th className="border border-gray-300 p-2 text-sm md:text-base">Student Name</th>
+                  <th className="border border-gray-300 p-2 text-sm md:text-base">Payment Status</th>
+                  <th className="border border-gray-300 p-2 text-sm md:text-base">Actions</th>
+                  <th className="border border-gray-300 p-2 text-sm md:text-base">Missed classes</th>
+                  <th className="border border-gray-300 p-2 text-sm md:text-base">Attendance</th>
                 </tr>
               </thead>
-              {attendenceGroupPupil.length != 0 ? (
+              {attendenceGroupPupil.length !== 0 ? (
                 <tbody>
                   {attendenceGroupPupil.map((student, index) => (
-                    <AttendanceStudent
-                      student={student}
-                      index={index}
-                      apsentStudentId={apsentStudentId}
-                      setApsentStudentId={setApsentStudentId}
-                    />
+                    <tr key={student._id} className="hover:bg-gray-50">
+                      <td className="border border-gray-300 p-2 text-center">{index + 1}</td>
+                      <td className="border border-gray-300 p-2">
+                        {student.name}
+                      </td>
+                      <td className="border border-gray-300 p-2 text-center">
+                        <span
+                          className={`inline-block px-2 py-1 rounded-full text-xs font-semibold ${student.payment_status === 'paid'
+                            ? 'bg-green-100 text-green-800'
+                            : 'bg-red-100 text-red-800'
+                            }`}
+                        >
+                          {student.payment_status || 'unpaid'}
+                        </span>
+                      </td>
+                      <td className="border border-gray-300 p-2 text-center">
+                        <button
+                          onClick={() => navigate(`/payment`)}
+                          className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded flex items-center justify-center gap-1 mx-auto"
+                        >
+                          <FaMoneyBillWave />
+                          <span>Payment</span>
+                        </button>
+                      </td>
+                      <td className="border border-gray-300 px-4 py-2">
+                        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 w-full">
+                          <div className="flex text-lg items-center gap-2 text-red-600 font-semibold">
+                            <span>{student.apsent}</span>
+                          </div>
+                          <button
+                            onClick={() => navigate(`/absentDates/${attendenceGroup._id}`)}
+                            className="bg-[#333333] hover:bg-[#555555] text-white px-3 py-1.5 rounded-lg flex items-center gap-2 shadow-sm transition duration-200"
+                          >
+                            <FaCalendarAlt className="text-lg" />
+                            <span className="text-sm font-semibold">View</span>
+                          </button>
+                        </div>
+                      </td>
+
+                      <td className="border border-gray-300 p-2 text-center">
+                        <input
+                          type="checkbox"
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setApsentStudentId([...apsentStudentId, student._id]);
+                            } else {
+                              setApsentStudentId(apsentStudentId.filter(id => id !== student._id));
+                            }
+                          }}
+                          className="w-5 h-5"
+                        />
+                      </td>
+                    </tr>
                   ))}
                 </tbody>
               ) : (
                 <tbody>
                   <tr>
-                    <td colSpan="3" className="text-center p-4 text-sm md:text-base">
+                    <td colSpan="5" className="text-center p-4 text-sm md:text-base">
                       No students in this group.
                     </td>
                   </tr>
@@ -269,12 +237,20 @@ function AttendenceGroup({ dataGroup, data, setLoading }) {
               )}
             </table>
           </div>
-          <button
-            onClick={updateApsentCount}
-            className="bg-[#333333] text-white px-3 py-1 md:px-4 md:py-2 rounded mt-3 md:mt-4 hover:bg-[#555555] text-sm md:text-base"
-          >
-            Save
-          </button>
+          <div className="flex justify-between items-center mt-4">
+            <button
+              onClick={() => navigate('/attandance')}
+              className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded"
+            >
+              Back
+            </button>
+            <button
+              onClick={updateApsentCount}
+              className="bg-[#333333] hover:bg-[#555555] text-white px-4 py-2 rounded"
+            >
+              Save Attendance
+            </button>
+          </div>
         </div>
       </div>
     </div>

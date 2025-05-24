@@ -1,12 +1,12 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { MdDelete } from "react-icons/md";
 
 const Groups = ({ setLoading, dataGroup }) => {
-    const [group_name, setGroup_name] = useState("")
-    const [lesson_dates, setLesson_dates] = useState("Mon-Wed-Fri")
-    const [lesson_time, setLesson_time] = useState("14:00 - 16:00")
+    const [group_name, setGroup_name] = useState("");
+    const [lesson_dates, setLesson_dates] = useState("Du-Chor-Juma");
+    const [lesson_time, setLesson_time] = useState("14:00 - 16:00");
     const [isOpen, setIsOpen] = useState(false);
     const [name, setName] = useState("");
     const [surname, setSurname] = useState("");
@@ -14,10 +14,12 @@ const Groups = ({ setLoading, dataGroup }) => {
     const [picture, setPicture] = useState(null);
     const [salary, setSalary] = useState("");
     const [groups, setGroups] = useState("");
-    const [disable, setDisable] = useState(false)
+    const [disable, setDisable] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
     const [filteredGroups, setFilteredGroups] = useState([]);
-    
+    const [errorMessage, setErrorMessage] = useState(null);
+    const [errorMessageT, setErrorMessageT] = useState(null);
+
     // Loader states
     const [addGroupLoader, setAddGroupLoader] = useState(false);
     const [deleteGroupLoader, setDeleteGroupLoader] = useState(false);
@@ -28,11 +30,11 @@ const Groups = ({ setLoading, dataGroup }) => {
     const handleSearch = (e) => {
         const term = e.target.value.toLowerCase();
         setSearchTerm(term);
-        
+
         if (term === "") {
             setFilteredGroups(dataGroup);
         } else {
-            const filtered = dataGroup.filter(group => 
+            const filtered = dataGroup.filter(group =>
                 group.group_name.toLowerCase().includes(term)
             );
             setFilteredGroups(filtered);
@@ -44,46 +46,45 @@ const Groups = ({ setLoading, dataGroup }) => {
         setFilteredGroups(dataGroup);
     }, [dataGroup]);
 
-    const DisableFunc = () => {
-        setDisable(!disable)
-    }
+    const clearError = () => {
+        setErrorMessage(null);
+    };
 
-    function addGroup(e) {
-        e.preventDefault()
-        const access_token = localStorage.getItem("token")
-        if (group_name != "") {
+    const addGroup = async (e) => {
+        e.preventDefault();
+        const access_token = localStorage.getItem("token");
+        if (group_name !== "") {
             setAddGroupLoader(true);
-            const formData = new FormData();
-            formData.append('group_name', `${group_name}`);
-            formData.append('lesson_dates', `${lesson_dates}`);
-            formData.append('lesson_time', `${lesson_time}`);
+            setErrorMessage(null);
 
-            const formDataToJson = Object.fromEntries(formData.entries());
-
-            axios.post('https://crm-system-beta.vercel.app/api/v1/group', formDataToJson, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${access_token}`
-                },
-            })
-                .then((response) => {
-                    console.log('Data sent successfully:', response.data);
-                    window.location.reload();
-                })
-                .catch((error) => {
-                    console.error('Error occurred:', error);
-                })
-                .finally(() => {
-                    setAddGroupLoader(false);
+            try {
+                const response = await axios.post('https://crm-system-beta.vercel.app/api/v1/group', {
+                    group_name,
+                    lesson_dates,
+                    lesson_time
+                }, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${access_token}`
+                    },
                 });
-            setGroup_name("")
+                window.location.reload();
+            } catch (error) {
+                const errorMsg = error.response?.data?.message?.[0]?.constraints?.matches ||
+                    error.response?.data?.message ||
+                    "Failed to add group";
+                setErrorMessage(errorMsg);
+            } finally {
+                setAddGroupLoader(false);
+                setGroup_name("");
+            }
         } else {
-            alert("Please fill in all fields")
+            setErrorMessage("Please fill in all fields");
         }
-    }
+    };
 
     const deleteGroup = async (id) => {
-        const access_token = localStorage.getItem("token")
+        const access_token = localStorage.getItem("token");
         setDeleteLoaderId(id);
 
         try {
@@ -92,10 +93,10 @@ const Groups = ({ setLoading, dataGroup }) => {
                     Authorization: `Bearer ${access_token}`
                 }
             });
-            console.log("Group deleted successfully:", response.data);
             window.location.reload();
         } catch (error) {
-            console.error("Error occurred:", error);
+            const errorMsg = error.response?.data?.message ||
+                "Failed to delete group";
         } finally {
             setDeleteLoaderId(null);
         }
@@ -103,37 +104,35 @@ const Groups = ({ setLoading, dataGroup }) => {
 
     const addTeacher = async (e) => {
         e.preventDefault();
-        const access_token = localStorage.getItem("token")
+        const access_token = localStorage.getItem("token");
         setAddTeacherLoader(true);
-        
-        if (groups === "") {
-            setGroups(dataGroup[0]._id)
-        }
-
-        const formData = new FormData();
-        formData.append("name", `${name}`);
-        formData.append("surname", `${surname}`);
-        formData.append("phone", `+${phone}`);
-        formData.append("picture", "exaple.jpg");
-        formData.append("salary", `${salary}`);
-        formData.append("groups", "67b6ba717668fcfb774c3937");
-        const formDataToJson = Object.fromEntries(formData.entries());
+        setErrorMessageT(null);
 
         try {
-            await axios.post("https://crm-system-beta.vercel.app/api/v1/teacher/", formDataToJson, {
+            await axios.post("https://crm-system-beta.vercel.app/api/v1/teacher/", {
+                name,
+                surname,
+                phone: `+${phone}`,
+                picture: "example.jpg",
+                salary,
+                groups: groups || (dataGroup.length > 0 ? dataGroup[0]._id : null)
+            }, {
                 headers: {
                     Authorization: `Bearer ${access_token}`,
                     "Content-Type": "application/json"
                 },
             });
-            alert("Teacher added successfully!");
             setIsOpen(false);
             setName("");
             setSurname("");
             setPhone("");
             setSalary("");
+            window.location.reload();
         } catch (error) {
-            console.error("Error occurred:", error);
+            const errorMsg = error.response?.data?.message?.[0]?.constraints?.matches ||
+                error.response?.data?.message ||
+                "Failed to add teacher";
+            setErrorMessageT(errorMsg);
         } finally {
             setAddTeacherLoader(false);
         }
@@ -141,6 +140,17 @@ const Groups = ({ setLoading, dataGroup }) => {
 
     return (
         <div className="p-4 md:p-6">
+            {/* Error Message Display */}
+            {errorMessage && (
+                <div className="flex items-center gap-2 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-md shadow-md transition-all duration-300 mb-4">
+                    <svg onClick={clearError} className="w-5 h-5 text-red-600 cursor-pointer" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M18.364 5.636L5.636 18.364M5.636 5.636l12.728 12.728" />
+                    </svg>
+                    <span className="text-sm font-medium">{errorMessage}</span>
+                </div>
+            )}
+
+            {/* Rest of your component remains the same */}
             {/* Group Creation Section */}
             <div className={disable === false ? 'block' : 'hidden'}>
                 {/* Group Creation Form */}
@@ -212,6 +222,14 @@ const Groups = ({ setLoading, dataGroup }) => {
                 {isOpen && (
                     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80 z-[99999] p-4">
                         <div className="bg-white p-4 md:p-6 rounded shadow-lg w-full md:w-3/4 lg:w-1/2 relative max-h-[90vh] overflow-y-auto">
+                            {errorMessageT && (
+                                <div className="flex items-center gap-2 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-md shadow-md transition-all duration-300 mb-4">
+                                    <svg onClick={()=>{setErrorMessageT(null)}} className="w-5 h-5 text-red-600 cursor-pointer" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M18.364 5.636L5.636 18.364M5.636 5.636l12.728 12.728" />
+                                    </svg>
+                                    <span className="text-sm font-medium">{errorMessageT}</span>
+                                </div>
+                            )}
                             <h2 className="text-xl md:text-2xl font-bold mb-4">Add New Teacher</h2>
                             <p
                                 onClick={() => setIsOpen(false)}
@@ -371,7 +389,7 @@ const Groups = ({ setLoading, dataGroup }) => {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default Groups
+export default Groups;
