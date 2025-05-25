@@ -55,7 +55,7 @@ function Home({ data, dataGroup, dataTeacher, group_id, setGroup_id, setLoading,
       <aside
         className={`
           ${isMenuCollapsed ? "xl:w-16" : "xl:w-64"}
-          bg-[#333333] text-white
+          bg-[#333] text-white
           transition-all duration-300
           xl:sticky xl:top-0 xl:h-screen xl:flex xl:flex-col
           fixed bottom-0 left-0 w-full h-16 
@@ -75,15 +75,14 @@ function Home({ data, dataGroup, dataTeacher, group_id, setGroup_id, setLoading,
         {!isMenuCollapsed && <hr className='mt-4 text-[#fff] xl:block hidden' />}
 
         {/* Menu for large screens */}
-        <nav className={`mt-8 px-0 space-y-4 ${isMenuCollapsed ? "hidden" : "hidden xl:block"}`}>
+        <nav className={`mt-8 px-0 space-y-1 ${isMenuCollapsed ? "hidden" : "hidden xl:block"}`}>
 
           <Link
             to="/"
-            className={`flex items-center p-2 space-x-2 rounded ${activeMenu === "/" ? "bg-[#555555]" : "hover:bg-[#555555]"}`}
+            className={`flex items-center p-2 py-3 space-x-2 rounded ${activeMenu === "/" ? "bg-[#555555]" : "hover:bg-[#555555]"}`}
             onClick={() => handleMenuClick("/")}
           >
-            <span className={`w-3 h-3 rounded-full border ${activeMenu === "/" ? "bg-white" : "border-white"}`} />
-            <FaHome className="text-xl" />
+               <FaHome className="text-xl" />
             <span className="font-normal">Report</span>
           </Link>
 
@@ -91,12 +90,10 @@ function Home({ data, dataGroup, dataTeacher, group_id, setGroup_id, setLoading,
           {hasGroups.length > 0 ? (
             <Link
               to="/students"
-              className={`flex items-center p-2 space-x-2 rounded ${activeMenu === "/students" ? "bg-[#555555]" : "hover:bg-[#555555]"}`}
+              className={`flex items-center p-2 py-3 space-x-2 rounded ${activeMenu === "/students" ? "bg-[#555555]" : "hover:bg-[#555555]"}`}
               onClick={() => handleMenuClick("/students")}
             >
-              <span className={`w-3 h-3 rounded-full border ${activeMenu === "/students" ? "bg-white" : "border-white"}`} />
-
-              <FaGraduationCap className="text-xl" />
+                            <FaGraduationCap className="text-xl" />
               <span className="font-normal">Students</span>
             </Link>
           ) : (
@@ -109,12 +106,10 @@ function Home({ data, dataGroup, dataTeacher, group_id, setGroup_id, setLoading,
           {/* Groups Link - with warning if no groups */}
           <Link
             to="/groups"
-            className={`flex items-center p-2 space-x-2 rounded ${activeMenu === "/groups" ? "bg-[#555555]" : "hover:bg-[#555555]"}`}
+            className={`flex items-center p-2 space-x-2 py-3 rounded ${activeMenu === "/groups" ? "bg-[#555555]" : "hover:bg-[#555555]"}`}
             onClick={() => handleMenuClick("/groups")}
           >
-            <span className={`w-3 h-3 rounded-full border ${activeMenu === "/groups" ? "bg-white" : "border-white"}`} />
-
-            <FaUsers className="text-xl" />
+                      <FaUsers className="text-xl" />
             <div className="flex flex-col">
               <span className="font-normal">Groups</span>
               {hasGroups.length == 0 && (
@@ -125,21 +120,19 @@ function Home({ data, dataGroup, dataTeacher, group_id, setGroup_id, setLoading,
 
           <Link
             to="/payment"
-            className={`flex items-center p-2 space-x-2 rounded ${activeMenu === "/payment" ? "bg-[#555555]" : "hover:bg-[#555555]"}`}
+            className={`flex items-center p-2 space-x-2 py-3 rounded ${activeMenu === "/payment" ? "bg-[#555555]" : "hover:bg-[#555555]"}`}
             onClick={() => handleMenuClick("/payment")}
           >
-            <span className={`w-3 h-3 rounded-full border ${activeMenu === "/payment" ? "bg-white" : "border-white"}`} />
-
-            <FaCreditCard className="text-xl" />
+                       <FaCreditCard className="text-xl" />
             <span className="font-normal">Payments</span>
           </Link>
 
           <Link
             to="/attandance"
-            className={`flex items-center p-2 space-x-2 rounded ${activeMenu === "/attandance" ? "bg-[#555555]" : "hover:bg-[#555555]"}`}
+            className={`flex items-center py-3 p-2 space-x-2 rounded ${activeMenu === "/attandance" ? "bg-[#555555]" : "hover:bg-[#555555]"}`}
             onClick={() => handleMenuClick("/attandance")}
           >
-            <span className={`w-3 h-3 rounded-full border ${activeMenu === "/attandance" ? "bg-white" : "border-white"}`} />
+            
 
             <FaUser className="text-xl" />
             <span className="font-normal">Attendance</span>
@@ -165,7 +158,7 @@ function Home({ data, dataGroup, dataTeacher, group_id, setGroup_id, setLoading,
               to: !hasGroups.length == 0 ? "/students" : "#",
               icon: <FaGraduationCap />,
               label: "Students",
-              disabled: !hasGroups.length == 0,
+              disabled: hasGroups.length == 0,
               path: "/students"
             },
             { to: "/groups", icon: <FaUsers />, label: "Groups", path: "/groups" },
@@ -175,7 +168,7 @@ function Home({ data, dataGroup, dataTeacher, group_id, setGroup_id, setLoading,
             <Link
               key={label}
               to={to}
-              className={`flex flex-col items-center text-xs ${disabled ? 'opacity-50 cursor-not-allowed text-red-500' : 'hover:text-gray-300'} ${activeMenu === path ? 'text-' : ''}`}
+              className={`flex flex-col items-center text-xs ${disabled ? 'opacity-20 cursor-not-allowed ' : 'hover:text-gray-300'} ${activeMenu === path ? 'text-' : ''}`}
               onClick={disabled ? (e) => e.preventDefault() : () => handleMenuClick(path)}
             >
               <span className="text-lg">{icon}</span>
