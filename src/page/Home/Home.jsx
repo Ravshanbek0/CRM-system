@@ -113,7 +113,7 @@ function Home({ data, dataGroup, dataTeacher, group_id, setGroup_id, setLoading,
             <div className="flex flex-col">
               <span className="font-normal">Groups</span>
               {hasGroups.length == 0 && (
-                <span className="text-xs text-yellow-300 mt-1">Avval guruh qo'shing!</span>
+                <span className="text-xs text-yellow-300 mt-1">Add a group first!</span>
               )}
             </div>
           </Link>

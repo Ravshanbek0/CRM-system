@@ -180,81 +180,103 @@ function Report({ data, dataGroup, dataTeacher, access_token }) {
             <h2 className="text-lg font-semibold">February 2025 Statistics</h2>
           </div>
           <div className="h-80 flex flex-col">
-            <div className="flex-1 min-h-0 relative">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={[
-                      { name: "Students", value: data.length, color: "#4f46e5" },
-                      { name: "Teachers", value: dataTeacher.length, color: "#10b981" },
-                      { name: "Groups", value: dataGroup.length, color: "#f59e0b" },
-                      { name: "Left", value: leftStudentsCount, color: "#ef4444" }
-                    ]}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={20}
-                    outerRadius={110}
-                    paddingAngle={1}
-                    dataKey="value"
-                    label={({
-                      cx,
-                      cy,
-                      midAngle,
-                      innerRadius,
-                      outerRadius,
-                      percent,
-                      index
-                    }) => {
-                      const RADIAN = Math.PI / 180;
-                      const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-                      const x = cx + radius * Math.cos(-midAngle * RADIAN);
-                      const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
-                      return (
-                        <text
-                          x={x}
-                          y={y}
-                          fill="white"
-                          textAnchor="middle"
-                          dominantBaseline="central"
-                          className="text-xs font-bold"
-                        >
-                          {`${(percent * 100).toFixed(0)}%`}
-                        </text>
-                      );
-                    }}
-                    labelLine={false}
-                  >
-                    {[
-                      { name: "Students", value: data.length, color: "#4f46e5" },
-                      { name: "Teachers", value: dataTeacher.length, color: "#10b981" },
-                      { name: "Groups", value: dataGroup.length, color: "#f59e0b" },
-                      { name: "Left", value: leftStudentsCount, color: "#ef4444" }
-                    ].map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} />
-                    ))}
-                  </Pie>
-                  
-                </PieChart>
-              </ResponsiveContainer>
-            </div>
-
-            <div className="flex flex-wrap justify-center gap-3 mt-4 px-2">
-              {[
-                { name: "Students", value: data.length, color: "#4f46e5" },
-                { name: "Teachers", value: dataTeacher.length, color: "#10b981" },
-                { name: "Groups", value: dataGroup.length, color: "#f59e0b" },
-                { name: "Left", value: leftStudentsCount, color: "#ef4444" }
-              ].map((item, index) => (
-                <div key={index} className="flex items-center text-xs sm:text-sm">
-                  <div
-                    className="w-3 h-3 rounded-full mr-2 flex-shrink-0"
-                    style={{ backgroundColor: item.color }}
+            {data.length === 0 && dataTeacher.length === 0 && dataGroup.length === 0 && leftStudentsCount === 0 ? (
+              <div className="flex-1 flex flex-col items-center justify-center text-gray-500">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-12 w-12 mb-3"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1}
+                    d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                   />
-                  <span>{item.name}</span>
+                </svg>
+                <p className="text-center">No data available for February 2025</p>
+                <p className="text-sm text-center mt-1">Please check back later</p>
+              </div>
+            ) : (
+              <>
+                <div className="flex-1 min-h-0 relative">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={[
+                          { name: "Students", value: data.length, color: "#4f46e5" },
+                          { name: "Teachers", value: dataTeacher.length, color: "#10b981" },
+                          { name: "Groups", value: dataGroup.length, color: "#f59e0b" },
+                          { name: "Left", value: leftStudentsCount, color: "#ef4444" }
+                        ]}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={20}
+                        outerRadius={110}
+                        paddingAngle={1}
+                        dataKey="value"
+                        label={({
+                          cx,
+                          cy,
+                          midAngle,
+                          innerRadius,
+                          outerRadius,
+                          percent,
+                          index
+                        }) => {
+                          const RADIAN = Math.PI / 180;
+                          const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+                          const x = cx + radius * Math.cos(-midAngle * RADIAN);
+                          const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+                          return (
+                            <text
+                              x={x}
+                              y={y}
+                              fill="white"
+                              textAnchor="middle"
+                              dominantBaseline="central"
+                              className="text-xs font-bold"
+                            >
+                              {`${(percent * 100).toFixed(0)}%`}
+                            </text>
+                          );
+                        }}
+                        labelLine={false}
+                      >
+                        {[
+                          { name: "Students", value: data.length, color: "#4f46e5" },
+                          { name: "Teachers", value: dataTeacher.length, color: "#10b981" },
+                          { name: "Groups", value: dataGroup.length, color: "#f59e0b" },
+                          { name: "Left", value: leftStudentsCount, color: "#ef4444" }
+                        ].map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={entry.color} />
+                        ))}
+                      </Pie>
+                    </PieChart>
+                  </ResponsiveContainer>
                 </div>
-              ))}
-            </div>
+
+                <div className="flex flex-wrap justify-center gap-3 mt-4 px-2">
+                  {[
+                    { name: "Students", value: data.length, color: "#4f46e5" },
+                    { name: "Teachers", value: dataTeacher.length, color: "#10b981" },
+                    { name: "Groups", value: dataGroup.length, color: "#f59e0b" },
+                    { name: "Left", value: leftStudentsCount, color: "#ef4444" }
+                  ].map((item, index) => (
+                    <div key={index} className="flex items-center text-xs sm:text-sm">
+                      <div
+                        className="w-3 h-3 rounded-full mr-2 flex-shrink-0"
+                        style={{ backgroundColor: item.color }}
+                      />
+                      <span>{item.name}</span>
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>
